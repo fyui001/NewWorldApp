@@ -14,7 +14,6 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-        Interfaces\NewsServiceInterface::class => Services\NewsService::class,
         Interfaces\AdminUserServiceInterface::class => Services\AdminUserService::class,
     ];
 

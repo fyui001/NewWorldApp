@@ -23,16 +23,6 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout')->name('auth.logout');
 });
 
-/* News */
-Route::prefix('news')->group(function() {
-    Route::get('/', 'NewsController@index')->name('news.index');
-    Route::get('/create', 'NewsController@create')->name('news.create');
-    Route::post('/', 'NewsController@store')->name('news.store');
-    Route::put('/{news}', 'NewsController@update')->where('news', '[0-9]+')->name('news.update');
-    Route::get('/{news}/edit', 'NewsController@edit')->where('news', '[0-9]+')->name('news.edit');
-    Route::delete('/{news}', 'NewsController@destroy')->where('news', '[0-9]+')->name('news.destroy');
-});
-
 /* Users */
 Route::prefix('admin_users')->group(function() {
     Route::get('/','AdminUserController@index')->name('admin_users.index');

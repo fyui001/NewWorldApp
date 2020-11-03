@@ -35,17 +35,14 @@ class Accessible
             AdminUser::ROLE_SYSTEM => [
                 'auth.*',
                 'admin_users.*',
-                'news.*',
                 'top_page',
             ],
             AdminUser::ROLE_ADMIN => [
                 'auth.*',
-                'news.*',
                 'top_page',
             ],
             AdminUser::ROLE_USER => [
                 'auth.*',
-                'news.index',
                 'top_page',
             ]
         ];
@@ -72,5 +69,5 @@ class Accessible
 
         return false;
     }
-    
+
 }

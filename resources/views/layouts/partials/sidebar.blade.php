@@ -12,12 +12,6 @@
                         <p>Admin Users</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'News' ? 'active' : '' }}" href="{{ route('news.index') }}">
-                        <i class="oi oi-share-boxed"></i>
-                        <p>News</p>
-                    </a>
-                </li>
             </ul>
         </nav>
     </div>
