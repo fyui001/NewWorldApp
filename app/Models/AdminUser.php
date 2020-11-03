@@ -13,8 +13,7 @@ class AdminUser extends Authenticatable
     use Notifiable;
 
     const ROLE_SYSTEM = 1;
-    const ROLE_ADMIN = 2;
-    const ROLE_USER = 3;
+    const ROLE_OPERATOR = 2;
 
     const STATUS_INVALID = 0;
     const STATUS_VALID = 1;
@@ -58,8 +57,7 @@ class AdminUser extends Authenticatable
 
         return [
             self::ROLE_SYSTEM => 'システム管理者',
-            self::ROLE_ADMIN => '管理者',
-            self::ROLE_USER => '一般ユーザー',
+            self::ROLE_OPERATOR => '管理者',
         ];
     }
 

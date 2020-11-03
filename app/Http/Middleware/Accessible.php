@@ -37,14 +37,10 @@ class Accessible
                 'admin_users.*',
                 'top_page',
             ],
-            AdminUser::ROLE_ADMIN => [
+            AdminUser::ROLE_OPERATOR => [
                 'auth.*',
                 'top_page',
             ],
-            AdminUser::ROLE_USER => [
-                'auth.*',
-                'top_page',
-            ]
         ];
 
         return data_get($routes, $roleId, []);
