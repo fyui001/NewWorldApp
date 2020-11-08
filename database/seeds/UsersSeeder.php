@@ -14,9 +14,11 @@ class UsersSeeder extends Seeder
     {
         DB::table('users')->insert([
             'user_id' => 'matsui_eriko',
-            'password' => Hash::make('hogehoge'),
             'name' => '松井恵理子',
+            'icon_url' => '',
+            'password' => Hash::make('hogehoge'),
             'access_token' => '',
+            'is_registered' => 0,
             'del_flg' => 0,
             'created_at' => now(),
             'updated_at' => now(),
