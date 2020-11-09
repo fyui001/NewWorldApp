@@ -13,7 +13,7 @@ class UsersSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'user_id' => 'matsui_eriko',
+            'user_id' => '19890308',
             'name' => '松井恵理子',
             'icon_url' => '',
             'password' => Hash::make('hogehoge'),
