@@ -5,11 +5,29 @@
     </a>
     <div class="sidebar">
         <nav class="mt-2">
+            @if(me('role') === App\Models\AdminUser::ROLE_SYSTEM)
+                <ul class="nav nav-pills nav-sidebar flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {{ $activePage == 'AdminUser' ? 'active' : '' }}" href="{{ route('admin_users.index') }}">
+                            <i class="oi oi-person"></i>
+                            <p>管理ユーザー</p>
+                        </a>
+                    </li>
+                </ul>
+            @endif
             <ul class="nav nav-pills nav-sidebar flex-column">
                 <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'AdminUser' ? 'active' : '' }}" href="{{ route('admin_users.index') }}">
-                        <i class="oi oi-person"></i>
-                        <p>Admin Users</p>
+                    <a class="nav-link {{ $activePage == 'Drug' ? 'active' : '' }}" href="{{ route('admin_users.index') }}">
+                        <i class="oi oi-eye"></i>
+                        <p>薬物一覧</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {{ $activePage == 'MedicationHistory' ? 'active' : '' }}" href="{{ route('admin_users.index') }}">
+                        <i class="oi oi-graph"></i>
+                        <p>服薬履歴</p>
                     </a>
                 </li>
             </ul>
