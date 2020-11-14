@@ -15,9 +15,9 @@ class CreateMedicationHistoriesTable extends Migration
     {
         Schema::create('medication_histories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id');
-            $table->bigInteger('drug_id');
-            $table->decimal('amount', 11, 2);
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('drug_id')->unsigned();
+            $table->decimal('amount', 11, 2)->unsigned();
             $table->timestamps();
         });
     }
