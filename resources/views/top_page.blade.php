@@ -1,4 +1,3 @@
-@extends('layouts.base', ['activePage' => 'TopPage', 'pageTitle' => 'トップページ'])
+@extends('layouts.base', ['activePage' => '無題', 'pageTitle' => 'Welcome to NewWorld'])
 @section('content')
-<p>トップページ</p>
 @endsection

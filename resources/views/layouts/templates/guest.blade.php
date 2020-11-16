@@ -2,7 +2,7 @@
     <div class="login-box">
         @include('layouts.partials.flash_message')
         <div class="login-logo">
-            <a href="">管理画面</a>
+            <a href="">NewWorld管理画面</a>
         </div><!-- /.login-logo -->
         @yield('content')
     </div>
