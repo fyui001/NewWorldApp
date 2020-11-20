@@ -30,7 +30,7 @@
         {{ Form::password('password_confirm', ['class' => 'form-control input-sm', 'placeholder' => '', 'required' => true]) }}
     </div>
     <div class="form-group">
-        <label for="TextareaUserName">Uesr Name</label>
+        <label for="TextareaUserName">User Name</label>
         {{ Form::text('name', old('name'), ['class' => 'form-control input-sm', 'required' => true]) }}
     </div>
     <div class="form-group">
