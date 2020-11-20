@@ -36,10 +36,12 @@ class Accessible
                 'auth.*',
                 'admin_users.*',
                 'top_page',
+                'drugs.*',
             ],
             AdminUser::ROLE_OPERATOR => [
                 'auth.*',
                 'top_page',
+                'drugs.*',
             ],
         ];
 
