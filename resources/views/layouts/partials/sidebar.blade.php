@@ -17,7 +17,7 @@
             @endif
             <ul class="nav nav-pills nav-sidebar flex-column">
                 <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'Drug' ? 'active' : '' }}" href="{{ route('admin_users.index') }}">
+                    <a class="nav-link {{ $activePage == 'Drug' ? 'active' : '' }}" href="{{ route('drugs.index') }}">
                         <i class="oi oi-eye"></i>
                         <p>薬物一覧</p>
                     </a>

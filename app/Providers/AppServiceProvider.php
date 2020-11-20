@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public $bindings = [
         Interfaces\AdminUserServiceInterface::class => Services\AdminUserService::class,
+        Interfaces\DrugServiceInterface::class => Services\DrugService::class,
     ];
 
     /**
