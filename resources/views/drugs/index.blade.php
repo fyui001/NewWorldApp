@@ -41,4 +41,7 @@
         </tr>
     @endforeach
 </table>
+<div class="box-footer clearfix">
+    {!! $drugs->render() !!}
+</div>
 @endsection
