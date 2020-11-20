@@ -17,14 +17,14 @@
 @section('content')
 <table class="table">
     <thead>
-    <tr>
-        <th class="text-center">#</th>
-        <th>user id</th>
-        <th>name</th>
-        <th>role</th>
-        <th>status</th>
-        <th class="text-right">Actions</th>
-    </tr>
+        <tr>
+            <th class="text-center">#</th>
+            <th>user id</th>
+            <th>name</th>
+            <th>role</th>
+            <th>status</th>
+            <th class="text-right">Actions</th>
+        </tr>
     </thead>
     @foreach($adminUsers as $item)
         <tr>
