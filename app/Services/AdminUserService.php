@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\AdminUser;
-use App\Services\Service as BaseService;
+use App\Services\Service as AppService;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 
-class AdminUserService extends BaseService implements AdminUserServiceInterface
+class AdminUserService extends AppService implements AdminUserServiceInterface
 {
 
     /**

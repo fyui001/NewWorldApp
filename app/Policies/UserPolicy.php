@@ -16,7 +16,7 @@ class UserPolicy
     public function create(AdminUser $user): bool
     {
 
-        if (me('role') == AdminUser::ROLE_SYSTEM) {
+        if (me('role') === AdminUser::ROLE_SYSTEM) {
             return true;
         }
         return false;
@@ -30,7 +30,7 @@ class UserPolicy
     public function update(AdminUser $user, AdminUser $editUser): bool
     {
 
-        if (me('role') == AdminUser::ROLE_SYSTEM) {
+        if (me('role') === AdminUser::ROLE_SYSTEM) {
             return true;
         }
         return false;
