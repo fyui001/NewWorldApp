@@ -11,5 +11,5 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface DrugServiceInterface
 {
     public function getDrugs(): LengthAwarePaginator;
-    public function createDrug(Request $request): Drug;
+    public function createDrug(Request $request): bool;
 }

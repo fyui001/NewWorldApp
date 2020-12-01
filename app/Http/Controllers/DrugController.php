@@ -45,13 +45,27 @@ class DrugController extends AppController
 
     }
 
+    /**
+     * Create Drugs
+     *
+     * @param CreateDrugRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(CreateDrugRequest $request) {
 
-        $this->drugService->createDrug($request);
+        if (!$this->drugService->createDrug($request)) {
+            return redirect(route('drugs.create'))->with('error', '不正な入力です');
+        }
         return redirect(route('drugs.index'))->with('success', '薬物を登録しました');
 
     }
 
+    /**
+     * Form to edit drugs
+     *
+     * @param Drug $Drug
+     * @return View
+     */
     public function edit(Drug $drug): View {
 
         return view('drugs.edit', compact('drug'));

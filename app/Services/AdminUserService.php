@@ -20,10 +20,10 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
      *
      * @return LengthAwarePaginator
      */
-    public function getUsers(): LengthAwarePaginator
-    {
+    public function getUsers(): LengthAwarePaginator {
 
         return AdminUser::paginate(15);
+
     }
 
     /**
