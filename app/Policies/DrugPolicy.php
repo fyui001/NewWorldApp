@@ -9,7 +9,7 @@ use App\Models\AdminUser;
 class DrugPolicy
 {
 
-    public function create(AdminUser $user): bool {
+    public function create(): bool {
 
         if (me('role') === AdminUser::ROLE_SYSTEM || me('role') === AdminUser::ROLE_OPERATOR) {
             return true;
@@ -19,7 +19,7 @@ class DrugPolicy
 
     }
 
-    public function update(AdminUser $user): bool {
+    public function update(): bool {
 
         if (me('role') === AdminUser::ROLE_SYSTEM || me('role') === AdminUser::ROLE_OPERATOR) {
             return true;

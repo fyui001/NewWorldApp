@@ -38,5 +38,6 @@ Route::prefix('drugs')->group(function() {
    Route::get('/', 'DrugController@index')->name('drugs.index');
    Route::get('/create', 'DrugController@create')->name('drugs.create');
    Route::post('/', 'DrugController@store')->name('drugs.store');
-   Route::get('/{Drug}/edit', 'DrugController@edit')->name('drugs.edit');
+   Route::get('/edit/{drug}', 'DrugController@edit')->name('drugs.edit');
+   Route::post('/update/{drug}', 'DrugController@update')->name('drugs.update');
 });

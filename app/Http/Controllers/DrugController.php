@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller as AppController;
 use App\Models\Drug;
 use App\Http\Requests\Drugs\CreateDrugRequest;
+use App\Http\Requests\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
 use Illuminate\View\View;
 
@@ -63,12 +64,22 @@ class DrugController extends AppController
     /**
      * Form to edit drugs
      *
-     * @param Drug $Drug
+     * @param Drug $drug
      * @return View
      */
     public function edit(Drug $drug): View {
 
         return view('drugs.edit', compact('drug'));
+
+    }
+
+    public function update(Drug $drug, UpdateDrugRequest $request) {
+
+        if (!$this->drugService->updateDrug($drug, $request)) {
+            return redirect()->route('drugs.index')->with(['error' => '薬物の更新に失敗しました']);
+        }
+
+        return redirect()->route('drugs.index')->with(['success' => '薬物の更新に成功しました']);
 
     }
 
