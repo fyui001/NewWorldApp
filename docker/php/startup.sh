@@ -2,10 +2,6 @@ cd /code
 # composer
 composer install
 
-#npm
-npm i
-npm run prod
-
 php artisan key:generate
 
 # cache clear
@@ -17,4 +13,4 @@ php artisan view:clear
 chmod -R 777 /code/storage bootstrap/cache
 
 echo "starting php-fpm"
-exec $@
+php-fpm -F

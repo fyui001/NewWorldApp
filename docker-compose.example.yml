@@ -10,8 +10,14 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
-    ports:
-      - 9000:9000
+      - js
+  js:
+    build:
+      context: .
+      dockerfile: ./docker/js/Dockerfile
+    volumes:
+      - .:/code:cached
+      - node-modules:/code/node_modules
   web:
     image: nginx:latest
     depends_on:
@@ -33,3 +39,7 @@ services:
       - TZ=${TZ}
     ports:
       - 3306:3306
+
+volumes:
+  php-vendor:
+  node-modules:
