@@ -23,7 +23,7 @@ class MedicationHistory extends AppModel
 
     public function drug() {
 
-        return $this->belongsTo('App\Model\Drug', 'drug_id');
+        return $this->belongsTo('App\Models\Drug', 'drug_id');
 
     }
 

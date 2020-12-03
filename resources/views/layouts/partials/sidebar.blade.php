@@ -25,7 +25,7 @@
             </ul>
             <ul class="nav nav-pills nav-sidebar flex-column">
                 <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'MedicationHistory' ? 'active' : '' }}" href="{{ route('admin_users.index') }}">
+                    <a class="nav-link {{ $activePage == 'MedicationHistory' ? 'active' : '' }}" href="{{ route('medication_histories.index') }}">
                         <i class="oi oi-graph"></i>
                         <p>服薬履歴</p>
                     </a>

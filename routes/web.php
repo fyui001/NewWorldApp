@@ -41,3 +41,7 @@ Route::prefix('drugs')->group(function() {
    Route::get('/edit/{drug}', 'DrugController@edit')->name('drugs.edit');
    Route::post('/update/{drug}', 'DrugController@update')->name('drugs.update');
 });
+
+Route::prefix('medication_histories')->group(function(){
+   Route::get('/', 'MedicationHistoryController@index')->name('medication_histories.index');
+});
