@@ -1,4 +1,4 @@
-@extends('layouts.base', ['activePage' => 'Drug'])
+@extends('layouts.base', ['activePage' => 'MedicationHistory'])
 
 @section('content-header')
 <div>
