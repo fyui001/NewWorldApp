@@ -2,8 +2,6 @@ cd /code
 # composer
 composer install
 
-php artisan key:generate
-
 # cache clear
 php artisan cache:clear
 php artisan config:clear

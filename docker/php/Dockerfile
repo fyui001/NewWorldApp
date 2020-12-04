@@ -12,4 +12,4 @@ RUN set -eux && \
   docker-php-ext-install bcmath pdo_mysql && \
   chmod +x /root/startup.sh
 
-CMD ["/root/startup.sh", "&"]
+CMD ["/root/startup.sh"]
