@@ -17,8 +17,8 @@ class Controller extends BaseController
      * Use middlewares
      */
     public function __construct() {
-        
-        $this->middleware(['auth:web', 'accessible']);
+
+        $this->middleware(['auth:admin', 'accessible']);
 
     }
 }
