@@ -8,7 +8,7 @@ use App\Models\AdminUser;
 use App\Http\Requests\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface   AdminUserServiceInterface
+interface AdminUserServiceInterface
 {
     public function getUsers(): LengthAwarePaginator;
     public function createUser(Request $request): AdminUser;
