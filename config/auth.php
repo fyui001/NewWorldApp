@@ -48,8 +48,13 @@ return [
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'admin_users',
+            'provider' => 'users',
             'hash' => false,
+        ],
+
+        'user' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
         ],
     ],
 
@@ -75,11 +80,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\AdminUser::class,
         ],
-
-        // 'admin_users' => [
-        //     'driver' => 'database',
-        //     'table' => 'admin_users',
-        // ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ]
     ],
 
     /*
