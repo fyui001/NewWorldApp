@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\Users\LoginUserRequest;
+use App\Http\Requests\Users\RegisterUserRequest;
 use App\Services\Interfaces\UserServiceInterface;
 
 class UserController
@@ -26,13 +27,13 @@ class UserController
         if (!$users) {
             return [
                 'status' => false,
-                'msg' => 'unauthorized'
+                'msg' => 'unauthorized',
             ];
         }
 
         return [
             'status' => true,
-            'data' => $users
+            'data' => $users,
         ];
 
     }
@@ -44,12 +45,28 @@ class UserController
         if (!$response) {
             return [
                 'status' => false,
-                'data' => [],
+                'msg' => 'unauthorized',
+            ];
+        }
+
+        return [
+            'status' => true,
+            'data' => $response
+        ];
+
+    }
+
+    public function register(RegisterUserRequest $request) {
+
+        if (!$this->userService->register($request)) {
+            return [
+                'status' => false,
+                'msg' => '登録に失敗',
             ];
         }
         return [
             'status' => true,
-            'data' => $response
+            'msg' => '登録完了',
         ];
 
     }
