@@ -48,7 +48,7 @@ class LoginController extends Controller
      */
     protected function guard(): StatefulGuard {
 
-        return Auth::guard('web');
+        return Auth::guard('admin');
 
     }
 
@@ -96,7 +96,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::guard('admin')->attempt($credentials)) {
             return redirect()->intended(route('auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
         }
 
@@ -111,7 +111,7 @@ class LoginController extends Controller
      */
     public function logout(): RedirectResponse {
 
-        Auth::logout();
+        Auth::guard('admin')->logout();
         return redirect(route('auth.login'));
 
     }

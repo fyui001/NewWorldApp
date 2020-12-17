@@ -9,8 +9,8 @@ if (! function_exists('me')) {
      */
     function me($key = null)
     {
-        if (\Auth::guard('web')->check()) {
-            return $key ? \Auth::guard('web')->user()->getAttribute($key) : \Auth::guard('web')->user();
+        if (\Auth::guard('admin')->check()) {
+            return $key ? \Auth::guard('admin')->user()->getAttribute($key) : \Auth::guard('admin')->user();
         }
 
         return null;

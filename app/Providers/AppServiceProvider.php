@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         Interfaces\AdminUserServiceInterface::class => Services\AdminUserService::class,
         Interfaces\DrugServiceInterface::class => Services\DrugService::class,
         Interfaces\MedicationHistoryServiceInterface::class => Services\MedicationHistoryService::class,
+        Interfaces\UserServiceInterface::class => Services\UserService::class,
     ];
 
     /**
