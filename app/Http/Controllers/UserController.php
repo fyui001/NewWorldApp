@@ -43,16 +43,17 @@ class UserController
         $response = $this->userService->login($request);
 
         if (!$response) {
-            return [
+            return response()->json([
                 'status' => false,
                 'msg' => 'unauthorized',
-            ];
+            ], 400);
         }
 
-        return [
+        return response()->json([
             'status' => true,
             'data' => $response
-        ];
+        ], 200);
+
 
     }
 
@@ -61,12 +62,12 @@ class UserController
         if (!$this->userService->register($request)) {
             return [
                 'status' => false,
-                'msg' => '登録に失敗',
+                'msg' => 'Failed to register',
             ];
         }
         return [
             'status' => true,
-            'msg' => '登録完了',
+            'msg' => 'registered',
         ];
 
     }
