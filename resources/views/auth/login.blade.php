@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.base', ['activePage' => 'Login'])
 @section('content')
 <div class="login-box-body">
     <h4 class="login-box-msg"><strong>Please Login</strong></h4>
