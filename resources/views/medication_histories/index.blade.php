@@ -31,6 +31,6 @@
     @endforeach
 </table>
 <div class="box-footer clearfix">
-    {!! $medicationHistories->render() !!}
+    {!! $medicationHistories->links('pagination::bootstrap-4') !!}
 </div>
 @endsection

@@ -42,6 +42,6 @@
     @endforeach
 </table>
 <div class="box-footer clearfix">
-    {!! $drugs->render() !!}
+    {!! $drugs->links('pagination::bootstrap-4') !!}
 </div>
 @endsection
