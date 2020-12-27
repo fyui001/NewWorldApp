@@ -66,9 +66,13 @@ class LoginController extends Controller
     /**
      * Form for login.
      *
-     * @return View
+     * @return View | RedirectResponse
      */
-    public function showLoginForm(): View {
+    public function showLoginForm() {
+
+        if (me()) {
+            return redirect(route('top_page'));
+        }
 
         return view('auth.login');
 
