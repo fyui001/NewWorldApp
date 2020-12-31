@@ -24,8 +24,8 @@ class DrugService extends AppService implements DrugServiceInterface
     /**
      * Create a drug
      *
-     * @param Request $request
-     * @return Drug
+     * @param CreateDrugRequest $request
+     * @return bool
      */
     public function createDrug(CreateDrugRequest $request): bool {
         $result = Drug::create([
@@ -41,6 +41,13 @@ class DrugService extends AppService implements DrugServiceInterface
 
     }
 
+    /**
+     * Update a drug
+     *
+     * @param Drug $drug
+     * @param UpdateDrugRequest $request
+     * @return bool
+     */
     public function updateDrug(Drug $drug, UpdateDrugRequest $request): bool {
 
         $data = $request->only('drug_name', 'url');

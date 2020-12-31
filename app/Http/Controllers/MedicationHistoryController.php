@@ -20,6 +20,11 @@ class MedicationHistoryController extends AppController
 
     }
 
+    /**
+     * 服薬履歴一覧
+     *
+     * @return View
+     */
     public function index() {
 
         $medicationHistories = $this->medicationHistoryService->getMedicationHistories();

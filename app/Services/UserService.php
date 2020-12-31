@@ -14,7 +14,12 @@ use App\Http\Requests\Users\RegisterUserRequest;
 
 class UserService extends AppService implements UserServiceInterface
 {
-
+    
+    /**
+     * ユーザー情報取得
+     *
+     * @return array
+     */
     public function getUser(): array {
 
         $user = Auth::guard('user')->user();
@@ -31,6 +36,12 @@ class UserService extends AppService implements UserServiceInterface
 
     }
 
+    /**
+     * ログイン
+     *
+     * @param LoginUserRequest $request
+     * @return array
+     */
     public function login(LoginUserRequest $request): array {
 
         $credentials = $request->only('user_id', 'password');
@@ -56,6 +67,12 @@ class UserService extends AppService implements UserServiceInterface
 
     }
 
+    /**
+     * 登録
+     *
+     * @param RegisterUserRequest $request
+     * @return bool
+     */
     public function register(RegisterUserRequest $request): bool {
 
         $user = User::where(['user_id' => $request->input('user_id')])->first();

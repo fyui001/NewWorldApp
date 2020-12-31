@@ -31,6 +31,7 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
      *
      * @param Request $request
      * @return AdminUser
+     * @throws Exception
      */
     public function createUser(Request $request): AdminUser
     {
@@ -53,6 +54,7 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
      *
      * @param AdminUser $adminUser
      * @param Request $request
+     * @throws Exception
      */
     public function updateUser(AdminUser $adminUser, Request $request)
     {
@@ -75,6 +77,7 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
      * Delete the user.
      *
      * @param AdminUser $adminUser
+     * @throws Exception
      */
     public function deleteUser(AdminUser $adminUser)
     {

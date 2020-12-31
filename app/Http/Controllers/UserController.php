@@ -20,6 +20,11 @@ class UserController
 
     }
 
+    /**
+     * ユーザー情報取得
+     *
+     * @return array
+     */
     public function show() {
 
         $users = $this->userService->getUser();
@@ -38,6 +43,12 @@ class UserController
 
     }
 
+    /**
+     * ログイン
+     *
+     * @param LoginUserRequest $request
+     * @return array
+     */
     public function login(LoginUserRequest $request) {
 
         $response = $this->userService->login($request);
@@ -57,6 +68,12 @@ class UserController
 
     }
 
+    /**
+     * ユーザー登録
+     *
+     * @param RegisterUserRequest $request
+     * @return array
+     */
     public function register(RegisterUserRequest $request) {
 
         if (!$this->userService->register($request)) {
