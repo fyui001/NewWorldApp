@@ -20,55 +20,102 @@ class UserController
 
     }
 
+    /**
+     * ユーザー情報取得
+     *
+     * @return array
+     */
     public function show() {
 
         $users = $this->userService->getUser();
 
-        if (!$users) {
-            return [
-                'status' => false,
-                'msg' => 'unauthorized',
-            ];
-        }
-
-        return [
-            'status' => true,
-            'data' => $users,
-        ];
-
-    }
-
-    public function login(LoginUserRequest $request) {
-
-        $response = $this->userService->login($request);
-
-        if (!$response) {
+        if (!$users['status']) {
             return response()->json([
                 'status' => false,
-                'msg' => 'unauthorized',
+                'message' => $users['errors']['type'],
+                'data' => null,
             ], 400);
         }
 
         return response()->json([
             'status' => true,
-            'data' => $response
+            'message' => '',
+            'data' => $users['data'],
+        ], 200);
+
+    }
+
+    /**
+     * ログイン
+     *
+     * @param LoginUserRequest $request
+     * @return array
+     */
+    public function login(LoginUserRequest $request) {
+
+        $response = $this->userService->login($request);
+
+        if (!$response['status']) {
+            return response()->json([
+                'status' => false,
+                'message' => $response['errors']['type'],
+                'data' => null,
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => '',
+            'data' => $response['data']
         ], 200);
 
 
     }
 
+    /**
+     * ユーザー登録
+     *
+     * @param RegisterUserRequest $request
+     * @return array
+     */
     public function register(RegisterUserRequest $request) {
 
-        if (!$this->userService->register($request)) {
-            return [
-                'status' => false,
-                'msg' => 'Failed to register',
-            ];
+        $response = $this->userService->register($request);
+
+        if (!$response['status']) {
+            if ($response['errors']['type'] === 'User is not found') {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $response['errors']['type'],
+                    'data' => null,
+                ], 404);
+
+            } else if ($response['errors']['type'] === 'Already registered') {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $response['errors']['type'],
+                    'data' => null,
+                ], 400);
+
+            } else if ($response['errors']['type'] === 'Failed to register') {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $response['errors']['type'],
+                    'data' => null,
+                ], 500);
+
+            }
+
         }
-        return [
+
+        return response()->json([
             'status' => true,
-            'msg' => 'registered',
-        ];
+            'message' => 'registered',
+            'data' => null,
+        ], 200);
 
     }
 
