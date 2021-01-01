@@ -10,5 +10,5 @@ use App\Http\Requests\Users\RegisterUserRequest;
 interface UserServiceInterface {
     public function getUser(): array;
     public function login(LoginUserRequest $request): array;
-    public function register(RegisterUserRequest $request): bool;
+    public function register(RegisterUserRequest $request): array;
 }

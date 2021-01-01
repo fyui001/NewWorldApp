@@ -14,7 +14,7 @@ use App\Http\Requests\Users\RegisterUserRequest;
 
 class UserService extends AppService implements UserServiceInterface
 {
-    
+
     /**
      * ユーザー情報取得
      *
@@ -25,13 +25,21 @@ class UserService extends AppService implements UserServiceInterface
         $user = Auth::guard('user')->user();
 
         if (empty($user)) {
-            return [];
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'unauthorized',
+                ],
+            ];
         }
 
         $user->medicationHistories;
 
         return [
-            'user' => $user,
+            'status' => true,
+            'data' => [
+                'user' => $user,
+            ],
         ];
 
     }
@@ -46,11 +54,17 @@ class UserService extends AppService implements UserServiceInterface
 
         $credentials = $request->only('user_id', 'password');
         $credentials += [
-            'is_registered' => 1
+            'is_registered' => 1,
+            'del_flg' => 0,
         ];
 
         if (!Auth::guard('user')->attempt($credentials)) {
-            return [];
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'unauthorized',
+                ],
+            ];
         }
 
         $response = auth('user')->user();
@@ -61,8 +75,11 @@ class UserService extends AppService implements UserServiceInterface
         $response->medicationHistories;
 
         return [
-            'user' => $response,
-            'access_token' => $accessToken,
+            'status' => true,
+            'data' => [
+                'user' => $response,
+                'access_token' => $accessToken,
+            ],
         ];
 
     }
@@ -71,18 +88,28 @@ class UserService extends AppService implements UserServiceInterface
      * 登録
      *
      * @param RegisterUserRequest $request
-     * @return bool
+     * @return array
      */
-    public function register(RegisterUserRequest $request): bool {
+    public function register(RegisterUserRequest $request): array {
 
         $user = User::where(['user_id' => $request->input('user_id')])->first();
 
         if (empty($user)) {
-            return false;
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'User is not found',
+                ]
+            ];
         }
 
-        if($user->is_registered === 1) {
-            return false;
+        if ($user->is_registered === 1) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'Already registered',
+                ]
+            ];
         }
 
 
@@ -90,7 +117,21 @@ class UserService extends AppService implements UserServiceInterface
             'password' => Hash::make($request->input('password')),
             'is_registered' => 1,
         ];
-        return $user->update($requestData);
+
+        $response = $user->update($requestData);
+
+        if (!$response) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'Failed to register',
+                ],
+            ];
+        }
+
+        return [
+            'status' => true,
+        ];
 
     }
 
