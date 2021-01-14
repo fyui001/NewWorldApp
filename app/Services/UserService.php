@@ -33,12 +33,14 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user->medicationHistories;
+        $response = User::with('medicationHistories.drug')->where([
+            'id' => $user->id,
+        ])->get();
 
         return [
             'status' => true,
             'data' => [
-                'user' => $user,
+                'user' => $response,
             ],
         ];
 
@@ -67,17 +69,15 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $response = auth('user')->user();
+        $user = Auth::guard('user')->user();
         $accessToken = auth('user')->claims([
             'guard' => 'user'
         ])->attempt($credentials);
 
-        $response->medicationHistories;
-
         return [
             'status' => true,
             'data' => [
-                'user' => $response,
+                'user' => $user,
                 'access_token' => $accessToken,
             ],
         ];
