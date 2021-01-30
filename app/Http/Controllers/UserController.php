@@ -30,18 +30,18 @@ class UserController
         $users = $this->userService->getUser();
 
         if (!$users['status']) {
-            return response()->json([
+            return [
                 'status' => false,
                 'message' => $users['errors']['type'],
                 'data' => null,
-            ], 400);
+            ];
         }
 
-        return response()->json([
+        return [
             'status' => true,
             'message' => '',
             'data' => $users['data'],
-        ], 200);
+        ];
 
     }
 
@@ -56,18 +56,18 @@ class UserController
         $response = $this->userService->login($request);
 
         if (!$response['status']) {
-            return response()->json([
+            return [
                 'status' => false,
                 'message' => $response['errors']['type'],
                 'data' => null,
-            ], 400);
+            ];
         }
 
-        return response()->json([
+        return [
             'status' => true,
             'message' => '',
             'data' => $response['data']
-        ], 200);
+        ];
 
 
     }
@@ -85,37 +85,37 @@ class UserController
         if (!$response['status']) {
             if ($response['errors']['type'] === 'User is not found') {
 
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => $response['errors']['type'],
                     'data' => null,
-                ], 404);
+                ];
 
             } else if ($response['errors']['type'] === 'Already registered') {
 
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => $response['errors']['type'],
                     'data' => null,
-                ], 400);
+                ];
 
             } else if ($response['errors']['type'] === 'Failed to register') {
 
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => $response['errors']['type'],
                     'data' => null,
-                ], 500);
+                ];
 
             }
 
         }
 
-        return response()->json([
+        return [
             'status' => true,
             'message' => 'registered',
             'data' => null,
-        ], 200);
+        ];
 
     }
 
