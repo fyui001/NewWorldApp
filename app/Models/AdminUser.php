@@ -29,12 +29,8 @@ class AdminUser extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'password',
-        'name',
-        'role',
-        'status'
+    protected $guarded = [
+        'id',
     ];
 
     /**
@@ -44,6 +40,10 @@ class AdminUser extends Authenticatable
      */
     protected $hidden = [
         'password',
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
     ];
 
     /**

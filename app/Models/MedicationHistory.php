@@ -10,9 +10,8 @@ class MedicationHistory extends AppModel
 {
     protected $table = 'medication_histories';
 
-    protected $fillable = [
-        'user_id',
-        'drug_id'
+    protected $guarded = [
+        'id',
     ];
 
     public function user() {
