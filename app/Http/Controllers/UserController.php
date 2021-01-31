@@ -83,32 +83,11 @@ class UserController
         $response = $this->userService->register($request);
 
         if (!$response['status']) {
-            if ($response['errors']['type'] === 'User is not found') {
-
-                return [
-                    'status' => false,
-                    'message' => $response['errors']['type'],
-                    'data' => null,
-                ];
-
-            } else if ($response['errors']['type'] === 'Already registered') {
-
-                return [
-                    'status' => false,
-                    'message' => $response['errors']['type'],
-                    'data' => null,
-                ];
-
-            } else if ($response['errors']['type'] === 'Failed to register') {
-
-                return [
-                    'status' => false,
-                    'message' => $response['errors']['type'],
-                    'data' => null,
-                ];
-
-            }
-
+            return [
+                'status' => false,
+                'message' => $response['errors']['type'],
+                'data' => null,
+            ];
         }
 
         return [
