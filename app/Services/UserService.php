@@ -56,8 +56,8 @@ class UserService extends AppService implements UserServiceInterface
 
         $credentials = $request->only('user_id', 'password');
         $credentials += [
-            'is_registered' => 1,
-            'del_flg' => 0,
+            'is_registered' => true,
+            'del_flg' => false,
         ];
 
         if (!Auth::guard('user')->attempt($credentials)) {
@@ -103,7 +103,7 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        if ($user->is_registered === 1) {
+        if ($user->is_registered === true) {
             return [
                 'status' => false,
                 'errors' => [
@@ -115,7 +115,7 @@ class UserService extends AppService implements UserServiceInterface
 
         $requestData = [
             'password' => Hash::make($request->input('password')),
-            'is_registered' => 1,
+            'is_registered' => true,
         ];
 
         $response = $user->update($requestData);
