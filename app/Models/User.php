@@ -12,16 +12,18 @@ class User extends Authenticatable implements JWTSubject
 
     protected $table = 'users';
 
-    protected $fillable = [
+    protected $guarded = [
+        'id',
         'user_id',
-        'name',
-        'password',
-        'is_registered',
-        'del_flg',
     ];
 
     protected $hidden = [
         'password',
+    ];
+
+    protected $casts = [
+        'is_registered' => 'boolean',
+        'del_flg' => 'boolean',
     ];
 
     public function medicationHistories() {

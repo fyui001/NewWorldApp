@@ -11,9 +11,8 @@ class Drug extends AppModel
 
     protected $table = 'drugs';
 
-    protected $fillable = [
-        'drug_name',
-        'url'
+    protected $guarded = [
+        'id',
     ];
 
     public function MedicationHistory() {
