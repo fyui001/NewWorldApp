@@ -35,7 +35,7 @@ class UserService extends AppService implements UserServiceInterface
 
         $response = User::with('medicationHistories.drug')->where([
             'id' => $user->id,
-        ])->get();
+        ])->first();
 
         return [
             'status' => true,
