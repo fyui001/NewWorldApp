@@ -73,6 +73,13 @@ class DrugController extends AppController
 
     }
 
+    /**
+     * From to update drug
+     *
+     * @param Drug $drug
+     * @param UpdateDrugRequest $request
+     * @return mixed
+     */
     public function update(Drug $drug, UpdateDrugRequest $request) {
 
         if (!$this->drugService->updateDrug($drug, $request)) {
