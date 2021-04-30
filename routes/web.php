@@ -40,6 +40,7 @@ Route::prefix('drugs')->group(function() {
    Route::post('/', 'DrugController@store')->name('drugs.store');
    Route::get('/edit/{drug}', 'DrugController@edit')->name('drugs.edit');
    Route::post('/update/{drug}', 'DrugController@update')->name('drugs.update');
+   Route::post('/{drug}', 'DrugController@delete')->name('drugs.delete');
 });
 
 Route::prefix('medication_histories')->group(function(){

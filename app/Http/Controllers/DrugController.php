@@ -9,6 +9,7 @@ use App\Models\Drug;
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Http\Requests\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class DrugController extends AppController
@@ -90,5 +91,17 @@ class DrugController extends AppController
 
     }
 
+    /**
+     * Delete the drug
+     *
+     * @param Drug $drug
+     * @return RedirectResponse
+     */
+    public function delete(Drug $drug): RedirectResponse {
+
+        $this->drugService->deleteDrug($drug);
+        return redirect()->route('drugs.index')->with(['success' => '薬物を削除しました']);
+
+    }
 
 }

@@ -37,11 +37,38 @@
                 <a href="{{ route('drugs.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
+                <a href="javascript:void(0)" data-url="{{ route('drugs.delete', $item)  }}"
+                   class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
+                   data-label="{{ $item->drug_name }}" title="Delete">
+                    <span class="oi oi-x"></span>
+                </a>
             </td>
         </tr>
     @endforeach
 </table>
+
+<form action="#" id="form-delete" method="POST">
+    <input type="hidden" name="_method" value="post" />
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+</form>
+
 <div class="box-footer clearfix">
     {!! $drugs->links('pagination::bootstrap-4') !!}
 </div>
 @endsection
+
+@push('js')
+    <script>
+
+        $(function(){
+            $('.delete-form-btn').on('click', function() {
+                let btn = $(this)
+                if (confirm('「' + btn.data('label') + '」' + 'を削除してよろしいでしょうか？')) {
+                    $('#form-delete').attr('action', btn.data('url'))
+                    $('#form-delete').submit()
+                }
+            })
+        });
+
+    </script>
+@endpush
