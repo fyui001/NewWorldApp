@@ -56,4 +56,15 @@ class DrugService extends AppService implements DrugServiceInterface
 
     }
 
+    /**
+     * Delete the drug
+     *
+     * @param Drug $drug
+     */
+    public function deleteDrug(Drug $drug): void {
+        if (!$drug->delete()) {
+            throw new Exception('Failed to delete');
+        }
+    }
+
 }
