@@ -61,10 +61,35 @@ class DrugService extends AppService implements DrugServiceInterface
      *
      * @param Drug $drug
      */
-    public function deleteDrug(Drug $drug): void {
-        if (!$drug->delete()) {
-            throw new Exception('Failed to delete');
+    public function deleteDrug(Drug $drug): array {
+
+        $medicationHistories = $drug::with('medicationHistories.drug')->where([
+            'id' => $drug->id,
+        ])->first()['medicationHistories'];
+
+        if ($medicationHistories->isNotEmpty()) {
+            return [
+                'status' => false,
+                'message' => 'Have a medication history',
+                'errors' => [
+                    'key' => 'have_a_medication_history',
+                ],
+            ];
         }
+
+        if (!$drug->delete()) {
+            return [
+                'status' => false,
+                'message' => 'Failed to delete',
+                'errors' => [
+                    'key' => 'failed_to_delete',
+                ],
+            ];
+        }
+
+        return [
+            'status' => true,
+        ];
     }
 
 }

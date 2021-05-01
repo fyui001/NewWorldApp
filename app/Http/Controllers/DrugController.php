@@ -99,7 +99,14 @@ class DrugController extends AppController
      */
     public function delete(Drug $drug): RedirectResponse {
 
-        $this->drugService->deleteDrug($drug);
+        $response = $this->drugService->deleteDrug($drug);
+        if (!$response['status']) {
+            if ($response['errors']['key'] === 'have_a_medication_history') {
+                return redirect()->route('drugs.index')->with(['error' => '服薬履歴が存在するため削除できません']);
+            }
+            return redirect()->route('drugs.index')->with(['error' => '薬物の削除に失敗しました']);
+        }
+
         return redirect()->route('drugs.index')->with(['success' => '薬物を削除しました']);
 
     }

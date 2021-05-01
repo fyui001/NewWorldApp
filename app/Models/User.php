@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -26,7 +27,10 @@ class User extends Authenticatable implements JWTSubject
         'del_flg' => 'boolean',
     ];
 
-    public function medicationHistories() {
+    /**
+     * @return HasMany
+     */
+    public function medicationHistories(): HasMany {
 
         return $this->hasMany('App\Models\MedicationHistory', 'user_id');
 

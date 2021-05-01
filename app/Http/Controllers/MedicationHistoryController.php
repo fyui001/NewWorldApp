@@ -25,7 +25,7 @@ class MedicationHistoryController extends AppController
     /**
      * 服薬履歴一覧
      *
-     * @return View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
      */
     public function index() {
 
@@ -38,7 +38,7 @@ class MedicationHistoryController extends AppController
      * 服薬履歴編集
      *
      * @param MedicationHistory $medicationHistory
-     * @return View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
      */
     public function edit(MedicationHistory $medicationHistory): View {
 

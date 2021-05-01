@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Model as AppModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Drug extends AppModel
 {
@@ -15,9 +16,12 @@ class Drug extends AppModel
         'id',
     ];
 
-    public function MedicationHistory() {
+    /**
+     * @return HasMany
+     */
+    public function medicationHistories(): HasMany {
 
-        return $this->hasMany('App\Model\MedicationHistory', 'drug_id');
+        return $this->hasMany('App\Models\MedicationHistory', 'drug_id');
 
     }
 
