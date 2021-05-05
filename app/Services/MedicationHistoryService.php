@@ -20,7 +20,7 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
      */
     public function getMedicationHistories(): LengthAwarePaginator {
 
-        return MedicationHistory::orderBy('id', 'desc')->paginate(15);
+        return MedicationHistory::sortable()->orderBy('id', 'desc')->paginate(15);
 
     }
 

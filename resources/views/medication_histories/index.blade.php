@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th class="text-center">#</th>
+        <th class="text-center">@sortablelink('id', '#')</th>
         <th>服薬者</th>
         <th>薬物名</th>
         <th>量(mg)</th>
@@ -37,6 +37,6 @@
     @endforeach
 </table>
 <div class="box-footer clearfix">
-    {!! $medicationHistories->links('pagination::bootstrap-4') !!}
+    {!! $medicationHistories->appends(request()->query())->links('pagination::bootstrap-4') !!}
 </div>
 @endsection

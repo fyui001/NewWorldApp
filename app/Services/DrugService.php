@@ -17,7 +17,7 @@ class DrugService extends AppService implements DrugServiceInterface
 
     public function getDrugs(): LengthAwarePaginator {
 
-        return Drug::paginate(15);
+        return Drug::sortable()->paginate(15);
 
     }
 
