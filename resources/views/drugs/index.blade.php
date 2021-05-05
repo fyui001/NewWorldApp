@@ -18,8 +18,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="text-center">#</th>
-            <th>薬物名</th>
+            <th class="text-center">@sortablelink('id', '#') </th>
+            <th>@sortablelink('drug_name', '薬物名')</th>
             <th>Wiki Source</th>
             <th class="text-right">Action</th>
         </tr>
@@ -53,7 +53,7 @@
 </form>
 
 <div class="box-footer clearfix">
-    {!! $drugs->links('pagination::bootstrap-4') !!}
+    {!! $drugs->appends(request()->query())->links('pagination::bootstrap-4') !!}
 </div>
 @endsection
 
