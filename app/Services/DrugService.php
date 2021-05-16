@@ -37,10 +37,21 @@ class DrugService extends AppService implements DrugServiceInterface
         ]);
 
         if (empty($result)) {
-            return false;
+            return [
+                'status' => false,
+                'message' => 'Failed register drug',
+                'errors' => [
+                    'key' => 'failed_register_drug',
+                ],
+                'data' => null,
+            ];
         }
 
-        return true;
+        return [
+            'status' => true,
+            'errors' => null,
+            'data' => null,
+        ];
 
     }
 
@@ -51,11 +62,27 @@ class DrugService extends AppService implements DrugServiceInterface
      * @param UpdateDrugRequest $request
      * @return bool
      */
-    public function updateDrug(Drug $drug, UpdateDrugRequest $request): bool {
+    public function updateDrug(Drug $drug, UpdateDrugRequest $request): array {
 
         $data = $request->only('drug_name', 'url');
 
-        return $drug->update($data);
+        if (!$drug->update($data)) {
+            return [
+                'status' => false,
+                'message' => 'Failed update drug',
+                'errors' => [
+                    'key' => 'failed_update_drug',
+                ],
+                'data' => null,
+            ];
+        }
+
+        return [
+            'status' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => null,
+        ];
 
     }
 

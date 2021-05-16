@@ -124,14 +124,18 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
         if (!$adminUser->update($data)) {
             return [
                 'status' => false,
+                'message' => 'Failed to update',
                 'errors' => [
-                    'type' => 'Failed to update'
+                    'key' => 'failed_to_update',
                 ],
+                'data' => null,
             ];
         }
 
         return [
             'status' => true,
+            'message' => '',
+            'errors' => null,
             'data' => [
                 'token' => $token,
             ],
