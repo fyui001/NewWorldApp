@@ -8,8 +8,11 @@ use App\Models\AdminUser;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
+use \Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Str;
 use Exception;
 
 class AdminUserService extends AppService implements AdminUserServiceInterface
@@ -89,5 +92,49 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
         if (!$adminUser->delete()) {
             throw new Exception('Failed to delete');
         }
+    }
+
+    /**
+     * View a
+     *
+     * @param Authenticatable $adminUser
+     * @return string
+     */
+    public function apiTokenView(Authenticatable $adminUser): string
+    {
+        if (empty($adminUser->api_token)) {
+            return $adminUser->api_token;
+        }
+        return $adminUser->api_token;
+    }
+
+    /**
+     * Update the api token
+     *
+     * @return array
+     */
+    public function updateApiToken(): array
+    {
+        $adminUser = Auth::user();
+        $token = Str::random(64);
+        $data = [
+            'api_token' =>  $token,
+        ];
+
+        if (!$adminUser->update($data)) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'Failed to update'
+                ],
+            ];
+        }
+
+        return [
+            'status' => true,
+            'data' => [
+                'token' => $token,
+            ],
+        ];
     }
 }

@@ -9,13 +9,14 @@ use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class AdminUserController extends AppController
 {
 
-    protected $adminUserService;
+    protected AdminUserServiceInterface $adminUserService;
 
     public function __construct(AdminUserServiceInterface $adminUserService) {
 
@@ -97,6 +98,30 @@ class AdminUserController extends AppController
         $this->adminUserService->deleteUser($adminUser);
         return redirect()->route('admin_users.index')->with(['success' => 'ユーザーを削除しました']);
 
+    }
+
+    /**
+     * View a api token
+     *
+     * @return View
+     */
+    public function apiToken(): View {
+
+        $adminUser = Auth::user();
+        $apiToken = $this->adminUserService->apiTokenView($adminUser);
+
+        return view('admin_users.api_token', compact('apiToken'));
+
+    }
+
+    public function updateApiToken() {
+
+        $response = $this->adminUserService->updateApiToken();
+        if (!$response['status']) {
+            return redirect(route('admin_users.api_token'))->with(['error', $response['errors']['type']]);
+        }
+
+        return redirect(route('admin_users.api_token'))->with(['success', 'Updated api token!']);
     }
 
 }
