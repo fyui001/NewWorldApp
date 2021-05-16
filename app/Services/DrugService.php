@@ -10,14 +10,44 @@ use App\Services\Service as AppService;
 use App\Models\Drug;
 use App\Services\Interfaces\DrugServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Exception;
 
 class DrugService extends AppService implements DrugServiceInterface
 {
 
+    /**
+     * Paginate Drugs
+     *
+     * @return LengthAwarePaginator
+     */
     public function getDrugs(): LengthAwarePaginator {
 
         return Drug::sortable()->paginate(15);
+
+    }
+
+    /**
+     * Get drug list
+     *
+     * @return array
+     */
+    public function getDrugList(): array {
+
+        $drugs = Drug::all();
+        if ($drugs->isEmpty()) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'type' => 'No drug registered',
+                ]
+            ];
+        }
+
+        return [
+            'status' => true,
+            'data' => [
+                'drugs' => $drugs,
+            ],
+        ];
 
     }
 
@@ -27,7 +57,7 @@ class DrugService extends AppService implements DrugServiceInterface
      * @param CreateDrugRequest $request
      * @return bool
      */
-    public function createDrug(CreateDrugRequest $request): bool {
+    public function createDrug(CreateDrugRequest $request): array {
 
         $params = $request->only(['drug_name', 'url']);
 
