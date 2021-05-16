@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Http\Requests\Drugs\UpdateDrugRequest;
+use App\Http\Requests\Drugs\ShowDrugRequest;
 use App\Services\Service as AppService;
 use App\Models\Drug;
 use App\Services\Interfaces\DrugServiceInterface;
@@ -52,6 +53,37 @@ class DrugService extends AppService implements DrugServiceInterface
     }
 
     /**
+     * Find a drug
+     *
+     * @param ShowDrugRequest $request
+     * @return array
+     */
+    public function findDrug(ShowDrugRequest $request): array {
+
+        $params = $request->only('drug_name');
+        $drug = Drug::where(['drug_name' => $params['drug_name']])->first();
+
+        if (empty($drug)) {
+            return [
+                'status' => false,
+                'message' => 'Not found',
+                'errors' => [
+                    'key' => 'not_found',
+                ],
+                'data' => null
+            ];
+        }
+
+        return [
+            'status' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => $drug,
+        ];
+
+    }
+
+    /**
      * Create a drug
      *
      * @param CreateDrugRequest $request
@@ -79,6 +111,7 @@ class DrugService extends AppService implements DrugServiceInterface
 
         return [
             'status' => true,
+            'message' => '',
             'errors' => null,
             'data' => null,
         ];
@@ -134,6 +167,7 @@ class DrugService extends AppService implements DrugServiceInterface
                 'errors' => [
                     'key' => 'have_a_medication_history',
                 ],
+                'data' => null,
             ];
         }
 
@@ -144,11 +178,15 @@ class DrugService extends AppService implements DrugServiceInterface
                 'errors' => [
                     'key' => 'failed_to_delete',
                 ],
+                'data' => null,
             ];
         }
 
         return [
             'status' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => null,
         ];
     }
 

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
+use App\Http\Requests\Drugs\ShowDrugRequest;
 
 class DrugController
 {
@@ -41,11 +42,45 @@ class DrugController
 
     }
 
+    /**
+     * Create the drug
+     *
+     * @param CreateDrugRequest $request
+     * @return array
+     */
     public function create(CreateDrugRequest $request): array {
 
         $response = $this->drugService->createDrug($request);
 
         if (!$response) {
+            return [
+                'status' => false,
+                'message' => $response['message'],
+                'errors' => $response['errors'],
+                'data' => null,
+            ];
+        }
+
+        return [
+            'status' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => $response['data'],
+        ];
+
+    }
+
+    /**
+     * Find a drug
+     *
+     * @param ShowDrugRequest $request
+     * @return array
+     */
+    public function show(ShowDrugRequest $request): array {
+
+        $response = $this->drugService->findDrug($request);
+
+        if (!$response['status']) {
             return [
                 'status' => false,
                 'message' => $response['message'],

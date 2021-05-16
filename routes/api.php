@@ -23,5 +23,6 @@ Route::prefix('users')->group(function() {
 /* Drugs */
 Route::prefix('drugs')->middleware('auth:api')->group(function() {
    Route::get('/', 'Api\DrugController@index')->name('api.drugs.index');
+   Route::get('/show', 'Api\DrugController@show')->name('api.drugs.show');
    Route::post('/create', 'Api\DrugController@create')->name('api.drugs.create');
 });
