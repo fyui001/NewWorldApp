@@ -52,7 +52,7 @@ class DrugController
 
         $response = $this->drugService->createDrug($request);
 
-        if (!$response) {
+        if (!$response['status']) {
             return [
                 'status' => false,
                 'message' => $response['message'],
@@ -65,7 +65,7 @@ class DrugController
             'status' => true,
             'message' => '',
             'errors' => null,
-            'data' => $response['data'],
+            'data' => null,
         ];
 
     }
