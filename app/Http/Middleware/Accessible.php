@@ -41,6 +41,8 @@ class Accessible
             ],
             AdminUser::ROLE_OPERATOR => [
                 'auth.*',
+                'admin_users.api_token',
+                'admin_users.api_token.update',
                 'top_page',
                 'drugs.*',
                 'medication_histories.*',
