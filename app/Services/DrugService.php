@@ -28,9 +28,12 @@ class DrugService extends AppService implements DrugServiceInterface
      * @return bool
      */
     public function createDrug(CreateDrugRequest $request): bool {
+
+        $params = $request->only(['drug_name', 'url']);
+
         $result = Drug::create([
-            'drug_name' => $request->get('drug_name'),
-            'url' => $request->get('url'),
+            'drug_name' => $params['drug_name'],
+            'url' => $params['url'],
         ]);
 
         if (empty($result)) {

@@ -53,7 +53,6 @@ class AdminUser extends Authenticatable
      */
     public static function roles(): array
     {
-
         return [
             self::ROLE_SYSTEM => 'システム管理者',
             self::ROLE_OPERATOR => '管理者',
@@ -68,7 +67,6 @@ class AdminUser extends Authenticatable
      */
     public static function getRoleText(int $role): string
     {
-
         $roles = self::roles();
         return !empty($roles[$role]) ? $roles[$role] : '';
     }
@@ -80,7 +78,6 @@ class AdminUser extends Authenticatable
      */
     public static function statuses(): array
     {
-
         return [
             self::STATUS_INVALID => '無効',
             self::STATUS_VALID => '有効',
@@ -95,7 +92,6 @@ class AdminUser extends Authenticatable
      */
     public static function getStatusText(int $status): string
     {
-
         $statuses = self::statuses();
         return !empty($statuses[$status]) ? $statuses[$status] : '';
     }
