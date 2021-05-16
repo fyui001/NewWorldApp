@@ -26,3 +26,8 @@ Route::prefix('drugs')->middleware('auth:api')->group(function() {
    Route::get('/show', 'Api\DrugController@show')->name('api.drugs.show');
    Route::post('/create', 'Api\DrugController@create')->name('api.drugs.create');
 });
+
+/* Medication Histories */
+Route::prefix('medication_histories')->middleware('auth:api')->group(function() {
+    Route::post('/create', 'Api\MedicationHistoryController@create')->name('api.medication_histories.create');
+});
