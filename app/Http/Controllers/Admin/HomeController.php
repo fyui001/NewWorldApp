@@ -23,9 +23,10 @@ class HomeController extends AppController
     /**
      * Top page.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
      */
-    public function index(): View {
+    public function index()
+    {
 
         return view('top_page');
 

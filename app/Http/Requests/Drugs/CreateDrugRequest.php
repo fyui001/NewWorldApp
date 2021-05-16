@@ -17,7 +17,7 @@ class CreateDrugRequest extends AppRequest
      */
     public function authorize(): bool {
 
-        return me() && me()->can('create', Drug::class);
+        return me() && me()->can('create', Drug::class) || \Auth::user();
 
     }
 

@@ -30,7 +30,7 @@ class UpdateMedicationHistoryRequest extends AppRequest
      *
      * @return array|string[]
      */
-    public function message(): array {
+    public function messages(): array {
         return [
             'amount.required' => '服薬量は必須です',
         ];

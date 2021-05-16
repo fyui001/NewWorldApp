@@ -9,7 +9,9 @@ use App\Models\Drug;
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Http\Requests\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class DrugController extends AppController
@@ -51,11 +53,16 @@ class DrugController extends AppController
      * Create Drugs
      *
      * @param CreateDrugRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function store(CreateDrugRequest $request) {
 
-        if (!$this->drugService->createDrug($request)) {
+        $response = $this->drugService->createDrug($request);
+
+        if (!$response['status']) {
+            if ($response['errors']['key'] === 'failed_register_drug') {
+                return redirect()->route('drugs.index')->with(['error' => '薬物の登録に失敗しました']);
+            }
             return redirect(route('drugs.create'))->with('error', '不正な入力です');
         }
         return redirect(route('drugs.index'))->with('success', '薬物を登録しました');
@@ -83,7 +90,9 @@ class DrugController extends AppController
      */
     public function update(Drug $drug, UpdateDrugRequest $request) {
 
-        if (!$this->drugService->updateDrug($drug, $request)) {
+        $response = $this->drugService->updateDrug($drug, $request);
+
+        if (!$response['status']) {
             return redirect()->route('drugs.index')->with(['error' => '薬物の更新に失敗しました']);
         }
 
