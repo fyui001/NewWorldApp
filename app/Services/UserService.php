@@ -28,8 +28,9 @@ class UserService extends AppService implements UserServiceInterface
             return [
                 'status' => false,
                 'errors' => [
-                    'type' => 'unauthorized',
+                    'key' => 'unauthorized',
                 ],
+                'data' => null,
             ];
         }
 
@@ -39,6 +40,7 @@ class UserService extends AppService implements UserServiceInterface
 
         return [
             'status' => true,
+            'errors' => null,
             'data' => [
                 'user' => $response,
             ],
@@ -64,8 +66,9 @@ class UserService extends AppService implements UserServiceInterface
             return [
                 'status' => false,
                 'errors' => [
-                    'type' => 'unauthorized',
+                    'key' => 'login_failure',
                 ],
+                'data' => null,
             ];
         }
 
@@ -76,6 +79,7 @@ class UserService extends AppService implements UserServiceInterface
 
         return [
             'status' => true,
+            'errors' => null,
             'data' => [
                 'user' => $user,
                 'access_token' => $accessToken,
@@ -98,8 +102,9 @@ class UserService extends AppService implements UserServiceInterface
             return [
                 'status' => false,
                 'errors' => [
-                    'type' => 'User is not found',
-                ]
+                    'key' => 'notfound',
+                ],
+                'data' => null,
             ];
         }
 
@@ -107,8 +112,9 @@ class UserService extends AppService implements UserServiceInterface
             return [
                 'status' => false,
                 'errors' => [
-                    'type' => 'Already registered',
-                ]
+                    'key' => 'duplicate_entry',
+                ],
+                'data' => null,
             ];
         }
 
@@ -124,13 +130,16 @@ class UserService extends AppService implements UserServiceInterface
             return [
                 'status' => false,
                 'errors' => [
-                    'type' => 'Failed to register',
+                    'key' => 'internal_server_error',
                 ],
+                'data' => null,
             ];
         }
 
         return [
             'status' => true,
+            'errors' => null,
+            'data' => null,
         ];
 
     }

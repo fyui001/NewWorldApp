@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Requests\Drugs\IndexDrugRequest;
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Http\Requests\Drugs\UpdateDrugRequest;
 use App\Http\Requests\Drugs\ShowDrugRequest;
@@ -29,25 +30,29 @@ class DrugService extends AppService implements DrugServiceInterface
     /**
      * Get drug list
      *
+     * @param IndexDrugRequest $request
      * @return array
      */
-    public function getDrugList(): array {
+    public function getDrugList(IndexDrugRequest $request): array {
 
-        $drugs = Drug::all();
-        if ($drugs->isEmpty()) {
-            return [
-                'status' => false,
-                'errors' => [
-                    'type' => 'No drug registered',
-                ]
-            ];
+        $orderBy = $request->input('order_by', 'id');
+        $sortOrder = $request->input('sort', 'asc');
+
+        if ($request->has('page')) {
+            $perPage = $request->input('per_page', 10);
+            $drugs = Drug::select('*')
+                ->sortSetting($orderBy, $sortOrder)
+                ->paginate($perPage);
+        } else {
+            $drugs = Drug::select('*')
+                ->sortSetting($orderBy, $sortOrder)
+                ->get();
         }
 
         return [
             'status' => true,
-            'data' => [
-                'drugs' => $drugs,
-            ],
+            'errors' => null,
+            'data' => $drugs,
         ];
 
     }
@@ -66,9 +71,8 @@ class DrugService extends AppService implements DrugServiceInterface
         if (empty($drug)) {
             return [
                 'status' => false,
-                'message' => 'Not found',
                 'errors' => [
-                    'key' => 'not_found',
+                    'key' => 'drug_notfound',
                 ],
                 'data' => null
             ];
@@ -76,7 +80,6 @@ class DrugService extends AppService implements DrugServiceInterface
 
         return [
             'status' => true,
-            'message' => '',
             'errors' => null,
             'data' => $drug,
         ];
@@ -101,7 +104,6 @@ class DrugService extends AppService implements DrugServiceInterface
         if (empty($result)) {
             return [
                 'status' => false,
-                'message' => 'Failed register drug',
                 'errors' => [
                     'key' => 'failed_register_drug',
                 ],

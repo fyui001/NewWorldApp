@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
 use App\Http\Requests\MedicationHistories\CreateMedicationHistoryRequest;
+use \Illuminate\Http\JsonResponse;
 
 class MedicationHistoryController
 {
@@ -21,27 +22,28 @@ class MedicationHistoryController
      * Create medication history
      *
      * @param CreateMedicationHistoryRequest $request
-     * @return array
+     * @return JsonResponse
      */
-    public function create(CreateMedicationHistoryRequest $request): array {
+    public function create(CreateMedicationHistoryRequest $request): JsonResponse
+    {
 
         $response = $this->medicationHistoryService->createMedicationHistory($request);
 
         if (!$response['status']) {
-            return [
-                'status' => false,
-                'message' => $response['message'],
-                'errors' => $response['errors'],
-                'data' => null,
-            ];
+            if (!empty($response['errors'])) {
+                $error = apiErrorResponse($response['errors']['key']);
+                return response()->json($error['body'], $error['response_code']);
+            }
+            $error = apiErrorResponse('internal_server_error');
+            return response()->json($error['body'], $error['response_code']);
         }
 
-        return [
+        return response()->json( [
             'status' => true,
             'message' => '',
             'errors' => null,
             'data' => null,
-        ];
+        ], 200);
 
     }
 }

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Requests\Users\LoginUserRequest;
 use App\Http\Requests\Users\RegisterUserRequest;
 use App\Services\Interfaces\UserServiceInterface;
+use \Illuminate\Http\JsonResponse;
 
 class UserController
 {
@@ -23,25 +24,28 @@ class UserController
     /**
      * ユーザー情報取得
      *
-     * @return array
+     * @return JsonResponse
      */
-    public function show() {
+    public function show(): JsonResponse
+    {
 
-        $users = $this->userService->getUser();
+        $response = $this->userService->getUser();
 
-        if (!$users['status']) {
-            return [
-                'status' => false,
-                'message' => $users['errors']['type'],
-                'data' => null,
-            ];
+        if (!$response['status']) {
+            if (!empty($response['errors'])) {
+                $error = apiErrorResponse($response['errors']['key']);
+                return response()->json($error['body'], $error['response_code']);
+            }
+            $error = apiErrorResponse('internal_server_error');
+            return response()->json($error['body'], $error['response_code']);
         }
 
-        return [
+        return response()->json([
             'status' => true,
+            'errors' => null,
             'message' => '',
-            'data' => $users['data'],
-        ];
+            'data' => $response['data'],
+        ], 200);
 
     }
 
@@ -49,26 +53,28 @@ class UserController
      * ログイン
      *
      * @param LoginUserRequest $request
-     * @return array
+     * @return JsonResponse
      */
-    public function login(LoginUserRequest $request) {
+    public function login(LoginUserRequest $request): JsonResponse
+    {
 
         $response = $this->userService->login($request);
 
         if (!$response['status']) {
-            return [
-                'status' => false,
-                'message' => $response['errors']['type'],
-                'data' => null,
-            ];
+            if (!empty($response['errors'])) {
+                $error = apiErrorResponse($response['errors']['key']);
+                return response()->json($error['body'], $error['response_code']);
+            }
+            $error = apiErrorResponse('internal_server_error');
+            return response()->json($error['body'], $error['response_code']);
         }
 
-        return [
+        return response()->json([
             'status' => true,
+            'errors' => null,
             'message' => '',
-            'data' => $response['data']
-        ];
-
+            'data' => $response['data'],
+        ], 200);
 
     }
 
@@ -76,25 +82,28 @@ class UserController
      * ユーザー登録
      *
      * @param RegisterUserRequest $request
-     * @return array
+     * @return JsonResponse
      */
-    public function register(RegisterUserRequest $request) {
+    public function register(RegisterUserRequest $request): JsonResponse
+    {
 
         $response = $this->userService->register($request);
 
         if (!$response['status']) {
-            return [
-                'status' => false,
-                'message' => $response['errors']['type'],
-                'data' => null,
-            ];
+            if (!empty($response['errors'])) {
+                $error = apiErrorResponse($response['errors']['key']);
+                return response()->json($error['body'], $error['response_code']);
+            }
+            $error = apiErrorResponse('internal_server_error');
+            return response()->json($error['body'], $error['response_code']);
         }
 
-        return [
+        return response()->json([
             'status' => true,
+            'errors' => null,
             'message' => 'registered',
-            'data' => null,
-        ];
+            'data' => $response['data'],
+        ], 200);
 
     }
 
