@@ -35,17 +35,14 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
         if (empty($drug)) {
             return [
                 'status' => false,
-                'message' => 'Drug not found',
                 'errors' => [
-                    'key' => 'drug_not_found',
-                ],
-                'data' => null,
+                    'key' => 'drug_notfound',
+                ]
             ];
         }
         if (empty($user)) {
             return [
                 'status' => false,
-                'message' => 'User not found',
                 'errors' => [
                     'key' => 'user_not_found',
                 ],
@@ -61,7 +58,6 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
         if (!$result) {
             return [
                 'status' => false,
-                'message' => 'Failed create medication history',
                 'errors' => [
                     'key' => 'failed_create_medication_history',
                 ],
@@ -71,9 +67,8 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
 
         return [
             'status' => true,
-            'message' => '',
             'errors' => null,
-            'data' => null,
+            'data' => $result,
         ];
 
     }

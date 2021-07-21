@@ -19,7 +19,7 @@ class Drug extends AppModel
         'id',
     ];
 
-    public $sortable = [
+    public static array $sortable = [
         'id',
         'drug_name',
     ];
@@ -31,6 +31,20 @@ class Drug extends AppModel
 
         return $this->hasMany('App\Models\MedicationHistory', 'drug_id');
 
+    }
+
+    /**
+     * Sort
+     *
+     * @param $query
+     * @param $orderBy
+     * @param $sortOrder
+     * @param string $defaultKey
+     * @return mixed
+     */
+    public function scopeSortSetting($query, $orderBy, $sortOrder, $defaultKey = 'id')
+    {
+        return AppModel::commonSortSetting($query, self::$sortable, $orderBy, $sortOrder, $defaultKey);
     }
 
 }

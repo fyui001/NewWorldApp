@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Drugs\IndexDrugRequest;
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
 use App\Http\Requests\Drugs\ShowDrugRequest;
+use \Illuminate\Http\JsonResponse;
 
 class DrugController
 {
@@ -21,24 +23,27 @@ class DrugController
     /**
      * Index of drugs
      *
-     * @return array
+     * @param IndexDrugRequest $request
+     * @return JsonResponse
      */
-    public function index(): array {
+    public function index(IndexDrugRequest $request): JsonResponse
+    {
 
-        $response = $this->drugService->getDrugList();
+        $response = $this->drugService->getDrugList($request);
         if (!$response['status']) {
-            return [
-                'status' => false,
-                'message' => $response['errors']['type'],
-                'data' => null,
-            ];
+            if (!empty($response['errors'])) {
+                $error = apiErrorResponse($response['errors']['key']);
+                return response()->json($error['body'], $error['response_code']);
+            }
+            $error = apiErrorResponse('internal_server_error');
+            return response()->json($error['body'], $error['response_code']);
         }
 
-        return [
+        return response()->json([
             'status' => true,
             'message' => '',
             'data' => $response['data'],
-        ];
+        ], 200);
 
     }
 
@@ -46,27 +51,30 @@ class DrugController
      * Create the drug
      *
      * @param CreateDrugRequest $request
-     * @return array
+     * @return JsonResponse
      */
-    public function create(CreateDrugRequest $request): array {
+    public function create(CreateDrugRequest $request): JsonResponse
+    {
 
         $response = $this->drugService->createDrug($request);
 
         if (!$response['status']) {
-            return [
-                'status' => false,
-                'message' => $response['message'],
-                'errors' => $response['errors'],
-                'data' => null,
-            ];
+            if (!$response['status']) {
+                if (!empty($response['errors'])) {
+                    $error = apiErrorResponse($response['errors']['key']);
+                    return response()->json($error['body'], $error['response_code']);
+                }
+                $error = apiErrorResponse('internal_server_error');
+                return response()->json($error['body'], $error['response_code']);
+            }
         }
 
-        return [
+        return response()->json([
             'status' => true,
             'message' => '',
             'errors' => null,
             'data' => null,
-        ];
+        ], 200);
 
     }
 
@@ -74,27 +82,30 @@ class DrugController
      * Find a drug
      *
      * @param ShowDrugRequest $request
-     * @return array
+     * @return JsonResponse
      */
-    public function show(ShowDrugRequest $request): array {
+    public function show(ShowDrugRequest $request): JsonResponse
+    {
 
         $response = $this->drugService->findDrug($request);
 
         if (!$response['status']) {
-            return [
-                'status' => false,
-                'message' => $response['message'],
-                'errors' => $response['errors'],
-                'data' => null,
-            ];
+            if (!$response['status']) {
+                if (!empty($response['errors'])) {
+                    $error = apiErrorResponse($response['errors']['key']);
+                    return response()->json($error['body'], $error['response_code']);
+                }
+                $error = apiErrorResponse('internal_server_error');
+                return response()->json($error['body'], $error['response_code']);
+            }
         }
 
-        return [
+        return response()->json([
             'status' => true,
             'message' => '',
             'errors' => null,
             'data' => $response['data'],
-        ];
+        ], 200);
 
     }
 }
