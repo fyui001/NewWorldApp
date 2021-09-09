@@ -21,6 +21,7 @@ class AdminUsersSeeder extends Seeder
             'name' => '高田憂希',
             'role' => 1,
             'status' => 1,
+            'api_token' => '',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
