@@ -8,7 +8,7 @@ use App\Services\Interfaces\DiscordBotServiceInterface;
 class RunDiscordBot extends Command
 {
 
-    protected DiscordBotServiceInterface $handyManService;
+    protected DiscordBotServiceInterface $discordBotService;
 
     /**
      * The name and signature of the console command.
@@ -29,9 +29,9 @@ class RunDiscordBot extends Command
      *
      * @return void
      */
-    public function __construct(DiscordBotServiceInterface $handyManService)
+    public function __construct(DiscordBotServiceInterface $discordBotService)
     {
-        $this->handyManService = $handyManService;
+        $this->discordBotService = $discordBotService;
         parent::__construct();
     }
 
@@ -42,6 +42,6 @@ class RunDiscordBot extends Command
      */
     public function handle()
     {
-        $this->handyManService->run(env('BOT_TOKEN'));
+        $this->discordBotService->run(env('BOT_TOKEN'));
     }
 }
