@@ -71,7 +71,7 @@ class HandyManService extends AppService implements HandyManServiceInterface
                         $commandService->run($discord, $message, $commandName);
                     }
                 }
-                return 0;
+                return true;
             });
         });
 

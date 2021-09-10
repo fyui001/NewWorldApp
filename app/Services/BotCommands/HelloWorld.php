@@ -12,7 +12,7 @@ class HelloWorld
 {
     protected string $commandName = 'hello';
 
-    public function run(Discord $discord, Message $message, string $command, $args = null)
+    public function run(Discord $discord, Message $message, string $command, $args = null): bool
     {
         if ($this->commandName !== $command) {
             return false;
@@ -21,8 +21,9 @@ class HelloWorld
         $bot = $discord->user;
 
         if ($message->author->user->id === $bot->id || $message->user->bot) {
-            return 0;
+            return false;
         }
+
         $message->reply('Watching you');
 
         return true;
