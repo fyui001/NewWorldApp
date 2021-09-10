@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Interfaces;
 
-interface HandyManServiceInterface
+interface DiscordBotServiceInterface
 {
     public function run(string $botToken): void;
     public function commandPrefixChecker(string $commandPrefix): bool;
