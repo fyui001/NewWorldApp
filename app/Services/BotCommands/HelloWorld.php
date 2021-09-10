@@ -6,7 +6,6 @@ namespace App\Services\BotCommands;
 
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\WebSockets\Event;
 
 class HelloWorld
 {
