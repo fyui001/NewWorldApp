@@ -85,7 +85,8 @@ class HandyManService extends AppService implements HandyManServiceInterface
      * @param string $commandPrefix
      * @return bool
      */
-    public function commandPrefixChecker(string $commandPrefix): bool {
+    public function commandPrefixChecker(string $commandPrefix): bool
+    {
         return $this->commandPrefix === $commandPrefix;
     }
 
@@ -96,7 +97,8 @@ class HandyManService extends AppService implements HandyManServiceInterface
      * @param string $commandContents
      * @return array
      */
-    public function argSplitter(string $commandContents): array {
+    public function argSplitter(string $commandContents): array
+    {
 
         return explode(' ', $commandContents);
 
