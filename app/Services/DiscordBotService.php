@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Services\Service as AppService;
-use App\Services\Interfaces\HandyManServiceInterface;
+use App\Services\Interfaces\DiscordBotServiceInterface;
 use Discord\Discord;
+use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
 
-class HandyManService extends AppService implements HandyManServiceInterface
+class DiscordBotService extends AppService implements DiscordBotServiceInterface
 {
 
     /**
@@ -31,7 +32,7 @@ class HandyManService extends AppService implements HandyManServiceInterface
      * Starting run a discord bot
      *
      * @param string $botToken
-     * @throws \Discord\Exceptions\IntentException
+     * @throws IntentException
      */
     public function run(string $botToken): void
     {
