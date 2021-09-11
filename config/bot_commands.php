@@ -1,9 +1,9 @@
 <?php
 
-use App\Services\BotCommands\HelloWorld;
+use App\Services\BotCommands;
 
 return [
     'hello' => [
-        'class' => HelloWorld::class,
+        'class' => BotCommands\HelloWorld::class,
     ],
 ];
