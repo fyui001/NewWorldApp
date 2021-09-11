@@ -68,8 +68,10 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
                     }
                 } elseif (isset($commands[$commandName])) {
                     foreach ($commands as $key => $value) {
-                        $commandService = new $value['class'];
-                        $commandService->run($discord, $message, $commandName);
+                        if ($key === $commandName) {
+                            $commandService = new $value['class'];
+                            $commandService->run($discord, $message, $commandName);
+                        }
                     }
                 }
                 return true;
