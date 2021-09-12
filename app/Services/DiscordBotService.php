@@ -55,10 +55,10 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
                     return false;
                 }
 
-                $commandName = mb_strstr($removedCommandPrefix, ' ', true) ?: mb_strstr($removedCommandPrefix, '　', true) ?: $removedCommandPrefix;
+                $removedCommandPrefix = mb_convert_kana($removedCommandPrefix, 'rsa');
+                $commandName = mb_strstr($removedCommandPrefix, ' ', true) ?: $removedCommandPrefix;
 
                 if (mb_strstr($removedCommandPrefix, ' ', true) || mb_strstr($removedCommandPrefix, '　', true)) {
-                    $removedCommandPrefix = mb_convert_kana($removedCommandPrefix, 'rsa');
                     $commandContents = $this->argSplitter($removedCommandPrefix);
                     unset($commandContents[0]);
                     $commandArgs = array_values($commandContents);
