@@ -7,8 +7,8 @@ namespace App\Services\BotCommands;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\Drugs\CreateDrugRequest;
-use App\Services\Interfaces\DrugServiceInterface;
 use App\Services\DrugService;
 
 class RegisterDrug
@@ -19,6 +19,16 @@ class RegisterDrug
     protected string $wikiViewPageUrl = 'https://ja.wikipedia.org/wiki/';
     protected string $drugName;
 
+    /**
+     * Run register drug command
+     *
+     * @param Discord $discord
+     * @param Message $message
+     * @param string $command
+     * @param array $args
+     * @return bool
+     * @throws \Exception
+     */
     public function run(Discord $discord, Message $message, string $command, array $args): bool
     {
         if ($this->commandName !== $command) {
@@ -31,7 +41,26 @@ class RegisterDrug
             return false;
         }
 
-        $result = Http::get($this->wikiApiUrl . $args[0]);
+        if (!$this->exec($args[0])) {
+            $message->reply('薬物の登録に失敗しました');
+            return false;
+        }
+
+        $message->reply($this->drugName . 'を登録しました');
+
+        return true;
+    }
+
+
+    /**
+     * Exec register drug
+     *
+     * @param string $drugName
+     * @return bool
+     */
+    public function exec(string $drugName): bool
+    {
+        $result = Http::get($this->wikiApiUrl . $drugName);
 
         if (empty($result) || isset($result['query']['redirects'])) {
             return false;
@@ -45,20 +74,25 @@ class RegisterDrug
 
         $serviceRequest = new CreateDrugRequest();
         $serviceRequest->merge([
-            'drug_name' => $args[0],
+            'drug_name' => $this->drugName,
             'url' => $this->wikiViewPageUrl . $this->drugName,
         ]);
 
         $drugService = new DrugService();
 
-        $serviceResult = $drugService->createDrug($serviceRequest);
+        try {
+            $serviceResult = $drugService->createDrug($serviceRequest);
 
-        if (!$serviceResult['status']) {
+            if (!$serviceResult['status']) {
+                return false;
+            }
+
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
             return false;
         }
 
-        $message->reply($this->drugName . 'を登録しました');
-
         return true;
     }
+
 }
