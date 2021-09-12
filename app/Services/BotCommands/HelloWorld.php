@@ -11,7 +11,7 @@ class HelloWorld
 {
     protected string $commandName = 'hello';
 
-    public function run(Discord $discord, Message $message, string $command, $args = null): bool
+    public function run(Discord $discord, Message $message, string $command, $args = []): bool
     {
         if ($this->commandName !== $command) {
             return false;
