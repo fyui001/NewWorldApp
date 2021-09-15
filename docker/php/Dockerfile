@@ -9,7 +9,7 @@ WORKDIR /code
 RUN set -eux && \
   apk add --update-cache --no-cache --virtual=.build-dependencies tzdata && \
   apk --no-cache add zip unzip composer && \
-  docker-php-ext-install bcmath pdo_mysql && \
+  docker-php-ext-install bcmath pdo_mysql json && \
   chmod +x /root/startup.sh
 
 CMD ["/root/startup.sh"]

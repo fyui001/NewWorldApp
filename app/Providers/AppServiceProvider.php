@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         Interfaces\DrugServiceInterface::class => Services\DrugService::class,
         Interfaces\MedicationHistoryServiceInterface::class => Services\MedicationHistoryService::class,
         Interfaces\UserServiceInterface::class => Services\UserService::class,
+        Interfaces\DiscordBotServiceInterface::class => Services\DiscordBotService::class,
     ];
 
     /**
