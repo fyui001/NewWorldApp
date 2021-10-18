@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
  */
 class Model extends EloquentModel
 {
+
+    use \App\Libs\EloquentQueryBuilder;
+
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
 
