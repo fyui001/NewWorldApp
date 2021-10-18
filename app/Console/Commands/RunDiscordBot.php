@@ -40,7 +40,7 @@ class RunDiscordBot extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): void
     {
         $this->discordBotService->run(env('BOT_TOKEN'));
     }
