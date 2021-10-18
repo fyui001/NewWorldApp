@@ -62,7 +62,7 @@ class UserService extends AppService implements UserServiceInterface
             'del_flg' => false,
         ];
 
-        if (!Auth::guard('user')->attempt($credentials)) {
+        if (!Auth::guard('api')->attempt($credentials)) {
             return [
                 'status' => false,
                 'errors' => [
@@ -72,9 +72,9 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = Auth::guard('user')->user();
-        $accessToken = auth('user')->claims([
-            'guard' => 'user'
+        $user = Auth::guard('api')->user();
+        $accessToken = auth('api')->claims([
+            'guard' => 'api'
         ])->attempt($credentials);
 
         return [
