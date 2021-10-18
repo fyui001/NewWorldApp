@@ -46,13 +46,13 @@ return [
             'provider' => 'admin_users',
         ],
 
-        'api' => [
+        'api_token' => [
             'driver' => 'token',
             'provider' => 'admin_users',
             'hash' => false,
         ],
 
-        'user' => [
+        'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
