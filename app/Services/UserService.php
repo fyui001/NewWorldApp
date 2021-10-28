@@ -22,7 +22,7 @@ class UserService extends AppService implements UserServiceInterface
      */
     public function getUser(): array {
 
-        $user = Auth::guard('user')->user();
+        $user = Auth::guard('api')->user();
 
         if (empty($user)) {
             return [
