@@ -12,7 +12,29 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 class Model extends EloquentModel
 {
 
-    use \App\Libs\EloquentQueryBuilder;
+    public function scopeWhereLike($query, string $attribute, string $keyword, int $position = 0)
+    {
+        $keyword = addcslashes($keyword, '\_%');
+
+        $condition = [
+                1  => "{$keyword}%",
+                -1 => "%{$keyword}",
+            ][$position] ?? "%{$keyword}%";
+
+        return $query->where($attribute, 'LIKE', $condition);
+    }
+
+    public function scopeOrWhereLike($query, string $attribute, string $keyword, int $position = 0)
+    {
+        $keyword = addcslashes($keyword, '\_%');
+
+        $condition = [
+                1  => "{$keyword}%",
+                -1 => "%{$keyword}",
+            ][$position] ?? "%{$keyword}%";
+
+        return $query->orWhere($attribute, 'LIKE', $condition);
+    }
 
     public const CREATED_AT = 'created_at';
     public const UPDATED_AT = 'updated_at';
