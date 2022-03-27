@@ -34,7 +34,7 @@ test:
 ssh:
 	@docker-compose exec app bash
 
-ide_halper:
+ide_helper:
 	@docker-compose exec app php artisan ide-helper:generate
 
 up:
