@@ -7,6 +7,34 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * App\Models\AdminUser
+ *
+ * @property int $id id
+ * @property string $user_id 管理者ID
+ * @property string $password パスワード
+ * @property string $name 名前
+ * @property int $role ロール
+ * @property bool $status ステータス
+ * @property string $api_token APIトークン
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereApiToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdminUser whereUserId($value)
+ * @mixin \Eloquent
+ */
 class AdminUser extends Authenticatable
 {
     use Notifiable;
