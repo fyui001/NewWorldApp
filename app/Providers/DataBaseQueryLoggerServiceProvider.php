@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\ServiceProvider;
 
 class DataBaseQueryLoggerServiceProvider extends ServiceProvider
@@ -26,7 +30,7 @@ class DataBaseQueryLoggerServiceProvider extends ServiceProvider
         if ($this->app->environment("local")) {
             \DB::listen(function ($query) {
                 $route = 'NOT URL';
-                if (method_exists(\Request::route(), 'getName')) {
+                if (method_exists(new \Request(), 'getName')) {
                     $route = \Request::route()->getName();
                 }
                 $sql = $query->sql;

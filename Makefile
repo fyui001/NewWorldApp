@@ -1,63 +1,68 @@
-APP_CONTAINER_ID = `docker-compose ps -q app`
+APP_CONTAINER_ID = `docker compose ps -q app`
+
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 init:
 	@cp .env.example .env
-	@cp docker-compose.example.yml docker-compose.yml
 
 build:
-	@docker-compose build
+	@docker compose build
 
 composer_install:
-	@docker-compose exec app composer install --ignore-platform-reqs
+	@docker compose exec app composer install
 
 cache_clear:
-	@docker-compose exec app php artisan cache:clear
-	@docker-compose exec app php artisan view:clear
-	@docker-compose exec app php artisan route:clear
-	@docker-compose exec app php artisan config:clear
+	@docker compose exec app php artisan cache:clear
+	@docker compose exec app php artisan view:clear
+	@docker compose exec app php artisan route:clear
+	@docker compose exec app php artisan config:clear
 
 permission:
-	@docker-compose exec app chmod -R 777 /code/storage bootstrap/cache
+	@docker compose exec app chmod -R 777 /code/storage bootstrap/cache
 
 migrate:
-	@docker-compose exec app php artisan migrate
+	@docker compose exec app php artisan migrate
 
 migrate_seed:
-	@docker-compose exec app php artisan migrate:fresh --seed --drop-views
+	@docker compose exec app php artisan migrate:fresh --seed --drop-views
 
 test_seed:
-	@docker-compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
+	@docker compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
 
 test:
-	@docker-compose exec app ./vendor/bin/phpunit
+	@docker compose exec app ./vendor/bin/phpunit
 
 ssh:
-	@docker-compose exec app bash
+	@docker compose exec app bash
 
 node-ssh:
-	@docker-compose exec js bash
+	@docker compose exec js bash
 
 ide_helper:
-	@docker-compose exec app php artisan ide-helper:generate
+	@docker compose exec app php artisan ide-helper:generate
 
 up:
-	@docker-compose up -d
+	@docker compose up -d
 
 down:
-	@docker-compose down
+	@docker compose down
 
 setup:
-	@docker-compose exec app php artisan key:generate
+	@make composer_install
+	@docker compose exec app php artisan key:generate
+	@docker compose exec app php artisan jwt:secret
 	@make cache_clear
 	@make migrate_seed
 	@make test_seed
 	@make permission
-	@docker-compose exec app php artisan storage:link
+	@docker compose exec app php artisan storage:link
 
 cp_vendor:
+	@echo '"vendor removing...'
 	@rm -rf ./vendor
 	@docker cp $(APP_CONTAINER_ID):/code/vendor ./vendor
 	@echo '"one sync vendor!'
 
 start_discord_bot:
-	@php artisan discord-bot:run &
+	@docker compose app php artisan discord-bot:run &
