@@ -6,16 +6,14 @@
 /public/mix-manifest.json
 /storage/*.key
 /vendor
-/docker/db/data/*
-!/docker/db/data/.gitkeep
 .env
 .env.backup
-docker-compose.yml
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+_ide_helper.php
 
 # IDE and editor specific files #
 /nbproject

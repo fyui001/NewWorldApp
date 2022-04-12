@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "new_world_org/new_world_app",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -23,6 +23,7 @@
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.12",
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.0",
@@ -36,7 +37,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "barryvdh/laravel-ide-helper"
+            ]
         }
     },
     "autoload": {

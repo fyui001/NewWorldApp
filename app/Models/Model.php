@@ -4,11 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
-/**
- * This class contains shared setup, properties and methods
- * of all application models
- *
- */
 class Model extends EloquentModel
 {
 
