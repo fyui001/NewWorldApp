@@ -4,17 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
-/**
- * This class contains shared setup, properties and methods
- * of all application models
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Model newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Model newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Model orWhereLike(string $attribute, string $keyword, int $position = 0)
- * @method static \Illuminate\Database\Eloquent\Builder|Model query()
- * @method static \Illuminate\Database\Eloquent\Builder|Model whereLike(string $attribute, string $keyword, int $position = 0)
- * @mixin \Eloquent
- */
 class Model extends EloquentModel
 {
 
