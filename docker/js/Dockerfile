@@ -1,5 +1,5 @@
-FROM node:15.1.0-stretch
+FROM node:17.0.0-stretch
 
 WORKDIR /code
 
-CMD ["sh", "-c", "yarn install && yarn prod"]
+CMD ["sh", "-c", "yarn && yarn prod && /bin/bash"]
