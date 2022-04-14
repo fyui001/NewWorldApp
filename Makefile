@@ -40,7 +40,7 @@ node-ssh:
 	@docker compose exec js bash
 
 ide_helper:
-	@docker compose exec app php artisan ide-helper:model --nowrite
+	@docker compose exec app php artisan ide-helper:generate
 
 up:
 	@docker compose up -d
@@ -52,7 +52,7 @@ setup:
 	@make composer_install
 	@docker compose exec app php artisan key:generate
 	@docker compose exec app php artisan jwt:secret
-	@docker compose exec app php artisan ide-helper:generate
+	@make ide_helper
 	@make cache_clear
 	@make migrate_seed
 	@make test_seed
