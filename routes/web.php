@@ -31,8 +31,6 @@ Route::prefix('admin_users')->group(function() {
     Route::get('/{adminUser}/edit','Admin\AdminUserController@edit')->where('user', '[0-9]+')->name('admin_users.edit');
     Route::put('/{adminUser}','Admin\AdminUserController@update')->where('user', '[0-9]+')->name('admin_users.update');
     Route::delete('/{adminUser}','Admin\AdminUserController@destroy')->where('user', '[0-9]+')->name('admin_users.destroy');
-    Route::get('/api_token', 'Admin\AdminUserController@apiToken')->name('admin_users.api_token');
-    Route::post('/api_token/update', 'Admin\AdminUserController@updateApiToken')->name('admin_users.api_token.update');
 });
 
 /* Drugs */
