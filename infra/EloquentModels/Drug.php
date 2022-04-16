@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Infra\EloquentModels;
 
-use App\Models\Model as AppModel;
+use Domain\Drugs\Drug as DrugDomain;
+use Domain\Drugs\DrugId;
+use Domain\Drugs\DrugName;
+use Domain\Drugs\DrugUrl;
+use Infra\EloquentModels\Model as AppModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -27,10 +31,9 @@ class Drug extends AppModel
     /**
      * @return HasMany
      */
-    public function medicationHistories(): HasMany {
-
+    public function medicationHistories(): HasMany
+    {
         return $this->hasMany('App\Models\MedicationHistory', 'drug_id');
-
     }
 
     /**
@@ -45,6 +48,15 @@ class Drug extends AppModel
     public function scopeSortSetting($query, $orderBy, $sortOrder, $defaultKey = 'id')
     {
         return AppModel::commonSortSetting($query, self::$sortable, $orderBy, $sortOrder, $defaultKey);
+    }
+
+    public function toDomain(): DrugDomain
+    {
+        return new DrugDomain(
+            new DrugId($this->id),
+            new DrugName($this->name),
+            new DrugUrl($this->url)
+        );
     }
 
 }
