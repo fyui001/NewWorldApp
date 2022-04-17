@@ -13,6 +13,7 @@ use Domain\AdminUsers\AdminUserStatus;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Domain\AdminUsers\AdminUser as AdminUserDomain;
+
 class AdminUser extends Authenticatable
 {
     use Notifiable;
