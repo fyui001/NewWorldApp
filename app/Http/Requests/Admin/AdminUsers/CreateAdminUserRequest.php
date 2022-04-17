@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\AdminUsers;
+namespace App\Http\Requests\Admin\AdminUsers;
 
-use App\Models\AdminUser;
 use App\Http\Requests\Request as AppRequest;
+use Domain\AdminUsers\AdminUserHashedPassword;
+use Domain\AdminUsers\AdminUserId;
+use Domain\AdminUsers\AdminUserName;
+use Domain\AdminUsers\AdminUserRole;
+use Domain\AdminUsers\AdminUserStatus;
+use Infra\EloquentModels\AdminUser;
 
 class CreateAdminUserRequest extends AppRequest
 {
@@ -16,7 +21,7 @@ class CreateAdminUserRequest extends AppRequest
      */
     public function authorize(): bool
     {
-        return me() && me()->can('create', AdminUser::class);
+        return true;
     }
 
     /**
@@ -66,5 +71,30 @@ class CreateAdminUserRequest extends AppRequest
             'role' => 'ロール',
             'status' => 'ステータス'
         ];
+    }
+
+    public function getUserId(): AdminUserId
+    {
+        return new AdminUserId($this->input('user_id'));
+    }
+
+    public function getPassword(): AdminUserHashedPassword
+    {
+        return new AdminUserHashedPassword($this->input('password'));
+    }
+
+    public function getName(): AdminUserName
+    {
+        return new AdminUserName($this->input('name'));
+    }
+
+    public function getRole(): AdminUserRole
+    {
+        return AdminUserRole::tryFrom((int)$this->input('role'));
+    }
+
+    public function getStatus(): AdminUserStatus
+    {
+        return AdminUserStatus::tryFrom((int)$this->input('status'));
     }
 }

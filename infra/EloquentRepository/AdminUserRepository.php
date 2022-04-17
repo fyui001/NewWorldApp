@@ -50,7 +50,7 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         $model = AdminUserModel::where(['id' => $adminUser->getId()->getRawValue()])->first();
 
         $model->user_id = $adminUser->getUserId()->getRawValue();
-        $model->password = $adminUser->getPassword();
+        $model->password = $adminUser->getPassword()->getRawValue();
         $model->name = $adminUser->getName()->getRawValue();
         $model->role = $adminUser->getRole()->getValue()->getRawValue();
         $model->status = $adminUser->getStatus()->getValue()->getRawValue();

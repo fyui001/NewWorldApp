@@ -177,8 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\DataBaseQueryLoggerServiceProvider::class
-
+        App\Providers\DataBaseQueryLoggerServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
     ],
 
     /*

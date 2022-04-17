@@ -53,8 +53,8 @@ class AdminUser extends Authenticatable
             new AdminUserId($this->user_id),
             new AdminUserHashedPassword(''),
             new AdminUserName($this->name),
-            AdminUserRole::tryFrom($this->role),
-            AdminUserStatus::tryFrom($this->status)
+            AdminUserRole::tryFrom((int)$this->role),
+            AdminUserStatus::tryFrom((int)$this->status)
         );
     }
 }
