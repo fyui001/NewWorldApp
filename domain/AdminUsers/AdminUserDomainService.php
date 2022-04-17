@@ -44,6 +44,6 @@ class AdminUserDomainService
 
     public function deleteAdminUser(AdminId $adminId): CoPositiveInteger
     {
-        $this->adminUserRepository->delete($adminId);
+        return $this->adminUserRepository->delete($adminId);
     }
 }
