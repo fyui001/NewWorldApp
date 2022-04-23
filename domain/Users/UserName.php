@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\Drugs;
+namespace Domain\Users;
 
 use Domain\Base\BaseValue;
 
-class DrugName extends BaseValue
+class UserName extends BaseValue
 {
 }

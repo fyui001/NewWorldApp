@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\Drugs;
+namespace Domain\Users;
 
 use Domain\Base\BaseUrlValue;
 
-class DrugUrl extends BaseUrlValue
+class IconUrl extends BaseUrlValue
 {
 }

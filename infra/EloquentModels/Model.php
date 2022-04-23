@@ -72,7 +72,7 @@ class Model extends EloquentModel
      * @param $defaultKey
      * @return mixed
      */
-    protected function commonSortSetting($query, $sortable, $orderBy, $sortOrder, $defaultKey)
+    protected function commonSortSetting($query, $sortable, $orderBy, $sortOrder, $defaultKey): mixed
     {
         foreach ($sortable as $key => $value) {
             if (is_int($key)) {

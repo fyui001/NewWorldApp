@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
+use Domain\Drugs\DrugId;
+use Domain\MedicationHistories\MedicationHistory as MedicationHistoryDomain;
+use Domain\MedicationHistories\MedicationHistoryAmount;
+use Domain\MedicationHistories\MedicationHistoryId;
+use Domain\Users\Id as UserId;
 use Infra\EloquentModels\Model as AppModel;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +22,8 @@ class MedicationHistory extends AppModel
 
     protected $guarded = [
         'id',
+        'user_id',
+        'drug_id',
     ];
 
     public $sortable = [
@@ -27,12 +34,21 @@ class MedicationHistory extends AppModel
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User', 'user_id');
+        return $this->belongsTo('Infra\EloquentModels\User', 'user_id');
     }
 
     public function drug(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Drug', 'drug_id');
+        return $this->belongsTo('Infra\EloquentModels\Drug', 'drug_id');
     }
 
+    public function toDomain(): MedicationHistoryDomain
+    {
+        return new MedicationHistoryDomain(
+            new MedicationHistoryId((int)$this->id),
+            new UserId((int)$this->user_id),
+            new DrugId((int)$this->drug_id),
+            new MedicationHistoryAmount((float)$this->amount)
+        );
+    }
 }

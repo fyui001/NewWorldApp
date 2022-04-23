@@ -8,8 +8,4 @@ use Domain\Base\BaseHashedValue;
 
 class AdminUserHashedPassword extends BaseHashedValue
 {
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
 }
