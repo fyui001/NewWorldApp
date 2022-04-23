@@ -5,25 +5,26 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
-use App\Http\Requests\Drugs\CreateDrugRequest;
-use App\Http\Requests\Drugs\UpdateDrugRequest;
+use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
+use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
+use Domain\Drugs\Drug;
+use Domain\Drugs\DrugId;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
-use Infra\EloquentModels\Drug;
+use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugController extends AppController
 {
 
-    protected $drugService;
+    protected DrugServiceInterface $drugService;
 
-    public function __construct(DrugServiceInterface $drugService) {
-
+    public function __construct(DrugServiceInterface $drugService)
+    {
         parent::__construct();
         $this->drugService = $drugService;
-
     }
 
     /**
@@ -31,11 +32,10 @@ class DrugController extends AppController
      *
      * @return View
      */
-    public function index(): View {
-
+    public function index(): View
+    {
         $drugs = $this->drugService->getDrugs();
         return view('drugs.index', compact('drugs'));
-
     }
 
     /**
@@ -43,20 +43,19 @@ class DrugController extends AppController
      *
      * @return View
      */
-    public function create(): View {
-
+    public function create(): View
+    {
         return view('drugs.create');
-
     }
 
     /**
-     * Create Drugs
+     * Create drug.
      *
      * @param CreateDrugRequest $request
      * @return Application|RedirectResponse|Redirector
      */
-    public function store(CreateDrugRequest $request) {
-
+    public function store(CreateDrugRequest $request): Redirector|RedirectResponse|Application
+    {
         $response = $this->drugService->createDrug($request);
 
         if (!$response['status']) {
@@ -71,10 +70,10 @@ class DrugController extends AppController
     /**
      * Form to edit drugs
      *
-     * @param Drug $drug
+     * @param DrugModel $drug
      * @return View
      */
-    public function edit(Drug $drug): View
+    public function edit(DrugModel $drug): View
     {
         return view('drugs.edit', compact('drug'));
     }
@@ -82,12 +81,12 @@ class DrugController extends AppController
     /**
      * From to update drug
      *
-     * @param Drug $drug
+     * @param DrugModel $drug
      * @param UpdateDrugRequest $request
-     * @return mixed
+     * @return RedirectResponse
      */
-    public function update(string $id, UpdateDrugRequest $request) {
-
+    public function update(DrugModel $drug, UpdateDrugRequest $request): RedirectResponse
+    {
         $response = $this->drugService->updateDrug($drug, $request);
 
         if (!$response['status']) {
@@ -95,16 +94,16 @@ class DrugController extends AppController
         }
 
         return redirect()->route('drugs.index')->with(['success' => '薬物の更新に成功しました']);
-
     }
 
     /**
      * Delete the drug
      *
-     * @param Drug $drug
+     * @param DrugModel $drug
      * @return RedirectResponse
      */
-    public function delete(Drug $drug): RedirectResponse {
+    public function delete(DrugModel $drug): RedirectResponse
+    {
 
         $response = $this->drugService->deleteDrug($drug);
         if (!$response['status']) {

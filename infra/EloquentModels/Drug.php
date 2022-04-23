@@ -45,7 +45,7 @@ class Drug extends AppModel
      * @param string $defaultKey
      * @return mixed
      */
-    public function scopeSortSetting($query, $orderBy, $sortOrder, $defaultKey = 'id')
+    public function scopeSortSetting($query, $orderBy, $sortOrder, string $defaultKey = 'id'): mixed
     {
         return AppModel::commonSortSetting($query, self::$sortable, $orderBy, $sortOrder, $defaultKey);
     }
@@ -54,7 +54,7 @@ class Drug extends AppModel
     {
         return new DrugDomain(
             new DrugId($this->id),
-            new DrugName($this->name),
+            new DrugName($this->drug_name),
             new DrugUrl($this->url)
         );
     }

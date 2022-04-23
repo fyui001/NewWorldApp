@@ -4,69 +4,45 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Http\Requests\Drugs\IndexDrugRequest;
-use App\Http\Requests\Drugs\CreateDrugRequest;
-use App\Http\Requests\Drugs\UpdateDrugRequest;
-use App\Http\Requests\Drugs\ShowDrugRequest;
+use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
+use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
-use App\Models\Drug;
+use Domain\Drugs\Drug;
+use Domain\Drugs\DrugDomainService;
+use Domain\Drugs\DrugId;
 use App\Services\Interfaces\DrugServiceInterface;
+use Domain\Drugs\DrugName;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugService extends AppService implements DrugServiceInterface
 {
+    private DrugDomainService $drugDomainService;
+
+    public function __construct(DrugDomainService $drugDomainService)
+    {
+        $this->drugDomainService = $drugDomainService;
+    }
 
     /**
      * Paginate Drugs
      *
      * @return LengthAwarePaginator
      */
-    public function getDrugs(): LengthAwarePaginator {
-
-        return Drug::sortable()->paginate(15);
-
-    }
-
-    /**
-     * Get drug list
-     *
-     * @param IndexDrugRequest $request
-     * @return array
-     */
-    public function getDrugList(IndexDrugRequest $request): array {
-
-        $orderBy = $request->input('order_by', 'id');
-        $sortOrder = $request->input('sort', 'asc');
-
-        if ($request->has('page')) {
-            $perPage = $request->input('per_page', 10);
-            $drugs = Drug::select('*')
-                ->sortSetting($orderBy, $sortOrder)
-                ->paginate($perPage);
-        } else {
-            $drugs = Drug::select('*')
-                ->sortSetting($orderBy, $sortOrder)
-                ->get();
-        }
-
-        return [
-            'status' => true,
-            'errors' => null,
-            'data' => $drugs,
-        ];
-
+    public function getDrugs(): LengthAwarePaginator
+    {
+        return $this->drugDomainService->getPaginator();
     }
 
     /**
      * Find a drug
      *
-     * @param ShowDrugRequest $request
+     * @param DrugId $drugId
      * @return array
      */
-    public function findDrug(ShowDrugRequest $request): array {
-
-        $params = $request->only('drug_name');
-        $drug = Drug::where(['drug_name' => $params['drug_name']])->first();
+    public function findDrug(DrugId $drugId): array
+    {
+        $drug = $this->drugDomainService->findDrug($drugId);
 
         if (empty($drug)) {
             return [
@@ -83,23 +59,47 @@ class DrugService extends AppService implements DrugServiceInterface
             'errors' => null,
             'data' => $drug,
         ];
+    }
 
+    /**
+     * Find drug by name
+     *
+     * @param DrugName $drugName
+     * @return Drug
+     */
+    public function searchDrugByName(DrugName $drugName): array
+    {
+        $drug = $this->drugDomainService->findDrugByName($drugName);
+
+        if (empty($drug)) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'key' => 'drug_notfound',
+                ],
+                'data' => null
+            ];
+        }
+
+        return [
+            'status' => true,
+            'errors' => null,
+            'data' => $drug,
+        ];
     }
 
     /**
      * Create a drug
      *
      * @param CreateDrugRequest $request
-     * @return bool
+     * @return array
      */
-    public function createDrug(CreateDrugRequest $request): array {
-
-        $params = $request->only(['drug_name', 'url']);
-
-        $result = Drug::create([
-            'drug_name' => $params['drug_name'],
-            'url' => $params['url'],
-        ]);
+    public function createDrug(CreateDrugRequest $request): array
+    {
+        $result = $this->drugDomainService->createDrug(
+            $request->getDrugName(),
+            $request->getUrl()
+        );
 
         if (empty($result)) {
             return [
@@ -115,23 +115,29 @@ class DrugService extends AppService implements DrugServiceInterface
             'status' => true,
             'message' => '',
             'errors' => null,
-            'data' => null,
+            'data' => $result,
         ];
-
     }
 
     /**
      * Update a drug
      *
-     * @param Drug $drug
+     * @param DrugModel $drug
      * @param UpdateDrugRequest $request
-     * @return bool
+     * @return array
      */
-    public function updateDrug(Drug $drug, UpdateDrugRequest $request): array {
+    public function updateDrug(DrugModel $drug, UpdateDrugRequest $request): array
+    {
 
-        $data = $request->only('drug_name', 'url');
+        $drugDomain = new Drug(
+            new DrugId((int)$drug->id),
+            $request->getName(),
+            $request->getUrl()
+        );
 
-        if (!$drug->update($data)) {
+        $result = $this->drugDomainService->updateDrug($drugDomain);
+
+        if (!$result) {
             return [
                 'status' => false,
                 'message' => 'Failed update drug',
@@ -148,16 +154,16 @@ class DrugService extends AppService implements DrugServiceInterface
             'errors' => null,
             'data' => null,
         ];
-
     }
 
     /**
      * Delete the drug
      *
-     * @param Drug $drug
+     * @param DrugModel $drug
+     * @return array
      */
-    public function deleteDrug(Drug $drug): array {
-
+    public function deleteDrug(DrugModel $drug): array
+    {
         $medicationHistories = $drug::with('medicationHistories.drug')->where([
             'id' => $drug->id,
         ])->first()['medicationHistories'];
@@ -191,5 +197,4 @@ class DrugService extends AppService implements DrugServiceInterface
             'data' => null,
         ];
     }
-
 }
