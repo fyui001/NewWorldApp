@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Admin\Auth;
 
 use App\Http\Requests\Request as AppRequest;
+use Courage\CoString;
+use Domain\AdminUsers\AdminUserId;
 
 class LoginRequest extends AppRequest
 {
@@ -29,5 +31,15 @@ class LoginRequest extends AppRequest
             'user_id' => 'required|max:255',
             'password' => 'required|max:255',
         ];
+    }
+
+    public function getUserId(): AdminUserId
+    {
+        return new AdminUserId($this->input('user_id'));
+    }
+
+    public function getPassword(): CoString
+    {
+        return new CoString($this->input('password'));
     }
 }

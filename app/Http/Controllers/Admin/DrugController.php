@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
-use App\Models\Drug;
 use App\Http\Requests\Drugs\CreateDrugRequest;
 use App\Http\Requests\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
@@ -13,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
+use Infra\EloquentModels\Drug;
 
 class DrugController extends AppController
 {
@@ -66,7 +66,6 @@ class DrugController extends AppController
             return redirect(route('drugs.create'))->with('error', '不正な入力です');
         }
         return redirect(route('drugs.index'))->with('success', '薬物を登録しました');
-
     }
 
     /**
@@ -75,10 +74,9 @@ class DrugController extends AppController
      * @param Drug $drug
      * @return View
      */
-    public function edit(Drug $drug): View {
-
+    public function edit(Drug $drug): View
+    {
         return view('drugs.edit', compact('drug'));
-
     }
 
     /**
@@ -88,7 +86,7 @@ class DrugController extends AppController
      * @param UpdateDrugRequest $request
      * @return mixed
      */
-    public function update(Drug $drug, UpdateDrugRequest $request) {
+    public function update(string $id, UpdateDrugRequest $request) {
 
         $response = $this->drugService->updateDrug($drug, $request);
 

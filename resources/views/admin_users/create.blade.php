@@ -19,7 +19,7 @@
 {{ Form::open(['url' => route('admin_users.store'), 'method' => 'post']) }}
     <div class="form-group info">
         <label for="InputUserId">User ID</label>
-        {{ Form::text('user_id', old('user_id'), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
+        {{ Form::text('user_id', old('user_id'), ['class' => 'form-control', 'placeholder' => 'Enter user id', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputPassword">Password</label>
@@ -35,11 +35,11 @@
     </div>
     <div class="form-group">
         <label for="InputRole">Role</label>
-        {{ Form::select('role', \App\Models\AdminUser::roles(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('role', \Domain\AdminUsers\AdminUserRole::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \App\Models\AdminUser::statuses(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('status', \Domain\AdminUsers\AdminUserStatus::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}

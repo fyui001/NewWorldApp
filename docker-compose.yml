@@ -33,6 +33,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/js/Dockerfile
+    tty: true
     volumes:
       - .:/code:cached
       - node-modules:/code/node_modules

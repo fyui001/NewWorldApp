@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\Interfaces;
 
-use App\Models\AdminUser;
-use App\Http\Requests\Request;
+use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
+use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
+use Domain\AdminUsers\AdminId;
 use Illuminate\Pagination\LengthAwarePaginator;
-use \Illuminate\Contracts\Auth\Authenticatable;
 
 interface AdminUserServiceInterface
 {
     public function getUsers(): LengthAwarePaginator;
-    public function createUser(Request $request): AdminUser;
-    public function updateUser(AdminUser $adminUser, Request $request);
-    public function deleteUser(AdminUser $adminUser);
-    public function apiTokenView(Authenticatable $adminUser): string;
-    public function updateApiToken(): array;
+    public function createUser(CreateAdminUserRequest $request): void;
+    public function updateUser(AdminId $adminId, UpdateAdminUserRequest $request): void;
+    public function deleteUser(AdminId $adminId): void;
 }

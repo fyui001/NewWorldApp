@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Infra\EloquentModels;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -30,10 +30,9 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return HasMany
      */
-    public function medicationHistories(): HasMany {
-
+    public function medicationHistories(): HasMany
+    {
         return $this->hasMany('App\Models\MedicationHistory', 'user_id');
-
     }
 
     /**
@@ -41,10 +40,9 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier() {
-
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
-
     }
 
     /**
@@ -52,17 +50,16 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return array
      */
-    public function getJWTCustomClaims() {
-
+    public function getJWTCustomClaims()
+    {
         return [];
-
     }
 
     /**
      * Prepare a date for array / JSON serialization.
      *
      * @param  \DateTimeInterface  $date
-     * @return string
+     * @return strin
      */
     protected function serializeDate(\DateTimeInterface $date)
     {

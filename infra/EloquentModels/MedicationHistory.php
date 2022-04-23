@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace Infra\EloquentModels;
 
-use App\Models\Model as AppModel;
+use Infra\EloquentModels\Model as AppModel;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MedicationHistory extends AppModel
 {
@@ -24,16 +25,14 @@ class MedicationHistory extends AppModel
         'drug_name',
     ];
 
-    public function user() {
-
+    public function user(): BelongsTo
+    {
         return $this->belongsTo('App\Models\User', 'user_id');
-
     }
 
-    public function drug() {
-
+    public function drug(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Drug', 'drug_id');
-
     }
 
 }

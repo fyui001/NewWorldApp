@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,9 +13,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        \App\Models\AdminUser::class => \App\Policies\UserPolicy::class,
-        \App\Models\Drug::class => \App\Policies\DrugPolicy::class,
-        \App\Models\MedicationHistory::class => \App\Policies\MedicationHistoryPolicy::class,
+        \Infra\EloquentRepository\AdminUserRepository::class => \App\Policies\AdminUserPolicy::class,
+        //\App\Models\Drug::class => \App\Policies\DrugPolicy::class,
+        //\App\Models\MedicationHistory::class => \App\Policies\MedicationHistoryPolicy::class,
     ];
 
     /**
