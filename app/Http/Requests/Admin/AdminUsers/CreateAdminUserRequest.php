@@ -10,7 +10,6 @@ use Domain\AdminUsers\AdminUserId;
 use Domain\AdminUsers\AdminUserName;
 use Domain\AdminUsers\AdminUserRole;
 use Domain\AdminUsers\AdminUserStatus;
-use Infra\EloquentModels\AdminUser;
 
 class CreateAdminUserRequest extends AppRequest
 {
