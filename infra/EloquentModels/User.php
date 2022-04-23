@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
+use Domain\Users\IconUrl;
+use Domain\Users\User as UserDomain;
+use Domain\Users\Id;
+use Domain\Users\UserHashedPassword;
+use Domain\Users\UserId;
+use Domain\Users\UserName;
+use Domain\Users\UserStatus;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -59,10 +66,22 @@ class User extends Authenticatable implements JWTSubject
      * Prepare a date for array / JSON serialization.
      *
      * @param  \DateTimeInterface  $date
-     * @return strin
+     * @return string
      */
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d: H:i:s');
+    }
+
+    public function toDomain(): UserDomain
+    {
+        return new UserDomain(
+            new Id((int)$this->id),
+            new UserId($this->user_id),
+            new UserName($this->name),
+            new IconUrl($this->icon_url),
+            new UserHashedPassword($this->password),
+            UserStatus::tryFrom((int)$this->status)
+        );
     }
 }

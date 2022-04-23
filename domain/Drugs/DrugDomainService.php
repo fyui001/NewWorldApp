@@ -41,8 +41,8 @@ class DrugDomainService
         return $this->drugRepository->update($drug);
     }
 
-    public function deleteDrug(DrugId $drugId): CoPositiveInteger
+    public function deleteDrug(DrugId $drugId): void
     {
-        return $this->deleteDrug($drugId);
+        $this->drugRepository->delete($drugId);
     }
 }

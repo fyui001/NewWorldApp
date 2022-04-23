@@ -8,8 +8,4 @@ use Domain\Base\BaseValue;
 
 class DrugName extends BaseValue
 {
-    public function __construct(string $value)
-    {
-        parent::__construct($value);
-    }
 }
