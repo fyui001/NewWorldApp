@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
-use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
@@ -30,26 +30,25 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected string $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct() {
-
+    public function __construct()
+    {
+        parent::__construct();
         $this->middleware('guest:web')->except('logout');
-
     }
 
     /**
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard(): StatefulGuard {
-
-        return Auth::guard('admin');
-
+    protected function guard(): StatefulGuard
+    {
+        return Auth::guard('web');
     }
 
     /**
@@ -57,23 +56,18 @@ class LoginController extends Controller
      *
      * @return string
      */
-    public function username(): string {
-
+    public function username(): string
+    {
         return 'user_id';
-
     }
 
     /**
      * Form for login.
      *
-     * @return View | RedirectResponse
+     * @return View
      */
-    public function showLoginForm() {
-
-        if (me()) {
-            return redirect(route('top_page'));
-        }
-
+    public function showLoginForm()
+    {
         return view('auth.login');
 
     }
@@ -84,9 +78,12 @@ class LoginController extends Controller
      * @param LoginRequest $request
      * @return RedirectResponse
      */
-    public function login(LoginRequest $request): RedirectResponse {
-
-        $credentials = $request->only('user_id', 'password');
+    public function login(LoginRequest $request): RedirectResponse
+    {
+        $credentials = [
+            'user_id' => $request->getUserId()->getRawValue(),
+            'password' => $request->getPassword()->getRawValue(),
+        ];
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -100,12 +97,11 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        if (!Auth::guard('admin')->attempt($credentials)) {
+        if (!Auth::guard('web')->attempt($credentials)) {
             return redirect()->intended(route('auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
         }
 
         return redirect()->intended(route('top_page'))->with(['success' => 'Welcome!']);
-
     }
 
     /**
@@ -113,11 +109,9 @@ class LoginController extends Controller
      *
      * @return RedirectResponse
      */
-    public function logout(): RedirectResponse {
-
-        Auth::guard('admin')->logout();
+    public function logout(): RedirectResponse
+    {
+        Auth::guard('web')->logout();
         return redirect(route('auth.login'));
-
     }
-
 }

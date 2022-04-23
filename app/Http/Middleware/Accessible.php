@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\AdminUser;
 use Closure;
+use Domain\AdminUsers\AdminUserRole;
 use Illuminate\Support\Str;
 
 class Accessible
 {
 
-    public function handle($request, Closure $next, $guard = null) {
+    public function handle($request, Closure $next, $guards = null) {
+        $currentUser = \Auth::user();
 
-        // Current user is not defined
-        abort_unless(me(), 403);
+        // Current route is not one of available routes
+        if ($currentUser) {
+            $accessibleRoutes = $this->getAccessibleRoutes($currentUser->role);
 
-        // Current route is not one of avaiable routes
-        $accessibleRoutes = $this->getAccessibleRoutes(me('role'));
-        abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
+            abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
+        }
 
         return $next($request);
     }
@@ -32,14 +33,14 @@ class Accessible
     protected function getAccessibleRoutes(int $roleId): array {
 
         $routes = [
-            AdminUser::ROLE_SYSTEM => [
+            AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue() => [
                 'auth.*',
                 'admin_users.*',
                 'top_page',
                 'drugs.*',
                 'medication_histories.*',
             ],
-            AdminUser::ROLE_OPERATOR => [
+            AdminUserRole::ROLE_OPERATOR->getValue()->getRawValue() => [
                 'auth.*',
                 'admin_users.api_token',
                 'admin_users.api_token.update',
@@ -56,14 +57,15 @@ class Accessible
     /**
      *
      *
-     * @param array $avaiableRoutes
+     * @param array $availableRoutes
      * @return bool
      */
-    protected function containsCurrentRoute(array $avaiableRoutes): bool {
+    protected function containsCurrentRoute(array $availableRoutes): bool
+    {
 
         $currentRoute = \Route::currentRouteName();
 
-        foreach ($avaiableRoutes as $route) {
+        foreach ($availableRoutes as $route) {
             if (Str::is($route, $currentRoute)) {
                 return true;
             }

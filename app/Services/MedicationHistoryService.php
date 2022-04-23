@@ -4,27 +4,37 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Http\Requests\MedicationHistories\CreateMedicationHistoryRequest;
-use App\Models\MedicationHistory;
-use App\Models\Drug;
-use App\Models\User;
+use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
+use App\Http\Requests\Api\MedicationHistories\CreateMedicationHistoryRequest;
+use Domain\Drugs\DrugId;
+use Domain\MedicationHistories\MedicationHistory;
+use Domain\MedicationHistories\MedicationHistoryDomainService;
+use Domain\MedicationHistories\MedicationHistoryId;
+use Domain\Users\Id;
+use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
+use Infra\EloquentModels\Drug;
+use Infra\EloquentModels\User;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Http\Requests\MedicationHistories\UpdateMedicationHistoryRequest;
 
 class MedicationHistoryService extends AppService implements MedicationHistoryServiceInterface
 {
+    private MedicationHistoryDomainService $medicationHistoryDomainService;
+
+    public function __construct(MedicationHistoryDomainService $medicationHistoryDomainService)
+    {
+        $this->medicationHistoryDomainService = $medicationHistoryDomainService;
+    }
 
     /**
      * Get all medication history
      *
      * @return LengthAwarePaginator
      */
-    public function getMedicationHistories(): LengthAwarePaginator {
-
-        return MedicationHistory::sortable()->orderBy('id', 'desc')->paginate(15);
-
+    public function getMedicationHistories(): LengthAwarePaginator
+    {
+        return $this->medicationHistoryDomainService->getPaginate();
     }
 
     public function createMedicationHistory(CreateMedicationHistoryRequest $request): array {
@@ -76,13 +86,21 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
     /**
      * Update medication history
      *
-     * @param MedicationHistory $medicationHistory
+     * @param MedicationHistoryModel $medicationHistory
      * @param UpdateMedicationHistoryRequest $request
      * @return bool
      */
-    public function updateMedicationHistory(MedicationHistory $medicationHistory, UpdateMedicationHistoryRequest $request): bool {
-        $params = $request->only('amount');
-        return $medicationHistory->update($params);
+    public function updateMedicationHistory(
+        MedicationHistoryModel $medicationHistory, UpdateMedicationHistoryRequest $request
+    ): MedicationHistory {
+        $medicationHistoryDomain = new MedicationHistory(
+            new MedicationHistoryId((int)$medicationHistory->id),
+            new Id($medicationHistory->user_id),
+            new DrugId($medicationHistory->drug_id),
+            $request->getAmount()
+        );
+
+        return $this->medicationHistoryDomainService->update($medicationHistoryDomain);
     }
 
 }

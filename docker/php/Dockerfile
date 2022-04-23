@@ -1,15 +1,37 @@
-FROM php:7.4-fpm-alpine
+## composer
+FROM composer:2.2.7 AS composer-cache
+WORKDIR /code
+# copy only composer files for caching
+COPY composer.json composer.lock /code/
+
+# install deps(without generating autoloader)
+RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
+
+## appliation
+FROM php:8.1-fpm
 
 ARG TZ
 
-COPY ./docker/php/startup.sh /root
+COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /code
 
-RUN set -eux && \
-  apk add --update-cache --no-cache --virtual=.build-dependencies tzdata && \
-  apk --no-cache add zip unzip composer && \
-  docker-php-ext-install bcmath pdo_mysql json && \
-  chmod +x /root/startup.sh
+RUN apt update && \
+    apt full-upgrade -y && \
+    apt full-upgrade -y && \
+    apt autoremove -y && \
+    apt autoclean -y && \
+    apt install -y \
+    g++ \
+    zip \
+    unzip \
+    locales \
+    libicu-dev \
+    libmemcached-dev \
+    unzip \
+    zlib1g-dev \
+    libonig-dev
 
-CMD ["/root/startup.sh"]
+RUN pecl install memcached && \
+    docker-php-ext-enable memcached && \
+    docker-php-ext-install bcmath intl pdo_mysql opcache bcmath

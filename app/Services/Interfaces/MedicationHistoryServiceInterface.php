@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Services\Interfaces;
 
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Models\MedicationHistory;
-use App\Http\Requests\MedicationHistories\UpdateMedicationHistoryRequest;
-use App\Http\Requests\MedicationHistories\CreateMedicationHistoryRequest;
+use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
+use Domain\MedicationHistories\MedicationHistory;
+use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
+
 interface MedicationHistoryServiceInterface
 {
     public function getMedicationHistories(): LengthAwarePaginator;
-    public function createMedicationHistory(CreateMedicationHistoryRequest $request): array;
-    public function updateMedicationHistory(MedicationHistory $medicationHistory, UpdateMedicationHistoryRequest $request): bool;
+    public function updateMedicationHistory(
+        MedicationHistoryModel $medicationHistory,
+        UpdateMedicationHistoryRequest $request
+    ): MedicationHistory;
 }

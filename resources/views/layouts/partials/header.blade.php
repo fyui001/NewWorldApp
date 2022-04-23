@@ -6,11 +6,8 @@
                 <span class="oi oi-person"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <p class="dropdown-item">{{ me('user_id') }}</p>
+                <p class="dropdown-item">{{ \Auth::user()->getAttribute('user_id') }}</p>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ route('admin_users.api_token') }}">
-                    <span class="oi oi-key"></span> API TOKEN
-                </a>
                 <a class="dropdown-item" href="{{ route('auth.logout') }}" >
                     <span class="oi oi-account-logout"></span> logout
                 </a>

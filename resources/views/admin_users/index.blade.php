@@ -27,19 +27,20 @@
         </tr>
     </thead>
     @foreach($adminUsers as $item)
+        <?php /** @var Infra\EloquentModels\AdminUser $item */ ?>
         <tr>
-            <td>{{ $item->id }}</td>
-            <td>{{ $item->user_id }}</td>
-            <td>{{ $item->name }}</td>
-            <td>{{ \App\Models\AdminUser::getRoleText($item->role) }}</td>
-            <td>{{ \App\Models\AdminUser::getStatusText($item->status) }}</td>
+            <td>{{ $item->toDomain()->getId() }}</td>
+            <td>{{ $item->toDomain()->getUserId() }}</td>
+            <td>{{ $item->toDomain()->getName() }}</td>
+            <td>{{ $item->toDomain()->getRole()->displayName() }}</td>
+            <td>{{ $item->toDomain()->getStatus()->displayName() }}</td>
             <td class="td-actions text-right">
                 <a href="{{ route('admin_users.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
                 <a href="javascript:void(0)" data-url="{{ route('admin_users.destroy', $item) }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
-                   data-label="{{ $item->user_id }}" title="Delete">
+                   data-label="{{ $item->toDomain()->getName()->getRawValue() }}" title="Delete">
                     <span class="oi oi-x"></span>
                 </a>
             </td>

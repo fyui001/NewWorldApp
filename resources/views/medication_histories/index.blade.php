@@ -22,11 +22,12 @@
     </tr>
     </thead>
     @foreach($medicationHistories as $item)
+        <?php /** @var Infra\EloquentModels\MedicationHistory $item */ ?>
     <tr>
-        <td>{{ $item->id }}</td>
-        <td>{{ $item->user->name }}</td>
-        <td>{{ $item->drug->drug_name }}</td>
-        <td>{{ $item->amount }}</td>
+        <td>{{ $item->toDomain()->getId()->getRawValue() }}</td>
+        <td>{{ $item->user->toDomain()->getName()->getRawValue() }}</td>
+        <td>{{ $item->drug->toDomain()->getName()->getRawValue() }}</td>
+        <td>{{ $item->toDomain()->getAmount() }}</td>
         <td>{{ $item->created_at }}</td>
         <td class="td-actions text-right">
             <a href="{{ route('medication_histories.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
