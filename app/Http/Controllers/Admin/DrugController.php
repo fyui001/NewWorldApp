@@ -8,8 +8,6 @@ use App\Http\Controllers\Controller as AppController;
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
-use Domain\Drugs\Drug;
-use Domain\Drugs\DrugId;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;

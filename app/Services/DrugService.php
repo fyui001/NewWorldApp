@@ -7,21 +7,28 @@ namespace App\Services;
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
+use Courage\CoInt\CoInteger;
 use Domain\Drugs\Drug;
 use Domain\Drugs\DrugDomainService;
 use Domain\Drugs\DrugId;
 use App\Services\Interfaces\DrugServiceInterface;
 use Domain\Drugs\DrugName;
+use Domain\Exceptions\NotFoundException;
+use Domain\MedicationHistories\MedicationHistoryDomainService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugService extends AppService implements DrugServiceInterface
 {
     private DrugDomainService $drugDomainService;
+    private MedicationHistoryDomainService $medicationHistoryDomainService;
 
-    public function __construct(DrugDomainService $drugDomainService)
-    {
+    public function __construct(
+        DrugDomainService $drugDomainService,
+        MedicationHistoryDomainService $medicationHistoryDomainService
+    ) {
         $this->drugDomainService = $drugDomainService;
+        $this->medicationHistoryDomainService = $medicationHistoryDomainService;
     }
 
     /**
@@ -164,22 +171,31 @@ class DrugService extends AppService implements DrugServiceInterface
      */
     public function deleteDrug(DrugModel $drug): array
     {
-        $medicationHistories = $drug::with('medicationHistories.drug')->where([
-            'id' => $drug->id,
-        ])->first()['medicationHistories'];
+        try {
+            $medicationHistories = $this->medicationHistoryDomainService->getCountMedicationTake(
+                $drug->toDomain()->getId()
+            );
 
-        if ($medicationHistories->isNotEmpty()) {
+            if ($medicationHistories->isLessThan(new CoInteger(0))) {
+                return [
+                    'status' => false,
+                    'message' => 'Have a medication history',
+                    'errors' => [
+                        'key' => 'have_a_medication_history',
+                    ],
+                    'data' => null,
+                ];
+            }
+
+            $this->drugDomainService->deleteDrug($drug->toDomain()->getId());
+
             return [
-                'status' => false,
-                'message' => 'Have a medication history',
-                'errors' => [
-                    'key' => 'have_a_medication_history',
-                ],
+                'status' => true,
+                'message' => '',
+                'errors' => null,
                 'data' => null,
             ];
-        }
-
-        if (!$drug->delete()) {
+        } catch (NotFoundException $e) {
             return [
                 'status' => false,
                 'message' => 'Failed to delete',
@@ -189,12 +205,5 @@ class DrugService extends AppService implements DrugServiceInterface
                 'data' => null,
             ];
         }
-
-        return [
-            'status' => true,
-            'message' => '',
-            'errors' => null,
-            'data' => null,
-        ];
     }
 }
