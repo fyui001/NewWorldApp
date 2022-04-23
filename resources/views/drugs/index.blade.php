@@ -25,21 +25,22 @@
         </tr>
     </thead>
     @foreach($drugs as $item)
+        <?php /** @var Infra\EloquentModels\Drug $item */ ?>
         <tr>
-            <td>{{ $item->id }}</td>
-            <td>{{ $item->drug_name }}</td>
+            <td>{{ $item->toDomain()->getId() }}</td>
+            <td>{{ $item->toDomain()->getName() }}</td>
             <td>
-                <a href="{{ $item->url }}" target="_blank" rel="noopener noreferrer">
-                    {{ mb_substr($item->url, 0, 40) }}
+                <a href="{{ $item->toDomain()->getUrl() }}" target="_blank" rel="noopener noreferrer">
+                    {{ mb_substr($item->toDomain()->getUrl(), 0, 40) }}
                 </a>
             </td>
             <td class="td-actions text-right">
-                <a href="{{ route('drugs.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('drugs.edit', $item->toDomain()->getId()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('drugs.delete', $item)  }}"
+                <a href="javascript:void(0)" data-url="{{ route('drugs.delete', $item->toDomain()->getId())  }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
-                   data-label="{{ $item->drug_name }}" title="Delete">
+                   data-label="{{ $item->toDomain()->getName() }}" title="Delete">
                     <span class="oi oi-x"></span>
                 </a>
             </td>
