@@ -66,7 +66,7 @@ class DrugRepository implements DrugRepositoryInterface
         return $model->toDomain();
     }
 
-    public function delete(DrugId $drugId): CoPositiveInteger
+    public function delete(DrugId $drugId): void
     {
         $model = DrugModel::where(['id' => $drugId->getRawValue()])->first();
 
@@ -79,7 +79,5 @@ class DrugRepository implements DrugRepositoryInterface
         if (!$result) {
             throw new LogicException();
         }
-
-        return new CoPositiveInteger($result);
     }
 }
