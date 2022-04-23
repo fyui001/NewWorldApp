@@ -25,7 +25,7 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
 
     public function getPaginator(): LengthAwarePaginator
     {
-        return MedicationHistoryModel::with(self::WITH_MODEL)->paginate(15);
+        return MedicationHistoryModel::sortable()->with(self::WITH_MODEL)->paginate(15);
     }
 
     public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger
