@@ -23,8 +23,22 @@ enum UserStatus: int implements BaseEnum
         };
     }
 
+    public function rowString(): CoString
+    {
+        return match ($this) {
+            self::STATUS_UNREGISTERED => new CoString('unregistered'),
+            self::STATUS_VALID => new CoString('valid'),
+            self::STATUS_DELETED => new CoString('deleted'),
+        };
+    }
+
     public function getValue(): CoInteger
     {
         return new CoInteger($this->value);
+    }
+
+    public function isRegistered(): bool
+    {
+        return $this === self::STATUS_VALID;
     }
 }

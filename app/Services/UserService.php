@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Http\Requests\Api\Users\LoginUserRequest;
+use App\Http\Requests\Api\Users\UserRegisterRequest;
+use Domain\Exceptions\NotFoundException;
+use Domain\Users\Id;
+use Domain\Users\UserDomainService;
+use Domain\Users\UserStatus;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\UserServiceInterface;
-use App\Http\Requests\Users\LoginUserRequest;
-use App\Http\Requests\Users\RegisterUserRequest;
 
 class UserService extends AppService implements UserServiceInterface
 {
+    private UserDomainService $userDomainService;
+
+    public function __construct(UserDomainService $userDomainService)
+    {
+        $this->userDomainService = $userDomainService;
+    }
 
     /**
      * ユーザー情報取得
      *
      * @return array
      */
-    public function getUser(): array {
+    public function getUser(): array
+    {
 
         $user = Auth::guard('api')->user();
 
@@ -34,16 +43,14 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $response = User::with('medicationHistories.drug')->where([
-            'id' => $user->id,
-        ])->first();
+        $response = $this->userDomainService->getUserByIdWithMedicationHistories(
+            new Id((int)$user->id)
+        );
 
         return [
             'status' => true,
             'errors' => null,
-            'data' => [
-                'user' => $response,
-            ],
+            'data' => $response->toArray(),
         ];
 
     }
@@ -54,12 +61,12 @@ class UserService extends AppService implements UserServiceInterface
      * @param LoginUserRequest $request
      * @return array
      */
-    public function login(LoginUserRequest $request): array {
-
-        $credentials = $request->only('user_id', 'password');
-        $credentials += [
-            'is_registered' => true,
-            'del_flg' => false,
+    public function login(LoginUserRequest $request): array
+    {
+        $credentials = [
+            'user_id' => $request->getUserId()->getRawValue(),
+            'password' => $request->getPassword()->getRawValue(),
+            'status' => UserStatus::STATUS_VALID,
         ];
 
         if (!Auth::guard('api')->attempt($credentials)) {
@@ -72,7 +79,7 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = Auth::guard('api')->user();
+        $user = $this->userDomainService->getUserByUserId($request->getUserId());
         $accessToken = auth('api')->claims([
             'guard' => 'api'
         ])->attempt($credentials);
@@ -85,20 +92,51 @@ class UserService extends AppService implements UserServiceInterface
                 'access_token' => $accessToken,
             ],
         ];
-
     }
 
     /**
      * 登録
      *
-     * @param RegisterUserRequest $request
+     * @param UserRegisterRequest $request
      * @return array
      */
-    public function register(RegisterUserRequest $request): array {
+    public function register(UserRegisterRequest $request): array
+    {
+        try {
+            $user = $this->userDomainService->getUserByUserId($request->getUserId());
 
-        $user = User::where(['user_id' => $request->input('user_id')])->first();
+            if ($user->getStatus()->isRegistered()) {
+                return [
+                    'status' => false,
+                    'errors' => [
+                        'key' => 'duplicate_entry',
+                    ],
+                    'data' => null,
+                ];
+            }
 
-        if (empty($user)) {
+            $result = $this->userDomainService->userRegister(
+                $user->getId(),
+                $request->getPassword(),
+                UserStatus::STATUS_VALID
+            );
+
+            if (!$result) {
+                return [
+                    'status' => false,
+                    'errors' => [
+                        'key' => 'internal_server_error',
+                    ],
+                    'data' => null,
+                ];
+            }
+
+            return [
+                'status' => true,
+                'errors' => null,
+                'data' => null,
+            ];
+        } catch (NotFoundException $e) {
             return [
                 'status' => false,
                 'errors' => [
@@ -107,41 +145,5 @@ class UserService extends AppService implements UserServiceInterface
                 'data' => null,
             ];
         }
-
-        if ($user->is_registered === true) {
-            return [
-                'status' => false,
-                'errors' => [
-                    'key' => 'duplicate_entry',
-                ],
-                'data' => null,
-            ];
-        }
-
-
-        $requestData = [
-            'password' => Hash::make($request->input('password')),
-            'is_registered' => true,
-        ];
-
-        $response = $user->update($requestData);
-
-        if (!$response) {
-            return [
-                'status' => false,
-                'errors' => [
-                    'key' => 'internal_server_error',
-                ],
-                'data' => null,
-            ];
-        }
-
-        return [
-            'status' => true,
-            'errors' => null,
-            'data' => null,
-        ];
-
     }
-
 }
