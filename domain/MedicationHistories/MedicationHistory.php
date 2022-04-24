@@ -43,4 +43,14 @@ class MedicationHistory
     {
         return $this->amount;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId()->getRawValue(),
+            'userId' => $this->getUserId()->getRawValue(),
+            'drugId' => $this->getDrugId()->getRawValue(),
+            'amount' => $this->getAmount()->getRawValue(),
+        ];
+    }
 }

@@ -12,6 +12,7 @@ class RepositoryServiceProvider extends ServiceProvider
         Domain\AdminUsers\AdminUserRepository::class => EloquentRepository\AdminUserRepository::class,
         Domain\Drugs\DrugRepository::class => EloquentRepository\DrugRepository::class,
         Domain\MedicationHistories\MedicationHistoryRepository::class => EloquentRepository\MedicationHistoryRepository::class,
+        Domain\Users\UserRepository::class => EloquentRepository\UserRepository::class,
     ];
 
     /**

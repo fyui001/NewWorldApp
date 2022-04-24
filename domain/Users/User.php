@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Domain\Users;
 
+use Courage\CoList;
+use Domain\Base\BaseListValue;
+
 class User
 {
     private Id $id;
     private UserId $userId;
     private UserName $userName;
     private IconUrl $iconUrl;
-    private UserHashedPassword $hashedPassword;
     private UserStatus $userStatus;
 
     public function __construct(
@@ -18,14 +20,12 @@ class User
         UserId $userId,
         UserName $userName,
         IconUrl $iconUrl,
-        UserHashedPassword $hashedPassword,
         UserStatus $userStatus
     ) {
         $this->id = $id;
         $this->userId = $userId;
         $this->userName = $userName;
         $this->iconUrl = $iconUrl;
-        $this->hashedPassword = $hashedPassword;
         $this->userStatus = $userStatus;
     }
 
@@ -49,13 +49,19 @@ class User
         return $this->iconUrl;
     }
 
-    public function getPassword(): UserHashedPassword
-    {
-        return $this->hashedPassword;
-    }
-
     public function getStatus(): UserStatus
     {
         return $this->userStatus;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId()->getRawValue(),
+            'userId' => $this->getUserId()->getRawValue(),
+            'name' => $this->getName()->getRawValue(),
+            'iconUrl' => $this->getIconUrl()->getRawValue(),
+            'status' => $this->getStatus()->displayName()->getRawValue(),
+        ];
     }
 }

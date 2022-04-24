@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\MedicationHistories;
+namespace App\Http\Requests\Api\MedicationHistories;
 
 use App\Http\Requests\Request as AppRequest;
-use App\Models\MedicationHistory;
+use Infra\EloquentModels\MedicationHistory;
+
 
 class CreateMedicationHistoryRequest extends AppRequest
 {
-    public function authorize(): bool {
-        return me() && me()->can('create', MedicationHistory::class) ||  \Auth::user();
+    public function authorize(): bool
+    {
+        return \Auth::guard('api')->user()->can('create', MedicationHistory::class);
     }
 
     /**
@@ -18,7 +20,8 @@ class CreateMedicationHistoryRequest extends AppRequest
      *
      * @return string[]
      */
-    public function rules(): array {
+    public function rules(): array
+    {
         return [
             'user_id' => 'required|numeric',
             'drug_name' => 'required|string',
@@ -31,7 +34,8 @@ class CreateMedicationHistoryRequest extends AppRequest
      *
      * @return array
      */
-    public function messages(): array {
+    public function messages(): array
+    {
         return [
             'user_id.required' => 'ユーザーIDは必須です',
             'drug_name.required' => '薬物名は必須です',
