@@ -14,8 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         \Infra\EloquentRepository\AdminUserRepository::class => \App\Policies\AdminUserPolicy::class,
-        //\App\Models\Drug::class => \App\Policies\DrugPolicy::class,
-        //\App\Models\MedicationHistory::class => \App\Policies\MedicationHistoryPolicy::class,
+        \Infra\EloquentModels\Drug::class => \App\Policies\DrugPolicy::class,
+        \Infra\EloquentModels\MedicationHistory::class => \App\Policies\MedicationHistoryPolicy::class,
     ];
 
     /**

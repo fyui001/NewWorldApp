@@ -33,7 +33,7 @@ class Drug extends AppModel
      */
     public function medicationHistories(): HasMany
     {
-        return $this->hasMany('App\Models\MedicationHistory', 'drug_id');
+        return $this->hasMany('Infra\EloquentModels\MedicationHistory', 'drug_id');
     }
 
     /**

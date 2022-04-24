@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
-use App\Http\Requests\Users\LoginUserRequest;
-use App\Http\Requests\Users\RegisterUserRequest;
+use App\Http\Responder\ApiErrorResponder;
+use App\Http\Requests\Api\Users\LoginUserRequest;
+use App\Http\Requests\Api\Users\UserRegisterRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use \Illuminate\Http\JsonResponse;
 
 class UserController
 {
 
-    protected $userService;
+    protected UserServiceInterface $userService;
 
     public function __construct(UserServiceInterface $userService) {;
 
@@ -33,11 +33,19 @@ class UserController
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
-                $error = apiErrorResponse($response['errors']['key']);
-                return response()->json($error['body'], $error['response_code']);
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
             }
-            $error = apiErrorResponse('internal_server_error');
-            return response()->json($error['body'], $error['response_code']);
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
         }
 
         return response()->json([
@@ -62,11 +70,19 @@ class UserController
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
-                $error = apiErrorResponse($response['errors']['key']);
-                return response()->json($error['body'], $error['response_code']);
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
             }
-            $error = apiErrorResponse('internal_server_error');
-            return response()->json($error['body'], $error['response_code']);
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
         }
 
         return response()->json([
@@ -74,28 +90,34 @@ class UserController
             'errors' => null,
             'message' => '',
             'data' => $response['data'],
-        ], 200);
-
+        ]);
     }
 
     /**
      * ユーザー登録
      *
-     * @param RegisterUserRequest $request
+     * @param UserRegisterRequest $request
      * @return JsonResponse
      */
-    public function register(RegisterUserRequest $request): JsonResponse
+    public function register(UserRegisterRequest $request): JsonResponse
     {
-
         $response = $this->userService->register($request);
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
-                $error = apiErrorResponse($response['errors']['key']);
-                return response()->json($error['body'], $error['response_code']);
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
             }
-            $error = apiErrorResponse('internal_server_error');
-            return response()->json($error['body'], $error['response_code']);
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
         }
 
         return response()->json([
@@ -103,8 +125,6 @@ class UserController
             'errors' => null,
             'message' => 'registered',
             'data' => $response['data'],
-        ], 200);
-
+        ]);
     }
-
 }

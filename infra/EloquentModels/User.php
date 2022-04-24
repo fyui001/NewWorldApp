@@ -29,17 +29,13 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    protected $casts = [
-        'is_registered' => 'boolean',
-        'del_flg' => 'boolean',
-    ];
 
     /**
      * @return HasMany
      */
     public function medicationHistories(): HasMany
     {
-        return $this->hasMany('App\Models\MedicationHistory', 'user_id');
+        return $this->hasMany('Infra\EloquentModels\MedicationHistory', 'user_id');
     }
 
     /**

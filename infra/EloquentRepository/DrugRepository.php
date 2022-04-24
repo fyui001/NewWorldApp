@@ -21,7 +21,7 @@ class DrugRepository implements DrugRepositoryInterface
     {
         $model = DrugModel::where(['id' => $drugId->getRawValue()])->first();
 
-        if ($model) {
+        if (!$model) {
             throw new NotFoundException();
         }
 
@@ -32,7 +32,7 @@ class DrugRepository implements DrugRepositoryInterface
     {
         $model = DrugModel::where(['name' => $drugName->getRawValue()])->first();
 
-        if ($model) {
+        if (!$model) {
             throw new NotFoundException();
         }
 

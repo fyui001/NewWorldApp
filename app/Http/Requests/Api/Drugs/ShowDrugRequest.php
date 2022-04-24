@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Drugs;
+namespace App\Http\Requests\Api\Drugs;
 
 use App\Http\Requests\Request as AppRequest;
-use App\Models\Drug;
+use Domain\Drugs\DrugName;
 
 class ShowDrugRequest extends AppRequest
 {
-    public function authorize(): bool {
-        return me() && me()->can('show', Drug::class) ||  \Auth::user();
+    public function authorize(): bool
+    {
+        return true;
     }
 
     /**
@@ -18,7 +19,8 @@ class ShowDrugRequest extends AppRequest
      *
      * @return string[]
      */
-    public function rules(): array {
+    public function rules(): array
+    {
         return [
             'drug_name' => 'required|string',
         ];
@@ -29,9 +31,15 @@ class ShowDrugRequest extends AppRequest
      *
      * @return string[]
      */
-    public function messages(): array {
+    public function messages(): array
+    {
         return [
             'drug_name.required' => '薬物名は必須です',
         ];
+    }
+
+    public function getDrugName(): DrugName
+    {
+        return new DrugName($this->input('drug_name'));
     }
 }
