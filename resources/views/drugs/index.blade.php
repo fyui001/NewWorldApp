@@ -7,7 +7,7 @@
         薬物一覧（全{{ $drugs->count() }}件）
     </h3>
     <div class="text-right">
-        <a href="{{ route('drugs.create') }}" class="btn btn-round btn-info" rel="tooltip">
+        <a href="{{ route('admin.drugs.create') }}" class="btn btn-round btn-info" rel="tooltip">
             <span class="oi oi-plus"></span> 新規作成
         </a>
     </div>
@@ -35,10 +35,10 @@
                 </a>
             </td>
             <td class="td-actions text-right">
-                <a href="{{ route('drugs.edit', $item->toDomain()->getId()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('admin.drugs.edit', $item->toDomain()->getId()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('drugs.delete', $item->toDomain()->getId())  }}"
+                <a href="javascript:void(0)" data-url="{{ route('admin.drugs.delete', $item->toDomain()->getId())  }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
                    data-label="{{ $item->toDomain()->getName() }}" title="Delete">
                     <span class="oi oi-x"></span>

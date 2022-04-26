@@ -34,19 +34,19 @@ class Accessible
 
         $routes = [
             AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue() => [
-                'auth.*',
-                'admin_users.*',
-                'top_page',
-                'drugs.*',
-                'medication_histories.*',
+                'admin.auth.*',
+                'admin.admin_users.*',
+                'admin.top_page',
+                'admin.drugs.*',
+                'admin.medication_histories.*',
             ],
             AdminUserRole::ROLE_OPERATOR->getValue()->getRawValue() => [
-                'auth.*',
-                'admin_users.api_token',
-                'admin_users.api_token.update',
-                'top_page',
-                'drugs.*',
-                'medication_histories.*',
+                'admin.auth.*',
+                'admin.admin_users.api_token',
+                'admin.admin_users.api_token.update',
+                'admin.top_page',
+                'admin.drugs.*',
+                'admin.medication_histories.*',
             ],
         ];
 

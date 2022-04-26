@@ -60,9 +60,9 @@ class DrugController extends AppController
             if ($response['errors']['key'] === 'failed_register_drug') {
                 return redirect()->route('drugs.index')->with(['error' => '薬物の登録に失敗しました']);
             }
-            return redirect(route('drugs.create'))->with('error', '不正な入力です');
+            return redirect(route('admin.drugs.create'))->with('error', '不正な入力です');
         }
-        return redirect(route('drugs.index'))->with('success', '薬物を登録しました');
+        return redirect(route('admin.drugs.index'))->with('success', '薬物を登録しました');
     }
 
     /**
@@ -88,10 +88,10 @@ class DrugController extends AppController
         $response = $this->drugService->updateDrug($drug, $request);
 
         if (!$response['status']) {
-            return redirect()->route('drugs.index')->with(['error' => '薬物の更新に失敗しました']);
+            return redirect(route('admin.drugs.index'))->with(['error' => '薬物の更新に失敗しました']);
         }
 
-        return redirect()->route('drugs.index')->with(['success' => '薬物の更新に成功しました']);
+        return redirect(route('admin.drugs.index'))->with(['success' => '薬物の更新に成功しました']);
     }
 
     /**
@@ -106,12 +106,12 @@ class DrugController extends AppController
         $response = $this->drugService->deleteDrug($drug);
         if (!$response['status']) {
             if ($response['errors']['key'] === 'have_a_medication_history') {
-                return redirect()->route('drugs.index')->with(['error' => '服薬履歴が存在するため削除できません']);
+                return redirect(route('admin.drugs.index'))->with(['error' => '服薬履歴が存在するため削除できません']);
             }
-            return redirect()->route('drugs.index')->with(['error' => '薬物の削除に失敗しました']);
+            return redirect(route('admin.drugs.index'))->with(['error' => '薬物の削除に失敗しました']);
         }
 
-        return redirect()->route('drugs.index')->with(['success' => '薬物を削除しました']);
+        return redirect(route('admin.drugs.index'))->with(['success' => '薬物を削除しました']);
 
     }
 

@@ -33,7 +33,7 @@ class UserTest extends TestCase
             'password' => 'hogehoge',
         ];
 
-        $response = $this->json('POST', route('users.login'), $params);
+        $response = $this->json('POST', route('admin.users.login'), $params);
         $response->assertStatus(200)->assertJson([
             'status' => true,
             'data' => $response['data'],
@@ -59,7 +59,7 @@ class UserTest extends TestCase
             'password' => 'testtest',
         ];
 
-        $response = $this->json('POST', route('users.login'), $params);
+        $response = $this->json('POST', route('admin.users.login'), $params);
         $response->assertStatus(400)->assertJson([
             'status' => false,
             'msg' => 'unauthorized',
