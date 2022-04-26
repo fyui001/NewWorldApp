@@ -76,7 +76,6 @@ class User extends Authenticatable implements JWTSubject
             new UserId($this->user_id),
             new UserName($this->name),
             new IconUrl($this->icon_url),
-            new UserHashedPassword($this->password),
             UserStatus::tryFrom((int)$this->status)
         );
     }

@@ -8,7 +8,7 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <p class="dropdown-item">{{ \Auth::user()->getAttribute('user_id') }}</p>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ route('auth.logout') }}" >
+                <a class="dropdown-item" href="{{ route('admin.auth.logout') }}" >
                     <span class="oi oi-account-logout"></span> logout
                 </a>
             </div>

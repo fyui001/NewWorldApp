@@ -7,7 +7,7 @@
             服薬履歴編集
         </h3>
         <div class="text-right">
-            <a href="{{ route('medication_histories.index') }}" class="btn btn-round btn-info">
+            <a href="{{ route('admin.medication_histories.index') }}" class="btn btn-round btn-info">
                 <span class="oi oi-chevron-left"></span>
                 服薬履歴一覧に戻る
             </a>
@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-    {{ Form::open(['url' => route('medication_histories.update', $medicationHistory), 'method' => 'post']) }}
+    {{ Form::open(['url' => route('admin.medication_histories.update', $medicationHistory), 'method' => 'post']) }}
     <div class="form-group info">
         <label>服薬者</label>
         {{ Form::text('taker', old('', $medicationHistory->user->name), ['class' => 'form-control', 'placeholder' => 'Enter Taker', 'disabled' => true]) }}

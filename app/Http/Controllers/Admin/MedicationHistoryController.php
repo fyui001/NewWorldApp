@@ -58,9 +58,9 @@ class MedicationHistoryController extends AppController
                 $medicationHistory,
                 $request
             )) {
-            return redirect()->route('medication_histories.index')->with(['error' => '服薬履歴の更新に失敗しました']);
+            return redirect(route('admin.medication_histories.index'))->with(['error' => '服薬履歴の更新に失敗しました']);
         }
 
-        return redirect()->route('medication_histories.index')->with(['success' => '服薬履歴の更新に成功しました']);
+        return redirect(route('admin.medication_histories.index'))->with(['success' => '服薬履歴の更新に成功しました']);
     }
 }

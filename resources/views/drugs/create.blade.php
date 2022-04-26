@@ -7,7 +7,7 @@
         薬物登録
     </h3>
     <div class="text-right">
-        <a href="{{ route('drugs.index') }}" class="btn btn-round btn-info">
+        <a href="{{ route('admin.drugs.index') }}" class="btn btn-round btn-info">
             <span class="oi oi-chevron-left"></span>
             薬物一覧に戻る
         </a>
@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('drugs.store'), 'method' => 'post']) }}
+{{ Form::open(['url' => route('admin.drugs.store'), 'method' => 'post']) }}
     <div class="form-group info">
         <label>薬物名</label>
         {{ Form::text('drug_name', old('drug_name'), ['class' => 'form-control', 'placeholder' => 'Enter drug name', 'required' => true]) }}

@@ -30,7 +30,7 @@
         <td>{{ $item->toDomain()->getAmount() }}</td>
         <td>{{ $item->created_at }}</td>
         <td class="td-actions text-right">
-            <a href="{{ route('medication_histories.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+            <a href="{{ route('admin.medication_histories.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                 <span class="oi oi-pencil"></span>
             </a>
         </td>

@@ -7,7 +7,7 @@
         管理ユーザー編集
     </h3>
     <div class="text-right">
-        <a href="{{ route('admin_users.index') }}" class="btn btn-round btn-info">
+        <a href="{{ route('admin.admin_users.index') }}" class="btn btn-round btn-info">
             <span class="oi oi-chevron-left"></span>
             管理ユーザー一覧に戻る
         </a>
@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('admin_users.update', $adminUser), 'method' => 'PUT', 'class' => 'form-horizontal']) }}
+{{ Form::open(['url' => route('admin.admin_users.update', $adminUser), 'method' => 'PUT', 'class' => 'form-horizontal']) }}
     <div class="form-group info">
         <label for="InputUserId">User ID</label>
         {{ Form::text('user_id', old('user_id', $adminUser->user_id), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}

@@ -7,7 +7,7 @@
         管理ユーザー覧 ( 全{{ $adminUsers->count() }}件 )
     </h3>
     <div class="text-right">
-        <a href="{{ route('admin_users.create') }}" class="btn btn-round btn-info" rel="tooltip">
+        <a href="{{ route('admin.admin_users.create') }}" class="btn btn-round btn-info" rel="tooltip">
             <span class="oi oi-plus"></span> 新規作成
         </a>
     </div>
@@ -35,10 +35,10 @@
             <td>{{ $item->toDomain()->getRole()->displayName() }}</td>
             <td>{{ $item->toDomain()->getStatus()->displayName() }}</td>
             <td class="td-actions text-right">
-                <a href="{{ route('admin_users.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('admin.admin_users.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('admin_users.destroy', $item) }}"
+                <a href="javascript:void(0)" data-url="{{ route('admin.admin_users.destroy', $item) }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
                    data-label="{{ $item->toDomain()->getName()->getRawValue() }}" title="Delete">
                     <span class="oi oi-x"></span>

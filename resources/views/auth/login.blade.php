@@ -2,7 +2,7 @@
 @section('content')
 <div class="login-box-body">
     <h4 class="login-box-msg"><strong>Please Login</strong></h4>
-    {!! Form::open(['class' => 'form', 'route' => 'auth.login.post', 'method' => 'POST']) !!}
+    {!! Form::open(['class' => 'form', 'route' => 'admin.auth.login.post', 'method' => 'POST']) !!}
         <div class="form-group{{ $errors->has('user_id') ? ' has-danger' : '' }} has-feedback">
             <div class="input-group">
                 <div class="input-group-prepend">
