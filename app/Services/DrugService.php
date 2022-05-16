@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
+use App\Http\Requests\Api\Drugs\CreateDrugRequest as ApiCreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
 use Courage\CoInt\CoInteger;
@@ -39,6 +40,27 @@ class DrugService extends AppService implements DrugServiceInterface
     public function getDrugs(): LengthAwarePaginator
     {
         return $this->drugDomainService->getPaginator();
+    }
+
+    public function getDrugList(): array
+    {
+        $drugList = $this->drugDomainService->getDrugList()->toArray();
+
+        if (empty($drugList)) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'key' => 'drug_notfound',
+                ],
+                'data' => null,
+            ];
+        }
+
+        return [
+            'status' => true,
+            'errors' => null,
+            'data' => $drugList,
+        ];
     }
 
     /**
@@ -98,10 +120,10 @@ class DrugService extends AppService implements DrugServiceInterface
     /**
      * Create a drug
      *
-     * @param CreateDrugRequest $request
+     * @param CreateDrugRequest|ApiCreateDrugRequest $request
      * @return array
      */
-    public function createDrug(CreateDrugRequest $request): array
+    public function createDrug(CreateDrugRequest|ApiCreateDrugRequest $request): array
     {
         $result = $this->drugDomainService->createDrug(
             $request->getDrugName(),

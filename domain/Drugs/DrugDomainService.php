@@ -21,6 +21,11 @@ class DrugDomainService
         return $this->drugRepository->findDrug($drugId);
     }
 
+    public function getDrugList(): DrugList
+    {
+        return $this->drugRepository->getDrugs();
+    }
+
     public function findDrugByName(DrugName $drugName): Drug
     {
         return $this->drugRepository->findDrugByName($drugName);

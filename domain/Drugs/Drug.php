@@ -31,4 +31,13 @@ class Drug
     {
         return $this->drugUrl;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId()->getRawValue(),
+            'drugName' => $this->getName()->getRawValue(),
+            'url' => $this->getUrl()->getRawValue(),
+        ];
+    }
 }

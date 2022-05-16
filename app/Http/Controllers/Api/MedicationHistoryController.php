@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\MedicationHistories\CreateMedicationHistoryRequest;
+use App\Http\Responder\ApiErrorResponder;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
-use App\Http\Requests\MedicationHistories\CreateMedicationHistoryRequest;
 use \Illuminate\Http\JsonResponse;
 
 class MedicationHistoryController
@@ -31,11 +32,19 @@ class MedicationHistoryController
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
-                $error = apiErrorResponse($response['errors']['key']);
-                return response()->json($error['body'], $error['response_code']);
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
             }
-            $error = apiErrorResponse('internal_server_error');
-            return response()->json($error['body'], $error['response_code']);
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
         }
 
         return response()->json( [
