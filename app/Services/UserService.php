@@ -79,7 +79,7 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = $this->userDomainService->getUserByUserId($request->getUserId());
+        $user = $this->userDomainService->getUserByUserId($request->getUserId())->toArray();
         $accessToken = auth('api')->claims([
             'guard' => 'api'
         ])->attempt($credentials);

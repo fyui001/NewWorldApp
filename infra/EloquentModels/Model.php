@@ -3,12 +3,17 @@
 namespace Infra\EloquentModels;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database\Eloquent\Builder;
 
-class Model extends EloquentModel
+abstract class Model extends EloquentModel
 {
 
-    public function scopeWhereLike($query, string $attribute, string $keyword, int $position = 0)
-    {
+    public function scopeWhereLike(
+        Builder $query,
+        string $attribute,
+        string $keyword,
+        int $position = 0,
+    ): Builder {
         $keyword = addcslashes($keyword, '\_%');
 
         $condition = [
@@ -19,8 +24,12 @@ class Model extends EloquentModel
         return $query->where($attribute, 'LIKE', $condition);
     }
 
-    public function scopeOrWhereLike($query, string $attribute, string $keyword, int $position = 0)
-    {
+    public function scopeOrWhereLike(
+        Builder $query,
+        string $attribute,
+        string $keyword,
+        int $position = 0,
+    ): Builder {
         $keyword = addcslashes($keyword, '\_%');
 
         $condition = [
@@ -65,15 +74,20 @@ class Model extends EloquentModel
     /**
      * Common sort setting
      *
-     * @param $query
-     * @param $sortable
-     * @param $orderBy
-     * @param $sortOrder
-     * @param $defaultKey
-     * @return mixed
+     * @param Builder $query
+     * @param array $sortable
+     * @param string $orderBy
+     * @param string $sortOrder
+     * @param string $defaultKey
+     * @return Builder
      */
-    protected function commonSortSetting($query, $sortable, $orderBy, $sortOrder, $defaultKey): mixed
-    {
+    protected static function commonSortSetting(
+        Builder $query,
+        array $sortable,
+        string $orderBy,
+        string $sortOrder,
+        string $defaultKey,
+    ): Builder {
         foreach ($sortable as $key => $value) {
             if (is_int($key)) {
                 if ($value === $orderBy) {

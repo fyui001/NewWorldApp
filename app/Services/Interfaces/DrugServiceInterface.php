@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Interfaces;
 
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
+use App\Http\Requests\Api\Drugs\CreateDrugRequest as ApiCreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use Domain\Drugs\DrugId;
 use Domain\Drugs\DrugName;
@@ -14,9 +15,10 @@ use Infra\EloquentModels\Drug as DrugModel;
 interface DrugServiceInterface
 {
     public function getDrugs(): LengthAwarePaginator;
+    public function getDrugList(): array;
     public function findDrug(DrugId $drugId): array;
     public function searchDrugByName(DrugName $drugName): array;
-    public function createDrug(CreateDrugRequest $request): array;
+    public function createDrug(CreateDrugRequest|ApiCreateDrugRequest $request): array;
     public function updateDrug(DrugModel $drug, UpdateDrugRequest $request): array;
     public function deleteDrug(DrugModel $drug): array;
 }

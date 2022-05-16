@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Courage\CoInt\CoPositiveInteger;
 use Domain\Drugs\Drug;
 use Domain\Drugs\DrugId;
+use Domain\Drugs\DrugList;
 use Domain\Drugs\DrugName;
 use Domain\Drugs\DrugRepository as DrugRepositoryInterface;
 use Domain\Drugs\DrugUrl;
 use Domain\Exceptions\LogicException;
 use Domain\Exceptions\NotFoundException;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\Drug as DrugModel;
 
@@ -26,6 +27,18 @@ class DrugRepository implements DrugRepositoryInterface
         }
 
         return $model->toDomain();
+    }
+
+    public function getDrugs(): DrugList
+    {
+        $builder = DrugModel::sortSetting('id', 'desc');
+        /* @var $collection Collection */
+        $collection = $builder->get();
+
+        return new DrugList($collection->map(function ($model) {
+            /** @var $model DrugModel */
+            return $model->toDomain()->toArray();
+        })->toArray());
     }
 
     public function findDrugByName(DrugName $drugName): Drug

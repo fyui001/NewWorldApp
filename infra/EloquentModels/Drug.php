@@ -8,6 +8,7 @@ use Domain\Drugs\Drug as DrugDomain;
 use Domain\Drugs\DrugId;
 use Domain\Drugs\DrugName;
 use Domain\Drugs\DrugUrl;
+use Illuminate\Database\Eloquent\Builder;
 use Infra\EloquentModels\Model as AppModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
@@ -39,15 +40,25 @@ class Drug extends AppModel
     /**
      * Sort
      *
-     * @param $query
-     * @param $orderBy
-     * @param $sortOrder
+     * @param Builder $query
+     * @param string $orderBy
+     * @param string $sortOrder
      * @param string $defaultKey
      * @return mixed
      */
-    public function scopeSortSetting($query, $orderBy, $sortOrder, string $defaultKey = 'id'): mixed
-    {
-        return AppModel::commonSortSetting($query, self::$sortable, $orderBy, $sortOrder, $defaultKey);
+    public static function scopeSortSetting(
+        Builder $query,
+        string $orderBy,
+        string $sortOrder,
+        string $defaultKey = 'id',
+    ): Builder {
+        return AppModel::commonSortSetting(
+            $query,
+            self::$sortable,
+            $orderBy,
+            $sortOrder,
+            $defaultKey
+        );
     }
 
     public function toDomain(): DrugDomain

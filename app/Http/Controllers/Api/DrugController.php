@@ -15,10 +15,9 @@ class DrugController
 {
     protected DrugServiceInterface $drugService;
 
-    public function __construct(DrugServiceInterface $drugService) {
-
+    public function __construct(DrugServiceInterface $drugService)
+    {
         $this->drugService = $drugService;
-
     }
 
     /**
@@ -30,11 +29,22 @@ class DrugController
     public function index(IndexDrugRequest $request): JsonResponse
     {
 
-        $response = $this->drugService->getDrugList($request);
+        $response = $this->drugService->getDrugList();
         if (!$response['status']) {
-            $apiErrorResponder = new ApiErrorResponder($response['errors']['key']);
-            $error = $apiErrorResponder->getResponse()->toArray();
-            return response()->json($error['body'], $error['response_code']);
+            if (!empty($response['errors'])) {
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
+            }
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
         }
 
         return response()->json([
@@ -57,9 +67,20 @@ class DrugController
         $response = $this->drugService->createDrug($request);
 
         if (!$response['status']) {
-            $apiErrorResponder = new ApiErrorResponder($response['errors']['key']);
-            $error = $apiErrorResponder->getResponse()->toArray();
-            return response()->json($error['body'], $error['response_code']);
+            if (!empty($response['errors'])) {
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
+            }
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
         }
 
         return response()->json([
