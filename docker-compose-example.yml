@@ -14,7 +14,7 @@ services:
       - TZ=${TZ}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.new-world-web.rule=Host(`nw.localhost`)"
+      - "traefik.http.routers.new-world.rule=Host(`nw.localhost`)"
   app:
     build:
       context: .
