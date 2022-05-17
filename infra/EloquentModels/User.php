@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
-use Domain\Users\IconUrl;
-use Domain\Users\User as UserDomain;
-use Domain\Users\Id;
-use Domain\Users\UserHashedPassword;
-use Domain\Users\UserId;
-use Domain\Users\UserName;
-use Domain\Users\UserStatus;
+use Domain\User\IconUrl;
+use Domain\User\User as UserDomain;
+use Domain\User\Id;
+use Domain\User\UserHashedPassword;
+use Domain\User\UserId;
+use Domain\User\UserName;
+use Domain\User\UserStatus;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;

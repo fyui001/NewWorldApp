@@ -6,13 +6,13 @@ namespace Infra\EloquentRepository;
 
 use Courage\CoInt\CoPositiveInteger;
 use Domain\Drugs\DrugId;
-use Domain\Exceptions\LogicException;
-use Domain\Exceptions\NotFoundException;
-use Domain\MedicationHistories\MedicationHistory;
-use Domain\MedicationHistories\MedicationHistoryAmount;
-use Domain\MedicationHistories\MedicationHistoryId;
-use Domain\MedicationHistories\MedicationHistoryRepository as MedicationHistoryRepositoryInterface;
-use Domain\Users\Id as UserId;
+use Domain\Exception\LogicException;
+use Domain\Exception\NotFoundException;
+use Domain\MedicationHistory\MedicationHistory;
+use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\MedicationHistoryId;
+use Domain\MedicationHistory\MedicationHistoryRepository as MedicationHistoryRepositoryInterface;
+use Domain\User\Id as UserId;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 

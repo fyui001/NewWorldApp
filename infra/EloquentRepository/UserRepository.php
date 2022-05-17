@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Infra\EloquentRepository;
 
 use Domain\Drugs\DrugId;
-use Domain\Exceptions\NotFoundException;
-use Domain\MedicationHistories\MedicationHistory;
-use Domain\MedicationHistories\MedicationHistoryAmount;
-use Domain\MedicationHistories\MedicationHistoryId;
-use Domain\MedicationHistories\MedicationHistoryList;
-use Domain\Users\IconUrl;
-use Domain\Users\Id;
-use Domain\Users\User;
-use Domain\Users\UserAndMedicationHistory;
-use Domain\Users\UserHashedPassword;
-use Domain\Users\UserId;
-use Domain\Users\UserName;
-use Domain\Users\UserRepository as UserRepositoryInterface;
-use Domain\Users\UserStatus;
+use Domain\Exception\NotFoundException;
+use Domain\MedicationHistory\MedicationHistory;
+use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\MedicationHistoryId;
+use Domain\MedicationHistory\MedicationHistoryList;
+use Domain\User\IconUrl;
+use Domain\User\Id;
+use Domain\User\User;
+use Domain\User\UserAndMedicationHistory;
+use Domain\User\UserHashedPassword;
+use Domain\User\UserId;
+use Domain\User\UserName;
+use Domain\User\UserRepository as UserRepositoryInterface;
+use Domain\User\UserStatus;
 use Infra\EloquentModels\User as UserModel;
 
 class UserRepository implements UserRepositoryInterface

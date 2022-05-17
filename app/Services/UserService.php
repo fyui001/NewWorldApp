@@ -6,10 +6,10 @@ namespace App\Services;
 
 use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserRegisterRequest;
-use Domain\Exceptions\NotFoundException;
-use Domain\Users\Id;
-use Domain\Users\UserDomainService;
-use Domain\Users\UserStatus;
+use Domain\Exception\NotFoundException;
+use Domain\User\Id;
+use Domain\User\UserDomainService;
+use Domain\User\UserStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\UserServiceInterface;

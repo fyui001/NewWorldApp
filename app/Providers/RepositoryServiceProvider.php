@@ -9,10 +9,10 @@ use Infra\EloquentRepository;
 class RepositoryServiceProvider extends ServiceProvider
 {
     public $bindings = [
-        Domain\AdminUsers\AdminUserRepository::class => EloquentRepository\AdminUserRepository::class,
+        Domain\AdminUser\AdminUserRepository::class => EloquentRepository\AdminUserRepository::class,
         Domain\Drugs\DrugRepository::class => EloquentRepository\DrugRepository::class,
-        Domain\MedicationHistories\MedicationHistoryRepository::class => EloquentRepository\MedicationHistoryRepository::class,
-        Domain\Users\UserRepository::class => EloquentRepository\UserRepository::class,
+        Domain\MedicationHistory\MedicationHistoryRepository::class => EloquentRepository\MedicationHistoryRepository::class,
+        Domain\User\UserRepository::class => EloquentRepository\UserRepository::class,
     ];
 
     /**

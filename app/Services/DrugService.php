@@ -14,8 +14,8 @@ use Domain\Drugs\DrugDomainService;
 use Domain\Drugs\DrugId;
 use App\Services\Interfaces\DrugServiceInterface;
 use Domain\Drugs\DrugName;
-use Domain\Exceptions\NotFoundException;
-use Domain\MedicationHistories\MedicationHistoryDomainService;
+use Domain\Exception\NotFoundException;
+use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\Drug as DrugModel;
 

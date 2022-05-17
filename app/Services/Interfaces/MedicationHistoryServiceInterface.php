@@ -6,7 +6,7 @@ namespace App\Services\Interfaces;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
-use Domain\MedicationHistories\MedicationHistory;
+use Domain\MedicationHistory\MedicationHistory;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 
 interface MedicationHistoryServiceInterface

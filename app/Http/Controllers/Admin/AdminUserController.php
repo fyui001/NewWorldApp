@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
-use Domain\AdminUsers\AdminId;
+use Domain\AdminUser\AdminId;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\AdminUser;

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Infra\EloquentModels;
 
 use Domain\Drugs\DrugId;
-use Domain\MedicationHistories\MedicationHistory as MedicationHistoryDomain;
-use Domain\MedicationHistories\MedicationHistoryAmount;
-use Domain\MedicationHistories\MedicationHistoryId;
-use Domain\Users\Id as UserId;
+use Domain\MedicationHistory\MedicationHistory as MedicationHistoryDomain;
+use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\MedicationHistoryId;
+use Domain\User\Id as UserId;
 use Infra\EloquentModels\Model as AppModel;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

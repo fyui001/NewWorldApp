@@ -8,9 +8,9 @@ use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\AdminUserServiceInterface;
-use Domain\AdminUsers\AdminId;
-use Domain\AdminUsers\AdminUser;
-use Domain\AdminUsers\AdminUserDomainService;
+use Domain\AdminUser\AdminId;
+use Domain\AdminUser\AdminUser;
+use Domain\AdminUser\AdminUserDomainService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 
