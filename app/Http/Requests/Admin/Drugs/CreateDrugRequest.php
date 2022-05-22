@@ -6,8 +6,8 @@ namespace App\Http\Requests\Admin\Drugs;
 
 use Infra\EloquentModels\Drug;
 use App\Http\Requests\Request as AppRequest;
-use Domain\Drugs\DrugName;
-use Domain\Drugs\DrugUrl;
+use Domain\Drug\DrugName;
+use Domain\Drug\DrugUrl;
 
 
 class CreateDrugRequest extends AppRequest

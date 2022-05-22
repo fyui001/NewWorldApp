@@ -2,7 +2,7 @@
 
 namespace Domain\MedicationHistory;
 
-use Domain\Drugs\DrugId;
+use Domain\Drug\DrugId;
 use Domain\User\Id as UserId;
 
 class MedicationHistory

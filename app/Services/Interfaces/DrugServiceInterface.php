@@ -7,8 +7,8 @@ namespace App\Services\Interfaces;
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
 use App\Http\Requests\Api\Drugs\CreateDrugRequest as ApiCreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
-use Domain\Drugs\DrugId;
-use Domain\Drugs\DrugName;
+use Domain\Drug\DrugId;
+use Domain\Drug\DrugName;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\Drug as DrugModel;
 

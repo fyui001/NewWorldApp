@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Infra\EloquentRepository;
 
 use Courage\CoInt\CoPositiveInteger;
-use Domain\Drugs\DrugId;
+use Domain\Drug\DrugId;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;

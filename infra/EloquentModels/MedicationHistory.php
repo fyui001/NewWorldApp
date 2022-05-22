@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
-use Domain\Drugs\DrugId;
+use Domain\Drug\DrugId;
 use Domain\MedicationHistory\MedicationHistory as MedicationHistoryDomain;
 use Domain\MedicationHistory\MedicationHistoryAmount;
 use Domain\MedicationHistory\MedicationHistoryId;

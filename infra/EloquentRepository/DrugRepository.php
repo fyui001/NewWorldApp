@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\Drugs\Drug;
-use Domain\Drugs\DrugId;
-use Domain\Drugs\DrugList;
-use Domain\Drugs\DrugName;
-use Domain\Drugs\DrugRepository as DrugRepositoryInterface;
-use Domain\Drugs\DrugUrl;
+use Domain\Drug\Drug;
+use Domain\Drug\DrugId;
+use Domain\Drug\DrugList;
+use Domain\Drug\DrugName;
+use Domain\Drug\DrugRepository as DrugRepositoryInterface;
+use Domain\Drug\DrugUrl;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Illuminate\Database\Eloquent\Collection;

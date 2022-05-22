@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\MedicationHistory;
 
 use Courage\CoInt\CoPositiveInteger;
-use Domain\Drugs\DrugId;
+use Domain\Drug\DrugId;
 use Domain\User\Id as UserId;
 use Illuminate\Pagination\LengthAwarePaginator;
 

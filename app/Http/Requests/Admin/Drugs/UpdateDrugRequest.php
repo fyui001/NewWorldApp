@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\Drugs;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\Drugs\DrugName;
-use Domain\Drugs\DrugUrl;
+use Domain\Drug\DrugName;
+use Domain\Drug\DrugUrl;
 
 class UpdateDrugRequest extends AppRequest
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Drugs;
+namespace Domain\Drug;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 

@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
 use App\Http\Requests\Api\MedicationHistories\CreateMedicationHistoryRequest;
-use Domain\Drugs\DrugId;
+use Domain\Drug\DrugId;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\MedicationHistory\MedicationHistoryId;

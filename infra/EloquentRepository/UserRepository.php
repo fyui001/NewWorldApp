@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\Drugs\DrugId;
+use Domain\Drug\DrugId;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryAmount;
