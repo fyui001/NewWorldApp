@@ -2,25 +2,25 @@
 
 namespace Domain\MedicationHistory;
 
-use Domain\Drug\DrugId;
-use Domain\User\Id as UserId;
+use Domain\Drug\Drug;
+use Domain\User\User;
 
 class MedicationHistory
 {
     private MedicationHistoryId $id;
-    private UserId $userId;
-    private DrugId $drugId;
+    private User $user;
+    private Drug $drug;
     private MedicationHistoryAmount $amount;
 
     public function __construct(
         MedicationHistoryId $id,
-        UserId $userId,
-        DrugId $drugId,
+        User $user,
+        Drug $drug,
         MedicationHistoryAmount $amount
     ) {
         $this->id = $id;
-        $this->userId = $userId;
-        $this->drugId = $drugId;
+        $this->user = $user;
+        $this->drug = $drug;
         $this->amount = $amount;
     }
 
@@ -29,14 +29,14 @@ class MedicationHistory
         return $this->id;
     }
 
-    public function getUserId(): UserId
+    public function getUser(): User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function getDrugId(): DrugId
+    public function getDrug(): Drug
     {
-        return $this->drugId;
+        return $this->drug;
     }
 
     public function getAmount(): MedicationHistoryAmount
@@ -48,8 +48,8 @@ class MedicationHistory
     {
         return [
             'id' => $this->getId()->getRawValue(),
-            'userId' => $this->getUserId()->getRawValue(),
-            'drugId' => $this->getDrugId()->getRawValue(),
+            'userId' => $this->getUser(),
+            'drugId' => $this->getDrug(),
             'amount' => $this->getAmount()->getRawValue(),
         ];
     }

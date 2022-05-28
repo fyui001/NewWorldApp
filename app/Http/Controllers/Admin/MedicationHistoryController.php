@@ -54,9 +54,10 @@ class MedicationHistoryController extends AppController
      */
     public function update(MedicationHistory $medicationHistory, UpdateMedicationHistoryRequest $request): RedirectResponse
     {
+        $amount = $request->getAmount();
         if (!$this->medicationHistoryService->updateMedicationHistory(
                 $medicationHistory,
-                $request
+                $amount,
             )) {
             return redirect(route('admin.medication_histories.index'))->with(['error' => '服薬履歴の更新に失敗しました']);
         }
