@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
-use Domain\AdminUsers\AdminId;
-use Domain\AdminUsers\AdminUserHashedPassword;
-use Domain\AdminUsers\AdminUserId;
-use Domain\AdminUsers\AdminUserName;
-use Domain\AdminUsers\AdminUserRole;
-use Domain\AdminUsers\AdminUserStatus;
+use Domain\AdminUser\AdminId;
+use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Domain\AdminUsers\AdminUser as AdminUserDomain;
+use Domain\AdminUser\AdminUser as AdminUserDomain;
 
 class AdminUser extends Authenticatable
 {

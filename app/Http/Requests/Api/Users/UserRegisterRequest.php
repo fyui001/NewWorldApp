@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Users;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\Users\UserHashedPassword;
-use Domain\Users\UserId;
+use Domain\User\UserHashedPassword;
+use Domain\User\UserId;
 
 class UserRegisterRequest extends AppRequest
 {

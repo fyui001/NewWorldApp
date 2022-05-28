@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Drugs;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\Drugs\DrugName;
+use Domain\Drug\DrugName;
 
 class ShowDrugRequest extends AppRequest
 {

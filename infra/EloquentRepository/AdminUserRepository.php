@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Infra\EloquentRepository;
 
 use Courage\CoInt\CoPositiveInteger;
-use Domain\AdminUsers\AdminUserHashedPassword;
-use Domain\AdminUsers\AdminUserName;
-use Domain\AdminUsers\AdminUserRepository as AdminUserRepositoryInterface;
-use Domain\AdminUsers\AdminUser;
-use Domain\AdminUsers\AdminId;
-use Domain\AdminUsers\AdminUserId;
-use Domain\AdminUsers\AdminUserRole;
-use Domain\AdminUsers\AdminUserStatus;
-use Domain\Exceptions\LogicException;
-use Domain\Exceptions\NotFoundException;
+use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRepository as AdminUserRepositoryInterface;
+use Domain\AdminUser\AdminUser;
+use Domain\AdminUser\AdminId;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
+use Domain\Exception\LogicException;
+use Domain\Exception\NotFoundException;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 

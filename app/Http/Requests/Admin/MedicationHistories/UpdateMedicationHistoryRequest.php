@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\MedicationHistories;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\MedicationHistories\MedicationHistoryAmount;
+use Domain\MedicationHistory\MedicationHistoryAmount;
 use Infra\EloquentModels\MedicationHistory;
 
 class UpdateMedicationHistoryRequest extends AppRequest

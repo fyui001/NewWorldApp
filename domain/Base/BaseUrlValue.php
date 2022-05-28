@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Base;
 
 use Courage\CoString;
-use Domain\Exceptions\InvalidArgumentException;
+use Domain\Exception\InvalidArgumentException;
 
 abstract class BaseUrlValue extends CoString
 {

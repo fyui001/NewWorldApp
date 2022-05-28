@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\Users;
 
 use App\Http\Requests\Request as AppRequest;
 use Courage\CoString;
-use Domain\Users\UserId;
+use Domain\User\UserId;
 
 class LoginUserRequest extends AppRequest
 {

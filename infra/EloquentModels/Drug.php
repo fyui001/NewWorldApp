@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
-use Domain\Drugs\Drug as DrugDomain;
-use Domain\Drugs\DrugId;
-use Domain\Drugs\DrugName;
-use Domain\Drugs\DrugUrl;
+use Domain\Drug\Drug as DrugDomain;
+use Domain\Drug\DrugId;
+use Domain\Drug\DrugName;
+use Domain\Drug\DrugUrl;
 use Illuminate\Database\Eloquent\Builder;
 use Infra\EloquentModels\Model as AppModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;

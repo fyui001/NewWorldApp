@@ -6,7 +6,7 @@ namespace App\Services\Interfaces;
 
 use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
-use Domain\AdminUsers\AdminId;
+use Domain\AdminUser\AdminId;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface AdminUserServiceInterface

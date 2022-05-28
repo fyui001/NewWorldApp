@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\Drugs\DrugId;
-use Domain\Exceptions\NotFoundException;
-use Domain\MedicationHistories\MedicationHistory;
-use Domain\MedicationHistories\MedicationHistoryAmount;
-use Domain\MedicationHistories\MedicationHistoryId;
-use Domain\MedicationHistories\MedicationHistoryList;
-use Domain\Users\IconUrl;
-use Domain\Users\Id;
-use Domain\Users\User;
-use Domain\Users\UserAndMedicationHistory;
-use Domain\Users\UserHashedPassword;
-use Domain\Users\UserId;
-use Domain\Users\UserName;
-use Domain\Users\UserRepository as UserRepositoryInterface;
-use Domain\Users\UserStatus;
+use Domain\Drug\Drug;
+use Domain\Drug\DrugId;
+use Domain\Drug\DrugName;
+use Domain\Drug\DrugUrl;
+use Domain\Exception\NotFoundException;
+use Domain\MedicationHistory\MedicationHistory;
+use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\MedicationHistoryId;
+use Domain\MedicationHistory\MedicationHistoryList;
+use Domain\User\IconUrl;
+use Domain\User\Id;
+use Domain\User\User;
+use Domain\User\UserHashedPassword;
+use Domain\User\UserId;
+use Domain\User\UserName;
+use Domain\User\UserRepository as UserRepositoryInterface;
+use Domain\User\UserStatus;
 use Infra\EloquentModels\User as UserModel;
 
 class UserRepository implements UserRepositoryInterface
@@ -27,35 +29,22 @@ class UserRepository implements UserRepositoryInterface
         'medicationHistories.drug',
     ];
 
-    public function getUserByIdWithMedicationHistories(Id $id): UserAndMedicationHistory
+    public function getUserById(Id $id): User
     {
-        $model = UserModel::with(self::WITH_MODEL)->where([
+        $model = UserModel::where([
             'id' => $id->getRawValue(),
-        ])->first()->toArray();
+        ])->first();
 
-        $medicationHistoryList = new MedicationHistoryList([]);
-        foreach ($model['medication_histories'] as $key => $value) {
-            $medicationHistoryList[$key] = new MedicationHistory(
-                new MedicationHistoryId((int)$value['id']),
-                new Id((int)$value['user_id']),
-                new DrugId((int)$value['drug_id']),
-                new MedicationHistoryAmount((float)$value['amount'])
-            );
+        if (!$model) {
+            throw new NotFoundException();
         }
 
-        return new UserAndMedicationHistory(
-            new User(
-                new Id((int)$model['id']),
-                new UserId((int)$model['id']),
-                new UserName($model['name']),
-                new IconUrl($model['icon_url']),
-                UserStatus::tryFrom((int)$model['status']),
-            ),
-            new MedicationHistoryList(
-                $medicationHistoryList->map(function(MedicationHistory $medicationHistory) {
-                    return $medicationHistory->toArray();
-                })->toArray()
-            )
+        return new User(
+            new Id((int)$model['id']),
+            new UserId((int)$model['user_id']),
+            new UserName($model['name']),
+            new IconUrl($model['icon_url']),
+            UserStatus::tryFrom((int)$model['status']),
         );
     }
 

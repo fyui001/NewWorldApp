@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
-use Domain\AdminUsers\AdminUserRole;
+use Domain\AdminUser\AdminUserRole;
 use Illuminate\Support\Str;
 
 class Accessible

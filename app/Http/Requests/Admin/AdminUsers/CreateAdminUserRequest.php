@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\AdminUsers;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\AdminUsers\AdminUserHashedPassword;
-use Domain\AdminUsers\AdminUserId;
-use Domain\AdminUsers\AdminUserName;
-use Domain\AdminUsers\AdminUserRole;
-use Domain\AdminUsers\AdminUserStatus;
+use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 
 class CreateAdminUserRequest extends AppRequest
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Interfaces;
 
+use Domain\MedicationHistory\MedicationHistoryAmount;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
-use Domain\MedicationHistories\MedicationHistory;
+use Domain\MedicationHistory\MedicationHistory;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 
 interface MedicationHistoryServiceInterface
@@ -14,6 +14,6 @@ interface MedicationHistoryServiceInterface
     public function getMedicationHistories(): LengthAwarePaginator;
     public function updateMedicationHistory(
         MedicationHistoryModel $medicationHistory,
-        UpdateMedicationHistoryRequest $request
+        MedicationHistoryAmount $amount,
     ): MedicationHistory;
 }
