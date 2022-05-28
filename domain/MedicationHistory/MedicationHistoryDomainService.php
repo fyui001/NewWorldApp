@@ -28,6 +28,11 @@ class MedicationHistoryDomainService
         return $this->medicationHistoryRepository->getCountMedicationTake($drugId);
     }
 
+    public function getListByUserId(UserId $userId): MedicationHistoryList
+    {
+        return $this->medicationHistoryRepository->getListByUserId($userId);
+    }
+
     public function create(
         UserId $userId,
         MedicationHistoryAmount $amount

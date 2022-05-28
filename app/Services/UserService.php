@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DataTransfer\MedicationHistory\MedicationHistoryDetail;
+use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
+use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
 use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserRegisterRequest;
 use Domain\Exception\NotFoundException;
+use Domain\MedicationHistory\MedicationHistory;
+use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\User\Id;
 use Domain\User\UserDomainService;
 use Domain\User\UserStatus;
@@ -17,10 +22,14 @@ use App\Services\Interfaces\UserServiceInterface;
 class UserService extends AppService implements UserServiceInterface
 {
     private UserDomainService $userDomainService;
+    private MedicationHistoryDomainService $medicationHistoryDomainService;
 
-    public function __construct(UserDomainService $userDomainService)
-    {
+    public function __construct(
+        UserDomainService $userDomainService,
+        MedicationHistoryDomainService $medicationHistoryDomainService,
+    ) {
         $this->userDomainService = $userDomainService;
+        $this->medicationHistoryDomainService = $medicationHistoryDomainService;
     }
 
     /**
@@ -43,16 +52,29 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $response = $this->userDomainService->getUserByIdWithMedicationHistories(
-            new Id((int)$user->id)
+        $user = $this->userDomainService->getUserById(
+            new Id((int)$user['id'])
+        );
+
+        $medicationHistoryList = $this->medicationHistoryDomainService->getListByUserId(
+            $user->getId(),
+        );
+
+        $medicationHistoryDetailList = new MedicationHistoryDetailList([]);
+        foreach ($medicationHistoryList as $key => $medicationHistory) {
+            $medicationHistoryDetailList[$key] = $this->buildDetail($medicationHistory)->toArray();
+        }
+
+        $userAndMedicationHistoryDetailList = new UserAndMedicationHistoryDetailList(
+            $user,
+            $medicationHistoryDetailList,
         );
 
         return [
             'status' => true,
             'errors' => null,
-            'data' => $response->toArray(),
+            'data' => $userAndMedicationHistoryDetailList->toArray(),
         ];
-
     }
 
     /**
@@ -145,5 +167,10 @@ class UserService extends AppService implements UserServiceInterface
                 'data' => null,
             ];
         }
+    }
+
+    private function buildDetail(MedicationHistory $medicationHistory): MedicationHistoryDetail
+    {
+        return new MedicationHistoryDetail($medicationHistory);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\User;
 
+use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
+
 class UserDomainService
 {
     private UserRepository $userRepository;
@@ -13,9 +15,9 @@ class UserDomainService
         $this->userRepository = $userRepository;
     }
 
-    public function getUserByIdWithMedicationHistories(Id $id): UserAndMedicationHistory
+    public function getUserById(Id $id): User
     {
-        return $this->userRepository->getUserByIdWithMedicationHistories($id);
+        return $this->userRepository->getUserById($id);
     }
 
     public function getUserByUserId(UserId $userId): User

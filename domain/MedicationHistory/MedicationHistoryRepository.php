@@ -13,6 +13,7 @@ interface MedicationHistoryRepository
 {
     public function getPaginator(): LengthAwarePaginator;
     public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger;
+    public function getListByUserId(UserId $userId): MedicationHistoryList;
     public function create(
         UserId $userId,
         MedicationHistoryAmount $amount
