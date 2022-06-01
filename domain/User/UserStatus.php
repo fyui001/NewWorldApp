@@ -23,7 +23,7 @@ enum UserStatus: int implements BaseEnum
         };
     }
 
-    public function rowString(): CoString
+    public function rawString(): CoString
     {
         return match ($this) {
             self::STATUS_UNREGISTERED => new CoString('unregistered'),
