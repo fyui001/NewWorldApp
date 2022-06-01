@@ -22,12 +22,10 @@ class MedicationHistoryDetail
 
     public function toArray(): array
     {
-        $medicationHistoryDetailArr['medicationHistory'] = [
+        return [
             'id' => $this->medicationHistory->getId()->getRawValue(),
             'amount' => $this->medicationHistory->getAmount()->getRawValue(),
             'drug' => $this->medicationHistory->getDrug()->toArray(),
         ];
-
-        return $medicationHistoryDetailArr;
     }
 }
