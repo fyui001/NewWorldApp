@@ -61,7 +61,7 @@ class User
             'userId' => $this->getUserId()->getRawValue(),
             'name' => $this->getName()->getRawValue(),
             'iconUrl' => $this->getIconUrl()->getRawValue(),
-            'status' => $this->getStatus()->displayName()->getRawValue(),
+            'status' => $this->getStatus()->rawString()->getRawValue(),
         ];
     }
 }
