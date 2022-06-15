@@ -8,13 +8,20 @@ use App\Services\Service as AppService;
 use App\Services\Interfaces\DiscordBotServiceInterface;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
+use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Intents;
+use Domain\DiscordBot\BotCommand;
+use Domain\DiscordBot\DiscordBotDomainService;
 
 class DiscordBotService extends AppService implements DiscordBotServiceInterface
 {
+    public function __construct(
+      private DiscordBotDomainService $discordBotDomainService,
+    ) {
+    }
 
     /**
-     * Discord Instans
+     * Discord Instants
      *
      * @var Discord
      */
@@ -36,50 +43,45 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
      */
     public function run(string $botToken): void
     {
-
         $this->discord = new Discord([
             'token' => $botToken,
             'loadAllMembers' => true,
             'intents' => Intents::getDefaultIntents() | Intents::GUILD_MEMBERS,
         ]);
 
-        $this->discord->on('ready', function($discord) {
+        $this->discord->on('ready', function(Discord $discord) {
 
-            $discord->on('message', function($message, $discord) {
-
-                $commands = config('bot_commands');
+            $discord->on('message', function(Message $message) {
                 $commandPrefix = substr($message->content, 0, 1);
                 $removedCommandPrefix = str_replace($this->commandPrefix, '', $message->content);
 
-                if (!$this->commandPrefixChecker($commandPrefix)) {
+                if (!$this->commandPrefixChecker($commandPrefix) || !$this->commandCheck($message)) {
                     return false;
                 }
 
                 $removedCommandPrefix = mb_convert_kana($removedCommandPrefix, 'rsa');
                 $commandName = mb_strstr($removedCommandPrefix, ' ', true) ?: $removedCommandPrefix;
+                $botCommand = BotCommand::makeFromDisplayName($commandName)->getValue();
 
                 if (mb_strstr($removedCommandPrefix, ' ', true) || mb_strstr($removedCommandPrefix, '　', true)) {
                     $commandContents = $this->argSplitter($removedCommandPrefix);
                     unset($commandContents[0]);
                     $commandArgs = array_values($commandContents);
-                    foreach ($commands as $key => $value) {
-                        $commandService = new $value['class'];
-                        $commandService->run($discord, $message, $commandName, $commandArgs);
-                    }
-                } elseif (isset($commands[$commandName])) {
-                    foreach ($commands as $key => $value) {
-                        if ($key === $commandName) {
-                            $commandService = new $value['class'];
-                            $commandService->run($discord, $message, $commandName);
-                        }
-                    }
+                    $message->reply(
+                        $this->discordBotDomainService->$botCommand($commandArgs)
+                    );
+                    return true;
                 }
+
+                $message->reply(
+                    $this->discordBotDomainService->$botCommand()
+                );
+
                 return true;
             });
         });
 
         $this->discord->run();
-
     }
 
     /**
@@ -102,8 +104,20 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
      */
     public function argSplitter(string $commandContents): array
     {
-
         return explode(' ', $commandContents);
+    }
 
+    private function commandCheck(Message $message): bool
+    {
+        $bot = $this->discord->user;
+
+        if (
+            $message->author->user->id === $bot->id
+            || $message->user->bot
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }
