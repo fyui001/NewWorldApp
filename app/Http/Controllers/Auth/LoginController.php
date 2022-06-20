@@ -98,7 +98,7 @@ class LoginController extends Controller
         }
 
         if (!Auth::guard('web')->attempt($credentials)) {
-            return redirect()->intended('admin.auth.login')->with(['error' => 'ログインIDまたはパスワードが違います']);
+            return redirect()->intended(route('admin.auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
         }
 
         return redirect()->intended(route('admin.top_page'))->with(['success' => 'Welcome!']);
