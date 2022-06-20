@@ -11,12 +11,14 @@ enum BotCommand: string
 {
     case HELLO = 'hello';
     case REGISTER_DRUG = 'registerDrug';
+    case MEDICATION = 'medication';
 
     public function displayName(): CoString
     {
         return match($this) {
             self::HELLO => new CoString('hello'),
             self::REGISTER_DRUG => new CoString('薬物登録'),
+            self::MEDICATION => new CoString('のんだ'),
         };
     }
 
@@ -31,6 +33,7 @@ enum BotCommand: string
             $value = match($displayName) {
                 'hello' => self::HELLO,
                 '薬物登録' => self::REGISTER_DRUG,
+                'のんだ' => self::MEDICATION
             };
         } catch(\UnhandledMatchError $e) {
             throw new InvalidArgumentException();

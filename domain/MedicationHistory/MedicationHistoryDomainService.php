@@ -6,16 +6,17 @@ namespace Domain\MedicationHistory;
 
 use Courage\CoInt\CoPositiveInteger;
 use Domain\Drug\DrugId;
-use Domain\User\Id as UserId;
+use Domain\User\Id;
+use Domain\User\UserDomainService;
+use Domain\User\UserId;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class MedicationHistoryDomainService
 {
-    private MedicationHistoryRepository $medicationHistoryRepository;
-
-    public function __construct(MedicationHistoryRepository $medicationHistoryRepository)
-    {
-        $this->medicationHistoryRepository = $medicationHistoryRepository;
+    public function __construct(
+        private MedicationHistoryRepository $medicationHistoryRepository,
+        private UserDomainService $userDomainService,
+    ) {
     }
 
     public function getPaginate(): LengthAwarePaginator
@@ -28,16 +29,18 @@ class MedicationHistoryDomainService
         return $this->medicationHistoryRepository->getCountMedicationTake($drugId);
     }
 
-    public function getListByUserId(UserId $userId): MedicationHistoryList
+    public function getListByUserId(Id $userId): MedicationHistoryList
     {
         return $this->medicationHistoryRepository->getListByUserId($userId);
     }
 
     public function create(
         UserId $userId,
+        DrugId $drugId,
         MedicationHistoryAmount $amount
     ): MedicationHistory {
-        return $this->medicationHistoryRepository->create($userId, $amount);
+        $user = $this->userDomainService->getUserByUserId($userId);
+        return $this->medicationHistoryRepository->create($user->getId(), $drugId, $amount);
     }
 
     public function update(MedicationHistory $medicationHistory): MedicationHistory

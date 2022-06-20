@@ -43,7 +43,7 @@ class DrugRepository implements DrugRepositoryInterface
 
     public function findDrugByName(DrugName $drugName): Drug
     {
-        $model = DrugModel::where(['name' => $drugName->getRawValue()])->first();
+        $model = DrugModel::where(['drug_name' => $drugName->getRawValue()])->first();
 
         if (!$model) {
             throw new NotFoundException();

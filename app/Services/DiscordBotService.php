@@ -26,6 +26,7 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
      * @var Discord
      */
     protected Discord $discord;
+    protected  Message $message;
 
     /**
      * This Command Prefix
@@ -52,10 +53,12 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
         $this->discord->on('ready', function(Discord $discord) {
 
             $discord->on('message', function(Message $message) {
-                $commandPrefix = substr($message->content, 0, 1);
-                $removedCommandPrefix = str_replace($this->commandPrefix, '', $message->content);
+                $this->message = $message;
+                $commandPrefix = substr($this->message->content, 0, 1);
+                $removedCommandPrefix = str_replace($this->commandPrefix, '', $this->message->content);
+                $commandContents = [];
 
-                if (!$this->commandPrefixChecker($commandPrefix) || !$this->commandCheck($message)) {
+                if (!$this->commandPrefixChecker($commandPrefix) || !$this->commandCheck($this->message)) {
                     return false;
                 }
 
@@ -67,15 +70,12 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
                     $commandContents = $this->argSplitter($removedCommandPrefix);
                     unset($commandContents[0]);
                     $commandArgs = array_values($commandContents);
-                    $message->reply(
-                        $this->discordBotDomainService->$botCommand($commandArgs)
-                    );
+
+                    $this->discordBotDomainService->$botCommand($commandArgs, $this->discord, $this->message);
                     return true;
                 }
 
-                $message->reply(
-                    $this->discordBotDomainService->$botCommand()
-                );
+                $this->discordBotDomainService->$botCommand($this->discord, $this->message);
 
                 return true;
             });
