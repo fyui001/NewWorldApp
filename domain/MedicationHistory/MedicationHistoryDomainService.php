@@ -34,7 +34,7 @@ class MedicationHistoryDomainService
         return $this->medicationHistoryRepository->getListByUserId($userId);
     }
 
-    public function create(
+    public function createByUserId(
         UserId $userId,
         DrugId $drugId,
         MedicationHistoryAmount $amount
