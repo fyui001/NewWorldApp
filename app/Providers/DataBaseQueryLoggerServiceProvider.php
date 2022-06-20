@@ -48,7 +48,7 @@ class DataBaseQueryLoggerServiceProvider extends ServiceProvider
                     } elseif ($binding instanceof DateTime) {
                         $binding = "'{$binding->format('Y-m-d H:i:s')}'";
                     }
-                    $sql = preg_replace('/\\?/', $binding, $sql, 1);
+                    $sql = preg_replace('/\\?/', (string)$binding, $sql, 1);
                 }
                 \Log::info($sql);
                 \Log::channel('sql')->info('[ROUTE]' . $route );

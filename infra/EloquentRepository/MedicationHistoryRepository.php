@@ -13,7 +13,7 @@ use Domain\MedicationHistory\MedicationHistoryAmount;
 use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\MedicationHistory\MedicationHistoryList;
 use Domain\MedicationHistory\MedicationHistoryRepository as MedicationHistoryRepositoryInterface;
-use Domain\User\Id as UserId;
+use Domain\User\Id;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
@@ -37,7 +37,7 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         );
     }
 
-    public function getListByUserId(UserId $userId): MedicationHistoryList
+    public function getListByUserId(Id $userId): MedicationHistoryList
     {
         $builder = MedicationHistoryModel::where([
             'user_id' => $userId->getRawValue()
@@ -51,11 +51,12 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         })->toarray());
     }
 
-    public function create(UserId $userId, MedicationHistoryAmount $amount): MedicationHistory
+    public function create(Id $userId, DrugId $drugId, MedicationHistoryAmount $amount): MedicationHistory
     {
         $model = new MedicationHistoryModel();
 
         $model->user_id = $userId->getRawValue();
+        $model->drug_id = $drugId->getRawValue();
         $model->amount = $amount->getRawValue();
 
         $model->save();

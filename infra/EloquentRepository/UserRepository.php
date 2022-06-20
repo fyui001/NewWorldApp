@@ -52,18 +52,18 @@ class UserRepository implements UserRepositoryInterface
     {
         $model = UserModel::where([
             'user_id' => $userId->getRawValue(),
-        ])->first()->toArray();
+        ])->first();
 
         if (!$model) {
             throw new NotFoundException();
         }
 
         return new User(
-            new Id((int)$model['id']),
-            new UserId((int)$model['user_id']),
-            new UserName($model['name']),
-            new IconUrl($model['icon_url']),
-            UserStatus::tryFrom((int)$model['status']),
+            new Id((int)$model->id),
+            new UserId((int)$model->user_id),
+            new UserName($model->name),
+            new IconUrl($model->icon_url),
+            UserStatus::tryFrom((int)$model->status),
         );
     }
 

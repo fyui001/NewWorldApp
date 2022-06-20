@@ -21,8 +21,7 @@ class UsersSeeder extends Seeder
             'icon_url' => '',
             'password' => Hash::make('hogehoge'),
             'access_token' => '',
-            'is_registered' => 0,
-            'del_flg' => 0,
+            'status' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
