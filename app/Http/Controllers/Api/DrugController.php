@@ -112,7 +112,7 @@ class DrugController
             'status' => true,
             'message' => '',
             'errors' => null,
-            'data' => $response['data']->toArray(),
+            'data' => $response['data'],
         ], 200);
 
     }

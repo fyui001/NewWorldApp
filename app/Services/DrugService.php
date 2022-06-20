@@ -113,7 +113,7 @@ class DrugService extends AppService implements DrugServiceInterface
         return [
             'status' => true,
             'errors' => null,
-            'data' => $drug,
+            'data' => $drug->toArray(),
         ];
     }
 
