@@ -28,7 +28,7 @@ class MedicationHistoryHelper
             '<@'. $this->message->user->id . '>' . ' took '
             . $medicationHistory->getDrug()->getName()->getRawValue()
             . ' '
-            . $medicationHistory->getAmount()->toInt()
+            . $medicationHistory->getAmount()->toFloat()
             . ' at '
             . Carbon::now()->format('H:m:s')
         );
