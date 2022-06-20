@@ -66,4 +66,4 @@ cp_vendor:
 	@echo '"one sync vendor!'
 
 start_discord_bot:
-	@docker compose app php artisan discord-bot:run &
+	@docker compose exec app php artisan discord-bot:run &
