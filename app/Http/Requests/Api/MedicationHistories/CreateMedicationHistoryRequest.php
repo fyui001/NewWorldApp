@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\MedicationHistories;
 
 use App\Http\Requests\Request as AppRequest;
-use Infra\EloquentModels\MedicationHistory;
-
+use Domain\Drug\DrugName;
+use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\User\Id as UserId;
 
 class CreateMedicationHistoryRequest extends AppRequest
 {
     public function authorize(): bool
     {
-        return \Auth::guard('api')->user()->can('create', MedicationHistory::class);
+        return true;
     }
 
     /**
@@ -41,5 +42,20 @@ class CreateMedicationHistoryRequest extends AppRequest
             'drug_name.required' => '薬物名は必須です',
             'amount.required' => '服薬量は必須です',
         ];
+    }
+
+    public function getUserId(): UserId
+    {
+        return new UserId((int)$this->input('user_id'));
+    }
+
+    public function getDrugName(): DrugName
+    {
+        return new DrugName($this->input('drug_name'));
+    }
+
+    public function getAmount(): MedicationHistoryAmount
+    {
+        return new MedicationHistoryAmount((float)$this->input('amount'));
     }
 }

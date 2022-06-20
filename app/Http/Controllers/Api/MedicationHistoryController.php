@@ -28,7 +28,11 @@ class MedicationHistoryController
     public function create(CreateMedicationHistoryRequest $request): JsonResponse
     {
 
-        $response = $this->medicationHistoryService->createMedicationHistory($request);
+        $response = $this->medicationHistoryService->createMedicationHistory(
+            $request->getUserId(),
+            $request->getDrugName(),
+            $request->getAmount(),
+        );
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
@@ -51,7 +55,7 @@ class MedicationHistoryController
             'status' => true,
             'message' => '',
             'errors' => null,
-            'data' => null,
+            'data' => $response['data'],
         ], 200);
 
     }

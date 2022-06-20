@@ -48,8 +48,8 @@ class MedicationHistory
     {
         return [
             'id' => $this->getId()->getRawValue(),
-            'userId' => $this->getUser(),
-            'drugId' => $this->getDrug(),
+            'user' => $this->getUser()->toArray(),
+            'drug' => $this->getDrug()->toArray(),
             'amount' => $this->getAmount()->getRawValue(),
         ];
     }
