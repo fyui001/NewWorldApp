@@ -92,7 +92,7 @@ class DiscordBotDomainService
         );
 
         try {
-            $medicationHistory = $this->medicationHistoryDomainService->create(
+            $medicationHistory = $this->medicationHistoryDomainService->createByUserId(
                 new UserId($message->user->id),
                 $drug->getId(),
                 new MedicationHistoryAmount($args[1]),
