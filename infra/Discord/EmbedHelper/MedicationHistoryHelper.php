@@ -29,7 +29,7 @@ class MedicationHistoryHelper
             . $medicationHistory->getDrug()->getName()->getRawValue()
             . ' '
             . $medicationHistory->getAmount()->toFloat()
-            . ' at '
+            . ' mg at '
             . Carbon::now()->format('H:m:s')
         );
         $embed->setColor('#eac645');
