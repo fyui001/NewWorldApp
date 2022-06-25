@@ -13,16 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: dokcer-compose up
+      - name: dokcer-compose build
         run: |
-          # docker-compose build
-          docker-compose up -d
+          docker-compose build
       - name: composer install
         run: |
           docker-compose exec -T app bash -c "composer install --no-progress --prefer-dist --optimize-autoloader"
       - name: migration
         run: |
+          docker-compose up -d
           docker-compose exec -T app bash -c "php artisan migrate --env=testing"
       - name: phpunit
         run: |
+          docker-compose up -d
           docker-compose exec -T app bash -c "vendor/bin/phpunit --testdox --colors=always"
