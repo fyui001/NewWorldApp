@@ -79,7 +79,7 @@ class UpdateAdminUserRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getPassword(): AdminUserHashedPassword
+    public function getHashedPassword(): AdminUserHashedPassword
     {
         return new AdminUserHashedPassword($this->input('password'));
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Users;
 
 use App\Http\Requests\Request as AppRequest;
-use Courage\CoString;
+use Domain\Base\BaseValue;
 use Domain\User\UserId;
 
 class LoginUserRequest extends AppRequest
@@ -34,8 +34,8 @@ class LoginUserRequest extends AppRequest
         return new UserId((int)$this->input('user_id'));
     }
 
-    public function getPassword(): CoString
+    public function getPasswordAsBaseValue(): BaseValue
     {
-        return new CoString($this->input('password'));
+        return new BaseValue($this->input('password'));
     }
 }

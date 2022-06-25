@@ -43,7 +43,7 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
     {
         $this->adminUserDomainService->createAdminUser(
             $request->getUserId(),
-            $request->getPassword(),
+            $request->getHashedPassword(),
             $request->getName(),
             $request->getRole(),
             $request->getStatus()
@@ -62,7 +62,7 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
             new AdminUser(
                 $adminId,
                 $request->getUserId(),
-                $request->getPassword(),
+                $request->getHashedPassword(),
                 $request->getName(),
                 $request->getRole(),
                 $request->getStatus()
