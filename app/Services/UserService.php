@@ -87,7 +87,7 @@ class UserService extends AppService implements UserServiceInterface
     {
         $credentials = [
             'user_id' => $request->getUserId()->getRawValue(),
-            'password' => $request->getPassword()->getRawValue(),
+            'password' => $request->getPasswordAsBaseValue()->getRawValue(),
             'status' => UserStatus::STATUS_VALID,
         ];
 

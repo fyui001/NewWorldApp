@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\Auth;
 
 use App\Http\Requests\Request as AppRequest;
-use Courage\CoString;
 use Domain\AdminUser\AdminUserId;
+use Domain\Base\BaseValue;
 
 class LoginRequest extends AppRequest
 {
@@ -38,8 +38,8 @@ class LoginRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getPassword(): CoString
+    public function getPasswordAsBaseValue(): BaseValue
     {
-        return new CoString($this->input('password'));
+        return new BaseValue($this->input('password'));
     }
 }
