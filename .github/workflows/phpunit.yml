@@ -18,6 +18,7 @@ jobs:
           docker-compose build
       - name: composer install
         run: |
+          docker-compose up -d
           docker-compose exec -T app bash -c "composer install --no-progress --prefer-dist --optimize-autoloader"
       - name: migration
         run: |
