@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: dokcer-compose build
         run: |
+          cp docker-compose-local.yml docker-compose.yml
           docker-compose build
       - name: dokcer-compose up
         run: |

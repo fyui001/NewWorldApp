@@ -89,11 +89,9 @@ abstract class Model extends EloquentModel
         string $defaultKey,
     ): Builder {
         foreach ($sortable as $key => $value) {
-            if (is_int($key)) {
-                if ($value === $orderBy) {
-                    $sortOrder = (strtolower($sortOrder) != 'desc') ? 'asc' : 'desc';
-                    return $query->orderBy($orderBy, $sortOrder);
-                }
+            if (is_int($key) && $value === $orderBy) {
+                $sortOrder = (strtolower($sortOrder) != 'desc') ? 'asc' : 'desc';
+                return $query->orderBy($orderBy, $sortOrder);
             }
         }
         return $query->orderBy($defaultKey);

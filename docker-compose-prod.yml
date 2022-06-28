@@ -1,7 +1,6 @@
 version: '3.9'
 services:
   web:
-    container_name: new-world-web
     image: nginx:latest
     depends_on:
       - app
@@ -15,9 +14,9 @@ services:
       - TZ=${TZ}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.new-world-app.rule=Host(`nw.localhost`)"
+      - "traefik.http.routers.new-world.rule=Host(`nw.fyui001.com`)"
+      - "traefik.http.routers.new-world.tls.certresolver=myresolver"
   app:
-    container_name: new-world-app
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
@@ -28,7 +27,16 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - js
-      - db
+    labels:
+      - "traefik.enable=false"
+  bot:
+    build:
+      context: .
+      dockerfile: ./docker/bot/Dockerfile
+    tty: true
+    volumes:
+      - .:/code
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     labels:
       - "traefik.enable=false"
   js:
@@ -41,31 +49,6 @@ services:
       - node-modules:/code/node_modules
     labels:
       - "traefik.enable=false"
-  db:
-    image: mysql:5.7
-    volumes:
-      - db-store:/var/lib/mysql
-      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/0.sql
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - TZ=${TZ}
-    ports:
-      - "3306:3306"
-    labels:
-      - "traefik.enable=false"
-  memcached:
-    image: memcached:latest
-    ports:
-      - "11211:11211"
-    volumes:
-      - memcached:/var/lib/memcached:delegated
-    networks:
-      - default
-      - docker_default
-    labels:
-      - "traefik.enable=false"
-
 networks:
   docker_default:
     name: docker_default
@@ -74,4 +57,4 @@ volumes:
   php-vendor:
   node-modules:
   memcached:
-  db-store:
+

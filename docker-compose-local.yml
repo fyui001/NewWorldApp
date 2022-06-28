@@ -1,4 +1,4 @@
-version: '3.9':
+version: '3.9'
 services:
   web:
     image: nginx:latest
@@ -14,8 +14,9 @@ services:
       - TZ=${TZ}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.new-world.rule=Host(`nw.localhost`)"
+      - "traefik.http.routers.new-world-app.rule=Host(`nw.localhost`)"
   app:
+    container_name: new-world-app
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
