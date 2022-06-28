@@ -10,39 +10,22 @@ on:
       - reopened
 jobs:
   phpunit:
-    name: PHPUnit (PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }})
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
-        php-versions: ['8.1']
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      # Docs: https://github.com/shivammathur/setup-php
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, dom, fileinfo, simplexml
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          # Use composer.json for key, if composer.lock is not committed.
-          # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-
-      - name: Test with PHPUnit
-        run: vendor/bin/phpunit --testdox --colors=always
+      - uses: actions/checkout@v2
+      - name: dokcer-compose build
+        run: |
+          docker-compose build
+      - name: dokcer-compose up
+        run: |
+          cp .env.example .env
+          docker-compose up -d
+      - name: composer install
+        run: |
+          docker-compose exec -T app bash -c "composer install --no-progress --prefer-dist --optimize-autoloader"
+      - name: migration
+        run: |
+          docker-compose exec -T app bash -c "php artisan migrate --env=testing"
+      - name: phpunit
+        run: |
+          docker-compose exec -T app bash -c "vendor/bin/phpunit --testdox --colors=always"
