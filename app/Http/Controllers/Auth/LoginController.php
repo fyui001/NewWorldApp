@@ -44,24 +44,6 @@ class LoginController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard(): StatefulGuard
-    {
-        return Auth::guard('web');
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function username(): string
-    {
-        return 'user_id';
-    }
-
-    /**
      * Form for login.
      *
      * @return View
@@ -69,7 +51,6 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('auth.login');
-
     }
 
     /**
