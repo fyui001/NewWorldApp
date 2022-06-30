@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase
         $model = new AdminUserModel();
 
         $model->user_id = 'takada_yuki';
-        $model->password = Hash::make('hogehoge');
+        $model->password = Hash::make('takada_yuki0316');
         $model->name = '高田憂希';
         $model->role = 1;
         $model->status = 1;
