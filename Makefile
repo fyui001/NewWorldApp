@@ -33,7 +33,7 @@ test_seed:
 test:
 	@docker compose exec app ./vendor/bin/phpunit
 
-ssh:
+bash:
 	@docker compose exec app bash
 
 node-ssh:
