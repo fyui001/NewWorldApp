@@ -52,7 +52,7 @@ class AdminUser extends Authenticatable
         return new AdminUserDomain(
             new AdminId($this->id),
             new AdminUserId($this->user_id),
-            new AdminUserHashedPassword(''),
+            new AdminUserHashedPassword($this->password),
             new AdminUserName($this->name),
             AdminUserRole::tryFrom((int)$this->role),
             AdminUserStatus::tryFrom((int)$this->status)

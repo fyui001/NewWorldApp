@@ -17,7 +17,7 @@ class UserDomainService
 
     public function getUserById(Id $id): User
     {
-        return $this->userRepository->getUserById($id);
+        return $this->userRepository->get($id);
     }
 
     public function getUserByUserId(UserId $userId): User

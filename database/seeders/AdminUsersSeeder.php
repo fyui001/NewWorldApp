@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Courage\CoString;
+use Domain\AdminUser\AdminUserRole;
+use Domain\User\UserStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,8 +22,8 @@ class AdminUsersSeeder extends Seeder
             'user_id' => 'takada_yuki',
             'password' => Hash::make('hogehoge'),
             'name' => '高田憂希',
-            'role' => 1,
-            'status' => 1,
+            'role' => AdminUserRole::ROLE_SYSTEM,
+            'status' => UserStatus::STATUS_VALID,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -9,11 +9,13 @@ use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
 use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
 use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserRegisterRequest;
+use Domain\Base\BaseValue;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\User\Id;
 use Domain\User\UserDomainService;
+use Domain\User\UserId;
 use Domain\User\UserStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Service as AppService;
@@ -80,14 +82,16 @@ class UserService extends AppService implements UserServiceInterface
     /**
      * ログイン
      *
-     * @param LoginUserRequest $request
+     * @param UserId $userId
+     * @param BaseValue $rawPassword
+     * @param UserStatus $status
      * @return array
      */
-    public function login(LoginUserRequest $request): array
+    public function login(UserId $userId, BaseValue $rawPassword): array
     {
         $credentials = [
-            'user_id' => $request->getUserId()->getRawValue(),
-            'password' => $request->getPasswordAsBaseValue()->getRawValue(),
+            'user_id' => $userId->getRawValue(),
+            'password' => $rawPassword->getRawValue(),
             'status' => UserStatus::STATUS_VALID,
         ];
 
@@ -101,7 +105,7 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = $this->userDomainService->getUserByUserId($request->getUserId())->toArray();
+        $user = $this->userDomainService->getUserByUserId($userId)->toArray();
         $accessToken = auth('api')->claims([
             'guard' => 'api'
         ])->attempt($credentials);

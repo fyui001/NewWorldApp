@@ -66,7 +66,10 @@ class UserController
     public function login(LoginUserRequest $request): JsonResponse
     {
 
-        $response = $this->userService->login($request);
+        $response = $this->userService->login(
+            $request->getUserId(),
+            $request->getPasswordAsBaseValue(),
+        );
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {

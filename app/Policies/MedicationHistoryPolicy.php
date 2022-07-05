@@ -9,6 +9,14 @@ use Infra\EloquentModels\AdminUser;
 
 class MedicationHistoryPolicy
 {
+    public function create(AdminUser $adminUser): Response
+    {
+        $adminUserDomain = $adminUser->toDomain();
+        return $adminUserDomain->getRole()->isSystem()
+            ? Response::allow()
+            : Response::deny('You do not own system role.');
+    }
+
     public function update(AdminUser $adminUser): Response
     {
         $adminUserDomain = $adminUser->toDomain();

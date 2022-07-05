@@ -9,25 +9,14 @@ use Domain\Base\BaseListValue;
 
 class User
 {
-    private Id $id;
-    private UserId $userId;
-    private UserName $userName;
-    private IconUrl $iconUrl;
-    private UserStatus $userStatus;
-
     public function __construct(
-        Id $id,
-        UserId $userId,
-        UserName $userName,
-        IconUrl $iconUrl,
-        UserStatus $userStatus
-    ) {
-        $this->id = $id;
-        $this->userId = $userId;
-        $this->userName = $userName;
-        $this->iconUrl = $iconUrl;
-        $this->userStatus = $userStatus;
-    }
+        private Id $id,
+        private UserId $userId,
+        private UserName $userName,
+        private UserHashedPassword $userHashedPassword,
+        private IconUrl $iconUrl,
+        private UserStatus $userStatus
+    ) {}
 
     public function getId(): Id
     {
@@ -44,6 +33,11 @@ class User
         return $this->userName;
     }
 
+    public function getHashedPassword(): UserHashedPassword
+    {
+        return $this->userHashedPassword;
+    }
+
     public function getIconUrl(): IconUrl
     {
         return $this->iconUrl;
@@ -52,6 +46,11 @@ class User
     public function getStatus(): UserStatus
     {
         return $this->userStatus;
+    }
+
+    public function hasHashedPassword(): bool
+    {
+        return !is_null($this->userHashedPassword);
     }
 
     public function toArray(): array

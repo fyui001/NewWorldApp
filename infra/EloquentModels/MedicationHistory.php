@@ -14,6 +14,7 @@ use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\User\IconUrl;
 use Domain\User\Id;
 use Domain\User\User as UserDomain;
+use Domain\User\UserHashedPassword;
 use Domain\User\UserId;
 use Domain\User\UserName;
 use Domain\User\UserStatus;
@@ -58,6 +59,7 @@ class MedicationHistory extends AppModel
                 new Id((int)$this->user->id),
                 new UserId((int)$this->user->user_id),
                 new UserName($this->user->name),
+                new UserHashedPassword($this->user->password),
                 new IconUrl($this->user->icon_url),
                 UserStatus::tryFrom((int)$this->user->status),
             ),

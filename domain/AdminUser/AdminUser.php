@@ -58,4 +58,9 @@ class AdminUser
     {
         return $this->adminUserStatus;
     }
+
+    public function hasHashedPassword(): bool
+    {
+        return !is_null($this->password);
+    }
 }
