@@ -29,7 +29,7 @@ class UserRepository implements UserRepositoryInterface
         'medicationHistories.drug',
     ];
 
-    public function getUserById(Id $id): User
+    public function get(Id $id): User
     {
         $model = UserModel::where([
             'id' => $id->getRawValue(),
@@ -39,13 +39,7 @@ class UserRepository implements UserRepositoryInterface
             throw new NotFoundException();
         }
 
-        return new User(
-            new Id((int)$model['id']),
-            new UserId((int)$model['user_id']),
-            new UserName($model['name']),
-            new IconUrl($model['icon_url']),
-            UserStatus::tryFrom((int)$model['status']),
-        );
+        return $model->toDomain();
     }
 
     public function getUserByUserId(UserId $userId): User
@@ -58,13 +52,7 @@ class UserRepository implements UserRepositoryInterface
             throw new NotFoundException();
         }
 
-        return new User(
-            new Id((int)$model->id),
-            new UserId((int)$model->user_id),
-            new UserName($model->name),
-            new IconUrl($model->icon_url),
-            UserStatus::tryFrom((int)$model->status),
-        );
+        return $model->toDomain();
     }
 
     public function userRegister(

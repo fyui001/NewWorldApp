@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Auth;
+
+use Domain\AdminUser\AdminUser as AdminUserDomain;
+use Domain\Base\BaseValue;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Hashing\Hasher;
+
+class AdminUser implements Authenticatable
+{
+    public function __construct(
+       private AdminUserDomain $adminUser,
+    ) {
+    }
+
+    /**
+     * @return AdminUserDomain
+     */
+    public function getAdminUser(): AdminUserDomain
+    {
+        return $this->adminUser;
+    }
+
+    /**
+     * @param AdminUserDomain $adminUser
+     */
+    public function setAdminUser(AdminUserDomain $adminUser): void
+    {
+        $this->adminUser = $adminUser;
+    }
+
+    public function getAuthIdentifier(): int
+    {
+        return $this->adminUser->getId()->getRawValue();
+    }
+
+    public function getAuthIdentifierName(): string
+    {
+        return 'id';
+    }
+
+    public function getAuthPassword(): string
+    {
+        return $this->adminUser->getPassword()->getRawValue();
+    }
+
+    public function getRememberToken()
+    {
+        // do noting
+    }
+
+    public function getRememberTokenName()
+    {
+        // do noting
+    }
+    public function setRememberToken($value)
+    {
+        // do noting
+    }
+
+    public function checkPassword(Hasher $hasher, BaseValue $rawPassword): bool
+    {
+        if (!$this->adminUser->hasHashedPassword()) {
+            return false;
+        }
+
+        return $this->adminUser->getPassword()->check($hasher, $rawPassword);
+    }
+}

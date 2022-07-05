@@ -10,6 +10,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface AdminUserRepository
 {
     public function getPaginator(): LengthAwarePaginator;
+    public function get(AdminId $adminId): AdminUser;
+    public function getByUserId(AdminUserId $adminUserId): AdminUser;
     public function create(
         AdminUserId $adminUserId,
         AdminUserHashedPassword $adminUserHashedPassWord,

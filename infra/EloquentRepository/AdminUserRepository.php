@@ -25,6 +25,28 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return AdminUserModel::paginate(15);
     }
 
+    public function get(AdminId $adminId): AdminUser
+    {
+        $model = AdminUserModel::where(['id' => $adminId->getRawValue()])->first();
+
+        if (!$model) {
+            throw new NotFoundException();
+        }
+
+        return $model->toDOmain();
+    }
+
+    public function getByUserId(AdminUserId $adminUserId): AdminUser
+    {
+        $model = AdminUserModel::where(['user_id' => $adminUserId->getRawValue()])->first();
+
+        if (!$model) {
+            throw new NotFoundException();
+        }
+
+        return $model->toDOmain();
+    }
+
     public function create(
         AdminUserId $adminUserId,
         AdminUserHashedPassword $adminUserHashedPassWord,

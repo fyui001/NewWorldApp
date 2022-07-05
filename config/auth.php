@@ -65,12 +65,12 @@ return [
 
     'providers' => [
         'admin_users' => [
-            'driver' => 'eloquent',
-            'model' => Infra\EloquentModels\AdminUser::class,
+            'driver' => 'adminAuth',
+            'model' => App\Auth\AdminUser::class,
         ],
         'users' => [
-            'driver' => 'eloquent',
-            'model' => Infra\EloquentModels\User::class,
+            'driver' => 'userAuth',
+            'model' => App\Auth\User::class,
         ]
     ],
 

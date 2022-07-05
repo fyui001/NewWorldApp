@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Domain\Base;
 
 use Courage\CoString;
+use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Support\Facades\Hash;
 
 abstract class BaseHashedValue extends CoString
 {
-    public function __construct(string $value)
+    public function check(Hasher $hasher, BaseValue $rawPassword): bool
     {
-        parent::__construct(Hash::make($value));
+        return $hasher->check($rawPassword->getRawValue(), $this->getRawValue());
     }
 }

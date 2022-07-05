@@ -5,7 +5,7 @@
     </a>
     <div class="sidebar">
         <nav class="mt-2">
-            @if(\Auth::guard('web')->user()->getAttribute('role') === \Domain\AdminUser\AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue())
+            @if(\Auth::user()->getAdminUser()->getRole()->getValue()->getRawValue() === \Domain\AdminUser\AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue())
                 <ul class="nav nav-pills nav-sidebar flex-column">
                     <li class="nav-item">
                         <a class="nav-link {{ $activePage == 'AdminUser' ? 'active' : '' }}" href="{{ route('admin.admin_users.index') }}">

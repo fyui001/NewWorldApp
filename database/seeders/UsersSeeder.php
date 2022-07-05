@@ -20,7 +20,6 @@ class UsersSeeder extends Seeder
             'name' => '松井恵理子',
             'icon_url' => '',
             'password' => Hash::make('hogehoge'),
-            'access_token' => '',
             'status' => 1,
             'created_at' => now(),
             'updated_at' => now(),

@@ -8,7 +8,7 @@ use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
 
 interface UserRepository
 {
-    public function getUserById(Id $id): User;
+    public function get(Id $id): User;
     public function getUserByUserId(UserId $userId): User;
     public function userRegister(
         Id $id,
