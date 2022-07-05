@@ -14,7 +14,6 @@ class UserUserControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->createUser();
     }
 
     public function testLoginSuccess()
