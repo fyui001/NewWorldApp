@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Auth\User;
+use Domain\Base\BaseValue;
 use Domain\Exception\NotFoundException;
 use Domain\User\Id;
 use Domain\User\UserId;
@@ -69,8 +70,8 @@ class UserProvider implements AuthUserProvider
         // do noting
     }
 
-    public function validateCredentials(Authenticatable $user, array $credentials)
+    public function validateCredentials(Authenticatable $user, array $credentials): bool
     {
-        // do noting
+        return $user->checkPassword($this->hasher, new BaseValue($credentials['password']));
     }
 }

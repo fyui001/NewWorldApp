@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
+use Domain\Base\BaseValue;
 use Domain\User\User as UserDomain;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Hashing\Hasher;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User implements Authenticatable
+class User implements Authenticatable, JWTSubject
 {
     public function __construct(
        private UserDomain $user,
@@ -58,5 +61,24 @@ class User implements Authenticatable
     public function setRememberToken($value)
     {
         // do noting
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getAuthIdentifierName();
+    }
+
+    public function checkPassword(Hasher $hasher, BaseValue $rawPassword): bool
+    {
+        if (!$this->user->hasHashedPassword()) {
+            return false;
+        }
+
+        return $this->user->getHashedPassword()->check($hasher, $rawPassword);
     }
 }

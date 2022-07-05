@@ -48,6 +48,11 @@ class User
         return $this->userStatus;
     }
 
+    public function hasHashedPassword(): bool
+    {
+        return !is_null($this->userHashedPassword);
+    }
+
     public function toArray(): array
     {
         return [
