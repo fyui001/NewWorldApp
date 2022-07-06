@@ -58,7 +58,7 @@ class AdminUserControllerTest extends TestCase
 
     public function testEdit()
     {
-        $this->get(route('admin.admin_users.edit', $this->drug->getId()))->assertOk();
+        $this->get(route('admin.admin_users.edit', $this->adminUser->getId()))->assertOk();
     }
 
     public function testUpdate()
