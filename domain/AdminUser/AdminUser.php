@@ -63,4 +63,16 @@ class AdminUser
     {
         return !is_null($this->password);
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->adminId->getRawValue(),
+            'user_id' => $this->adminUserId->getRawValue(),
+            'password' => $this->password->getRawValue(),
+            'name' => $this->adminUserName->getRawValue(),
+            'role' => $this->adminUserRole->getValue()->getRawValue(),
+            'status' => $this->adminUserStatus->getValue()->getRawValue(),
+        ];
+    }
 }
