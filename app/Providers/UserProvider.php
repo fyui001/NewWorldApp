@@ -40,7 +40,7 @@ class UserProvider implements AuthUserProvider
 
     public function retrieveById($identifier)
     {
-        return new User($this->userRepository->get(new Id($identifier)));
+        return new User($this->userRepository->get(new Id((int)$identifier)));
     }
 
     public function retrieveByCredentials(array $credentials): User | null

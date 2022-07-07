@@ -4,28 +4,72 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Domain\AdminUser\AdminUser;
+use App\Auth\AdminUser;
+use App\Auth\User;
+use Domain\AdminUser\AdminUser as AdminUserDomain;
+use Domain\AdminUser\AdminUserId;
 use Domain\Drug\Drug;
 use Domain\MedicationHistory\MedicationHistory;
-use Domain\User\User;
+use Domain\User\User as UserDomain;
+use Domain\User\UserId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
 use Infra\EloquentModels\Drug as DrugModel;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 use Infra\EloquentModels\User as UserModel;
+use Infra\EloquentRepository\AdminUserRepository;
+use Infra\EloquentRepository\UserRepository;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    private AdminUserRepository $adminUserRepository;
+    private UserRepository $userRepository;
+
+    protected AdminUserDomain $adminUser;
+    protected Drug $drug;
+    protected MedicationHistory $medicationHistory;
+    protected UserDomain $user;
+
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->adminUserRepository = $this->app->make(AdminUserRepository::class);
+        $this->userRepository = $this->app->make(UserRepository::class);
+
+        $this->createAdminUser();
+        $this->createUser();
+        $this->createDrug();
+        $this->createMedicationHistory();
     }
 
-    public function createAdminUser(): AdminUser
+    public function adminLogin(): void
+    {
+        $admin = new AdminUser(
+            $this->adminUserRepository->getByUserId(
+                new AdminUserId('takada_yuki')
+
+            )
+        );
+
+        $this->be($admin, 'web');
+    }
+
+    public function userLogin(): void
+    {
+        $user = new User(
+            $this->userRepository->getUserByUserId(
+                new UserId(19890308)
+            ),
+        );
+
+        $this->be($user, 'api');
+    }
+
+    public function createAdminUser(): void
     {
         $model = new AdminUserModel();
 
@@ -37,10 +81,10 @@ abstract class TestCase extends BaseTestCase
 
         $model->save();
 
-        return $model->toDomain();
+        $this->adminUser = $model->toDomain();
     }
 
-    public function createDrug(): Drug
+    public function createDrug(): void
     {
         $model = new DrugModel();
 
@@ -49,14 +93,14 @@ abstract class TestCase extends BaseTestCase
 
         $model->save();
 
-        return $model->toDomain();
+        $this->drug = $model->toDomain();
     }
 
-    public function createMedicationHistory(): MedicationHistory
+    public function createMedicationHistory(): void
     {
         $model = new MedicationHistoryModel();
-        $user = $this->createUser();
-        $drug = $this->createDrug();
+        $user = $this->user;
+        $drug = $this->drug;
 
         $model->user_id = $user->getId()->getRawValue();
         $model->drug_id = $drug->getId()->getRawValue();
@@ -64,10 +108,10 @@ abstract class TestCase extends BaseTestCase
 
         $model->save();
 
-        return $model->toDomain();
+        $this->medicationHistory = $model->toDomain();
     }
 
-    public function createUser(): User
+    public function createUser(): void
     {
         $model = new UserModel();
 
@@ -79,6 +123,6 @@ abstract class TestCase extends BaseTestCase
 
         $model->save();
 
-        return $model->toDomain();
+        $this->user = $model->toDomain();
     }
 }

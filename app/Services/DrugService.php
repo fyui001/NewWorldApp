@@ -44,7 +44,9 @@ class DrugService extends AppService implements DrugServiceInterface
 
     public function getDrugList(): array
     {
-        $drugList = $this->drugDomainService->getDrugList()->toArray();
+        $drugList = $this->drugDomainService->getDrugList()->map(function(Drug $domain) {
+            return $domain->toArray();
+        });
 
         if (empty($drugList)) {
             return [

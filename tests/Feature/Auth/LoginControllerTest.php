@@ -14,7 +14,6 @@ class LoginControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->createAdminUser();
     }
 
     public function testShowLoginForm(): void

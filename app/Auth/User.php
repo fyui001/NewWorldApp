@@ -70,7 +70,7 @@ class User implements Authenticatable, JWTSubject
 
     public function getJWTIdentifier()
     {
-        return $this->getAuthIdentifierName();
+        return $this->getAuthIdentifier();
     }
 
     public function checkPassword(Hasher $hasher, BaseValue $rawPassword): bool

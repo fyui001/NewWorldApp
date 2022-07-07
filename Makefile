@@ -33,7 +33,7 @@ test_seed:
 test:
 	@docker compose exec app ./vendor/bin/phpunit
 
-ssh:
+bash:
 	@docker compose exec app bash
 
 node-ssh:
@@ -67,3 +67,6 @@ cp_vendor:
 
 start_discord_bot:
 	@docker compose exec app php artisan discord-bot:run &
+
+run_test:
+	@docker compose exec app bash -c "vendor/bin/phpunit --testdox --colors=always"

@@ -55,7 +55,7 @@ class UserService extends AppService implements UserServiceInterface
         }
 
         $user = $this->userDomainService->getUserById(
-            new Id((int)$user['id'])
+            new Id($user->getAuthIdentifier())
         );
 
         $medicationHistoryList = $this->medicationHistoryDomainService->getListByUserId(
