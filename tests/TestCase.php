@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Auth\AdminUser;
+use App\Auth\User;
 use Domain\AdminUser\AdminUser as AdminUserDomain;
 use Domain\AdminUser\AdminUserId;
 use Domain\Drug\Drug;
 use Domain\MedicationHistory\MedicationHistory;
-use Domain\User\User;
+use Domain\User\User as UserDomain;
+use Domain\User\UserId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Hash;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
@@ -17,23 +19,26 @@ use Infra\EloquentModels\Drug as DrugModel;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 use Infra\EloquentModels\User as UserModel;
 use Infra\EloquentRepository\AdminUserRepository;
+use Infra\EloquentRepository\UserRepository;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
     private AdminUserRepository $adminUserRepository;
+    private UserRepository $userRepository;
 
     protected AdminUserDomain $adminUser;
     protected Drug $drug;
     protected MedicationHistory $medicationHistory;
-    protected User $user;
+    protected UserDomain $user;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->adminUserRepository = $this->app->make(AdminUserRepository::class);
+        $this->userRepository = $this->app->make(UserRepository::class);
 
         $this->createAdminUser();
         $this->createUser();
@@ -47,9 +52,21 @@ abstract class TestCase extends BaseTestCase
             $this->adminUserRepository->getByUserId(
                 new AdminUserId('takada_yuki')
 
-        ));
+            )
+        );
 
         $this->be($admin, 'web');
+    }
+
+    public function userLogin(): void
+    {
+        $user = new User(
+            $this->userRepository->getUserByUserId(
+                new UserId(19890308)
+            ),
+        );
+
+        $this->be($user, 'api');
     }
 
     public function createAdminUser(): void
