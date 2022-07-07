@@ -7,7 +7,7 @@ namespace Tests\Feature\Api;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class UserUserControllerTest extends TestCase
+class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 

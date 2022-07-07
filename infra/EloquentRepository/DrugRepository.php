@@ -37,7 +37,7 @@ class DrugRepository implements DrugRepositoryInterface
 
         return new DrugList($collection->map(function ($model) {
             /** @var $model DrugModel */
-            return $model->toDomain()->toArray();
+            return $model->toDomain();
         })->toArray());
     }
 

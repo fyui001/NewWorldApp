@@ -23,9 +23,13 @@ class DrugControllerTest extends TestCase
         $except = [
             'status' => true,
             'message' => '',
-            'data'
+            'data' => [
+                $this->drug->toArray(),
+            ],
         ];
 
-        //$this->get(route('api.drugs'))->;
+        $response = $this->json('GET',route('api.drugs.index'));
+
+        $response->assertStatus(200)->assertJson($except);
     }
 }
