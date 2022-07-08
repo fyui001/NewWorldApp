@@ -54,7 +54,7 @@ class DrugController extends AppController
      */
     public function store(CreateDrugRequest $request): Redirector|RedirectResponse|Application
     {
-        $response = $this->drugService->createDrug($request);
+        $response = $this->drugService->createDrug($request->getDrugName(), $request->getUrl());
 
         if (!$response['status']) {
             if ($response['errors']['key'] === 'failed_register_drug') {

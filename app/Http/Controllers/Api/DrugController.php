@@ -28,7 +28,6 @@ class DrugController
      */
     public function index(IndexDrugRequest $request): JsonResponse
     {
-
         $response = $this->drugService->getDrugList();
         if (!$response['status']) {
             if (!empty($response['errors'])) {
@@ -63,8 +62,7 @@ class DrugController
      */
     public function create(CreateDrugRequest $request): JsonResponse
     {
-
-        $response = $this->drugService->createDrug($request);
+        $response = $this->drugService->createDrug($request->getDrugName(), $request->getUrl());
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
@@ -99,7 +97,6 @@ class DrugController
      */
     public function show(ShowDrugRequest $request): JsonResponse
     {
-
         $response = $this->drugService->searchDrugByName($request->getDrugName());
 
         if (!$response['status']) {

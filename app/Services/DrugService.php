@@ -14,6 +14,7 @@ use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugId;
 use App\Services\Interfaces\DrugServiceInterface;
 use Domain\Drug\DrugName;
+use Domain\Drug\DrugUrl;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -44,8 +45,9 @@ class DrugService extends AppService implements DrugServiceInterface
 
     public function getDrugList(): array
     {
-        $drugList = $this->drugDomainService->getDrugList()->map(function(Drug $domain) {
-            return $domain->toArray();
+        $drugList = $this->drugDomainService->getDrugList()
+            ->map(function(Drug $domain) {
+                return $domain->toArray();
         })->toArray();
 
         if (empty($drugList)) {
@@ -125,11 +127,11 @@ class DrugService extends AppService implements DrugServiceInterface
      * @param CreateDrugRequest|ApiCreateDrugRequest $request
      * @return array
      */
-    public function createDrug(CreateDrugRequest|ApiCreateDrugRequest $request): array
+    public function createDrug(DrugName $drugName, DrugUrl $url): array
     {
         $result = $this->drugDomainService->createDrug(
-            $request->getDrugName(),
-            $request->getUrl()
+            $drugName,
+            $url,
         );
 
         if (empty($result)) {
