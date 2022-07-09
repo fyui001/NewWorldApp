@@ -77,7 +77,7 @@ class CreateAdminUserRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getHashedPassword(): AdminUserHashedPassword
+    public function getUserHashedPassword(): AdminUserHashedPassword
     {
         return new AdminUserHashedPassword($this->input('password'));
     }

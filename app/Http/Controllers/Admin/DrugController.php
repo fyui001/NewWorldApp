@@ -11,7 +11,7 @@ use App\Services\Interfaces\DrugServiceInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
+use \Illuminate\Contracts\View\View;
 use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugController extends AppController

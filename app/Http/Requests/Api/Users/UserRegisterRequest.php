@@ -29,8 +29,8 @@ class UserRegisterRequest extends AppRequest
         return new UserId((int)$this->input('user_id'));
     }
 
-    public function getPassword(): UserHashedPassword
+    public function getUserHashedPassword(): UserHashedPassword
     {
-        return new UserHashedPassword($this->input('password'));
+        return new UserHashedPassword((string)$this->input('password'));
     }
 }

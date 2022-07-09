@@ -104,7 +104,10 @@ class UserController
      */
     public function register(UserRegisterRequest $request): JsonResponse
     {
-        $response = $this->userService->register($request);
+        $response = $this->userService->register(
+            $request->getUserId(),
+            $request->getUserHashedPassword(),
+        );
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {

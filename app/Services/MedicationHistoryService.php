@@ -33,7 +33,8 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
         return $this->medicationHistoryDomainService->getPaginate();
     }
 
-    public function createMedicationHistory(Id $userId, DrugName $drugName, MedicationHistoryAmount $amount): array {
+    public function createMedicationHistory(Id $userId, DrugName $drugName, MedicationHistoryAmount $amount): array
+    {
         $drug = $this->drugDomainService->findDrugByName($drugName);
         $result = $this->medicationHistoryDomainService->create($userId, $drug->getId(), $amount);
         if (empty($result->toArray())) {
@@ -56,17 +57,12 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
     /**
      * Update medication history
      *
-     * @param MedicationHistoryModel $medicationHistory
-     * @param MedicationHistoryAmount $amount
+     * @param MedicationHistory $medicationHistory
      * @return MedicationHistory
      */
-    public function updateMedicationHistory(
-        MedicationHistoryModel $medicationHistory,
-        MedicationHistoryAmount $amount,
-    ): MedicationHistory {
-        $medicationHistoryDomain = $medicationHistory->toDomain();
-
-        return $this->medicationHistoryDomainService->update($medicationHistoryDomain);
+    public function updateMedicationHistory(MedicationHistory $medicationHistory): MedicationHistory
+    {
+        return $this->medicationHistoryDomainService->update($medicationHistory);
     }
 
 }

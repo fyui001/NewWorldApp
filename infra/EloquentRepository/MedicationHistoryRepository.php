@@ -70,7 +70,7 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
             'id' => $medicationHistory->getId()->getRawValue()
         ])->first();
 
-        $model->amount = (string)$medicationHistory->getAmount()->getRawValue();
+        $model->amount = $medicationHistory->getAmount()->getRawValue();
 
         $model->save();
 
