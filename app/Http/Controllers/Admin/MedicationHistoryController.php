@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller as AppController;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\MedicationHistory;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
-use \Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\View;
 use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
 
 class MedicationHistoryController extends AppController
