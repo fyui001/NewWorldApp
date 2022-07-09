@@ -11,12 +11,9 @@ use \Illuminate\Http\JsonResponse;
 
 class MedicationHistoryController
 {
-    protected MedicationHistoryServiceInterface $medicationHistoryService;
-
-    public function __construct(MedicationHistoryServiceInterface $medicationHistoryService) {
-
-        $this->medicationHistoryService = $medicationHistoryService;
-
+    public function __construct(
+        private MedicationHistoryServiceInterface $medicationHistoryService,
+    ) {
     }
 
     /**

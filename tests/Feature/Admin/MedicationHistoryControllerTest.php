@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Admin;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class MedicationHistoryControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->adminLogin();
+    }
+
+    public function testIndex()
+    {
+        $this->get(route('admin.medication_histories.index'))->assertOk();
+    }
+
+    public function testEdit()
+    {
+        $this->get(route('admin.medication_histories.edit', $this->medicationHistory->getId()))->assertOk();
+    }
+
+    public function testUpdate()
+    {
+        $params = [
+            'amount' => 316,
+        ];
+
+        $this->post(route('admin.medication_histories.update', $this->medicationHistory->getId()), $params)
+            ->assertRedirect(route('admin.medication_histories.index'))
+            ->assertSessionHas('success');
+    }
+}

@@ -11,7 +11,7 @@ use App\Services\Interfaces\DrugServiceInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugController extends AppController
@@ -54,7 +54,7 @@ class DrugController extends AppController
      */
     public function store(CreateDrugRequest $request): Redirector|RedirectResponse|Application
     {
-        $response = $this->drugService->createDrug($request);
+        $response = $this->drugService->createDrug($request->getDrugName(), $request->getUrl());
 
         if (!$response['status']) {
             if ($response['errors']['key'] === 'failed_register_drug') {

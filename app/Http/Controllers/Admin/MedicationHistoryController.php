@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller as AppController;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\MedicationHistory;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
 
 class MedicationHistoryController extends AppController
@@ -55,13 +55,12 @@ class MedicationHistoryController extends AppController
     public function update(MedicationHistory $medicationHistory, UpdateMedicationHistoryRequest $request): RedirectResponse
     {
         $amount = $request->getAmount();
+        $medicationHistory->amount = $amount->getRawValue();
         if (!$this->medicationHistoryService->updateMedicationHistory(
-                $medicationHistory,
-                $amount,
+            $medicationHistory->toDomain(),
             )) {
             return redirect(route('admin.medication_histories.index'))->with(['error' => '服薬履歴の更新に失敗しました']);
         }
-
         return redirect(route('admin.medication_histories.index'))->with(['success' => '服薬履歴の更新に成功しました']);
     }
 }
