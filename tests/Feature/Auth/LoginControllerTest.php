@@ -29,6 +29,7 @@ class LoginControllerTest extends TestCase
         ];
 
         $this->post('/admin/auth/login', $params)
-            ->assertRedirect(route('admin.top_page'));
+            ->assertRedirect(route('admin.top_page'))
+            ->assertSessionHas('success');
     }
 }
