@@ -7,10 +7,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use Domain\AdminUser\AdminUserStatus;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 
 class LoginController extends Controller
 {
