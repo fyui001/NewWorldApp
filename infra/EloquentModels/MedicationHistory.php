@@ -43,12 +43,12 @@ class MedicationHistory extends AppModel
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo('Infra\EloquentModels\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function drug(): BelongsTo
     {
-        return $this->belongsTo('Infra\EloquentModels\Drug', 'drug_id');
+        return $this->belongsTo(Drug::class, 'drug_id');
     }
 
     public function toDomain(): MedicationHistoryDomain
