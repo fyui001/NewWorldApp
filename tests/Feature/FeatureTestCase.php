@@ -115,7 +115,7 @@ class FeatureTestCase extends TestCase
 
         $model->user_id = 19890308;
         $model->name = '松井恵理子';
-        $model->icon_url = '';
+        $model->icon_url = 'https://example.com';
         $model->password = Hash::make('hogehoge');
         $model->status = 1;
 

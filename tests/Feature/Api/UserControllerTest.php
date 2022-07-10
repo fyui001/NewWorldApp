@@ -102,7 +102,7 @@ class UserControllerTest extends TestCase
 
         $model->user_id = 930316;
         $model->name = '高田憂希';
-        $model->icon_url = '';
+        $model->icon_url = 'https://example.com';
         $model->password = '';
         $model->status = UserStatus::STATUS_UNREGISTERED->getValue()->getRawValue();
 
