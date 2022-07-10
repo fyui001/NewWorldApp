@@ -7,7 +7,7 @@ namespace Tests\Feature\Api;
 use Domain\User\UserStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Infra\EloquentModels\User;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase as TestCase;
 
 class UserControllerTest extends TestCase
 {

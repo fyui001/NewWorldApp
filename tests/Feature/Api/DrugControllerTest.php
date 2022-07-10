@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase as TestCase;
 
 class DrugControllerTest extends TestCase
 {

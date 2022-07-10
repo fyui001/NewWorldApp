@@ -10,7 +10,7 @@ use Domain\Exception\NotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
 use Infra\EloquentRepository\AdminUserRepository;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase as TestCase;
 
 class AdminUserControllerTest extends TestCase
 {
