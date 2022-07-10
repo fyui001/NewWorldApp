@@ -18,39 +18,63 @@ class BotCommandTest extends TestCase
         parent::setUp();
     }
 
-    public function testDisplayName()
+    /**
+     * @dataProvider displayNameProvider
+     * @return void
+     */
+    public function testDisplayName(CoString $displayName, BotCommand $command)
     {
-        $hello = BotCommand::HELLO;
-        $registerDrug = BotCOmmand::REGISTER_DRUG;
-        $medication = BotCommand::MEDICATION;
-
         $this->assertEquals(
-            new CoString('hello'),
-            $hello->displayName(),
-        );
-        $this->assertEquals(
-            new CoString('薬物登録'),
-            $registerDrug->displayName(),
-        );
-        $this->assertEquals(
-            new CoString('のんだ'),
-            $medication->displayName(),
+            $displayName,
+            $command->displayName(),
         );
     }
 
-    public function testMakeFromDisplayName()
+    public function displayNameProvider() :array
     {
-        $except = [
-            'hello' => BotCommand::HELLO,
-            '薬物登録' => BotCommand::REGISTER_DRUG,
-            'のんだ' => BotCommand::MEDICATION,
+        return [
+            'hello' => [
+                new CoString('hello'),
+                BotCommand::HELLO
+            ],
+            'registerDrug' => [
+                new CoString('薬物登録'),
+                BotCommand::REGISTER_DRUG,
+            ],
+            'medication' => [
+                new CoString('のんだ'),
+                BOtCommand::MEDICATION,
+            ],
         ];
+    }
 
-        foreach ($except as $key => $value) {
-            $this->assertEquals(
-                $value,
-                BotCommand::makeFromDisplayName($key),
-            );
-        }
+    /**
+     * @dataProvider makeFromDisplayNameProvider
+     * @return void
+     */
+    public function testMakeFromDisplayName(string $displayName, BotCommand $command)
+    {
+        $this->assertEquals(
+            $command,
+            BotCommand::makeFromDisplayName($displayName),
+        );
+    }
+
+    public function makeFromDisplayNameProvider(): array
+    {
+        return [
+            [
+                'hello',
+                BotCommand::HELLO,
+            ],
+            [
+                '薬物登録',
+                BotCommand::REGISTER_DRUG,
+            ],
+            [
+                'のんだ',
+                BotCommand::MEDICATION,
+            ]
+        ];
     }
 }
