@@ -6,7 +6,6 @@ namespace Domain\Base;
 
 use Courage\CoString;
 use Illuminate\Contracts\Hashing\Hasher;
-use Illuminate\Support\Facades\Hash;
 
 abstract class BaseHashedValue extends CoString
 {

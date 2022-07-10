@@ -8,7 +8,7 @@ use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Infra\EloquentRepository\MedicationHistoryRepository;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase as TestCase;
 
 class MedicationHistoryControllerTest extends TestCase
 {

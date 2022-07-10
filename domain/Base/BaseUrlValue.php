@@ -11,7 +11,7 @@ abstract class BaseUrlValue extends CoString
 {
     public function __construct(string $value)
     {
-        if (!parse_url($value)) {
+        if (!parse_url($value, PHP_URL_SCHEME)) {
             throw new InvalidArgumentException();
         }
 

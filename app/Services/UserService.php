@@ -7,7 +7,7 @@ namespace App\Services;
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetail;
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
 use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
-use Domain\Base\BaseValue;
+use Domain\Common\RawPassword;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
@@ -82,11 +82,10 @@ class UserService extends AppService implements UserServiceInterface
      * ログイン
      *
      * @param UserId $userId
-     * @param BaseValue $rawPassword
-     * @param UserStatus $status
+     * @param RawPassword $rawPassword
      * @return array
      */
-    public function login(UserId $userId, BaseValue $rawPassword): array
+    public function login(UserId $userId, RawPassword $rawPassword): array
     {
         $credentials = [
             'user_id' => $userId->getRawValue(),

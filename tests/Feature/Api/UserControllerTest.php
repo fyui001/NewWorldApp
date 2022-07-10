@@ -7,7 +7,7 @@ namespace Tests\Feature\Api;
 use Domain\User\UserStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Infra\EloquentModels\User;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase as TestCase;
 
 class UserControllerTest extends TestCase
 {
@@ -102,7 +102,7 @@ class UserControllerTest extends TestCase
 
         $model->user_id = 930316;
         $model->name = '高田憂希';
-        $model->icon_url = '';
+        $model->icon_url = 'https://example.com';
         $model->password = '';
         $model->status = UserStatus::STATUS_UNREGISTERED->getValue()->getRawValue();
 
