@@ -48,19 +48,33 @@ class BotCommandTest extends TestCase
         ];
     }
 
-    public function testMakeFromDisplayName()
+    /**
+     * @dataProvider makeFromDisplayNameProvider
+     * @return void
+     */
+    public function testMakeFromDisplayName(string $displayName, BotCommand $command)
     {
-        $except = [
-            'hello' => BotCommand::HELLO,
-            '薬物登録' => BotCommand::REGISTER_DRUG,
-            'のんだ' => BotCommand::MEDICATION,
-        ];
+        $this->assertEquals(
+            $command,
+            BotCommand::makeFromDisplayName($displayName),
+        );
+    }
 
-        foreach ($except as $key => $value) {
-            $this->assertEquals(
-                $value,
-                BotCommand::makeFromDisplayName($key),
-            );
-        }
+    public function makeFromDisplayNameProvider(): array
+    {
+        return [
+            [
+                'hello',
+                BotCommand::HELLO,
+            ],
+            [
+                '薬物登録',
+                BotCommand::REGISTER_DRUG,
+            ],
+            [
+                'のんだ',
+                BotCommand::MEDICATION,
+            ]
+        ];
     }
 }
