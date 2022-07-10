@@ -18,24 +18,34 @@ class BotCommandTest extends TestCase
         parent::setUp();
     }
 
-    public function testDisplayName()
+    /**
+     * @dataProvider displayNameProvider
+     * @return void
+     */
+    public function testDisplayName(CoString $displayName, BotCommand $command)
     {
-        $hello = BotCommand::HELLO;
-        $registerDrug = BotCOmmand::REGISTER_DRUG;
-        $medication = BotCommand::MEDICATION;
+        $this->assertEquals(
+            $displayName,
+            $command->displayName(),
+        );
+    }
 
-        $this->assertEquals(
-            new CoString('hello'),
-            $hello->displayName(),
-        );
-        $this->assertEquals(
-            new CoString('薬物登録'),
-            $registerDrug->displayName(),
-        );
-        $this->assertEquals(
-            new CoString('のんだ'),
-            $medication->displayName(),
-        );
+    public function displayNameProvider() :array
+    {
+        return [
+            'hello' => [
+                new CoString('hello'),
+                BotCommand::HELLO
+            ],
+            'registerDrug' => [
+                new CoString('薬物登録'),
+                BotCommand::REGISTER_DRUG,
+            ],
+            'medication' => [
+                new CoString('のんだ'),
+                BOtCommand::MEDICATION,
+            ],
+        ];
     }
 
     public function testMakeFromDisplayName()
