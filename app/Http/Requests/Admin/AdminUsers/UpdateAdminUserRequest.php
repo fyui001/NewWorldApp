@@ -81,7 +81,7 @@ class UpdateAdminUserRequest extends AppRequest
 
     public function getUserHashedPassword(): AdminUserHashedPassword
     {
-        return new AdminUserHashedPassword($this->input('password'));
+        return AdminUserHashedPassword::make($this->input('password'));
     }
 
     public function getName(): AdminUserName

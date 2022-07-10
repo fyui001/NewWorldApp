@@ -87,6 +87,15 @@ class AdminUserControllerTest extends TestCase
         $this->assertTrue(
             $response->getUserId()->isEqual(new CoString($params['user_id']))
         );
+
+        $this->get(route('admin.auth.logout'));
+
+        $this->post('/admin/auth/login', [
+            'user_id' => 'takada_yuki_test',
+            'password' => 'hogehoge',
+        ])
+            ->assertRedirect(route('admin.top_page'))
+            ->assertSessionHas('success');
     }
 
     public function testDestroy()
