@@ -4,21 +4,11 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\Drug\Drug;
-use Domain\Drug\DrugId;
-use Domain\Drug\DrugName;
-use Domain\Drug\DrugUrl;
 use Domain\Exception\NotFoundException;
-use Domain\MedicationHistory\MedicationHistory;
-use Domain\MedicationHistory\MedicationHistoryAmount;
-use Domain\MedicationHistory\MedicationHistoryId;
-use Domain\MedicationHistory\MedicationHistoryList;
-use Domain\User\IconUrl;
 use Domain\User\Id;
 use Domain\User\User;
 use Domain\User\UserHashedPassword;
 use Domain\User\UserId;
-use Domain\User\UserName;
 use Domain\User\UserRepository as UserRepositoryInterface;
 use Domain\User\UserStatus;
 use Infra\EloquentModels\User as UserModel;
