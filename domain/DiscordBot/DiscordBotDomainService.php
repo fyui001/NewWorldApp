@@ -3,13 +3,15 @@
 namespace Domain\DiscordBot;
 
 use Courage\CoString;
+use Courage\Exceptions\InvalidArgumentException;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
+use Domain\DiscordBot\CommandArgument\MedicationCommandArgument;
+use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
 use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugName;
 use Domain\Drug\DrugUrl;
 use Domain\Exception\NotFoundException;
-use Domain\MedicationHistory\MedicationHistoryAmount;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\User\UserId;
 use Illuminate\Support\Facades\Http;
@@ -18,7 +20,6 @@ use Infra\Discord\EmbedHelper\DrugRegisterHelper;
 use Infra\Discord\EmbedHelper\HelloHelper;
 use Infra\Discord\EmbedHelper\MedicationHistoryHelper;
 use Infra\Discord\MessageSender;
-use Infra\Exceptions\InvalidArgumentException;
 
 class DiscordBotDomainService
 {
@@ -42,12 +43,11 @@ class DiscordBotDomainService
         );
     }
 
-    public function registerDrug(array $args, Discord $discord, Message $message): void
+    public function registerDrug(RegisterDrugCommandArgument $args, Discord $discord, Message $message): void
     {
         $this->messageSender = new MessageSender($message);
-
-        $drugName = new CoString($args[0]);
         $drugRegisterHelper = new DrugRegisterHelper($discord, $message);
+        $drugName = $args->getDrugName();
 
         $result = Http::get($this->wikiApiUrl . $drugName->getRawValue());
 
@@ -81,28 +81,28 @@ class DiscordBotDomainService
         }
     }
 
-    public function medication(array $args, Discord $discord, Message $message): void
+    public function medication(MedicationCommandArgument $args, Discord $discord, Message $message): void
     {
         $this->messageSender = new MessageSender($message);
 
         $medicationHistoryHelper = new MedicationHistoryHelper($discord, $message);
 
         $drug = $this->drugDomainService->findDrugByName(
-            new DrugName($args[0]),
+            $args->getDrugName()
         );
 
         try {
             $medicationHistory = $this->medicationHistoryDomainService->createByUserId(
                 new UserId($message->user->id),
                 $drug->getId(),
-                new MedicationHistoryAmount($args[1]),
+                $args->getAmount(),
             );
 
             $this->messageSender->sendEmbed(
                 $medicationHistoryHelper->toMedicationHistoryCreatedEmbed($medicationHistory),
             );
-        } catch (\InvalidArgumentException| NotFoundException $e) {
-            Log::warning($e->getMessage());
+        } catch (InvalidArgumentException | NotFoundException $e) {
+            Log::error($e->getMessage());
             $this->messageSender->sendEmbed(
                 $medicationHistoryHelper->toMedicationHistoryFailedEmbed(),
             );

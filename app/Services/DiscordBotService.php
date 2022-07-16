@@ -64,18 +64,18 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
 
                 $removedCommandPrefix = mb_convert_kana($removedCommandPrefix, 'rsa');
                 $commandName = mb_strstr($removedCommandPrefix, ' ', true) ?: $removedCommandPrefix;
-                $botCommand = BotCommand::makeFromDisplayName($commandName)->getValue();
+                $botCommandName = BotCommand::makeFromDisplayName($commandName)->getValue();
 
                 if (mb_strstr($removedCommandPrefix, ' ', true) || mb_strstr($removedCommandPrefix, '　', true)) {
-                    $commandContents = $this->argSplitter($removedCommandPrefix);
+                    $commandContents += $this->argSplitter($removedCommandPrefix);
                     unset($commandContents[0]);
                     $commandArgs = array_values($commandContents);
-
-                    $this->discordBotDomainService->$botCommand($commandArgs, $this->discord, $this->message);
+                    $commandArgs = BotCommand::makeFromDisplayName($commandName)->getCommandArgumentClass($commandArgs);
+                    $this->discordBotDomainService->$botCommandName($commandArgs, $this->discord, $this->message);
                     return true;
                 }
 
-                $this->discordBotDomainService->$botCommand($this->discord, $this->message);
+                $this->discordBotDomainService->$botCommandName($this->discord, $this->message);
 
                 return true;
             });

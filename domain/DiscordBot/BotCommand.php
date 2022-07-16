@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Domain\DiscordBot;
 
 use Courage\CoString;
+use Domain\DiscordBot\CommandArgument\MedicationCommandArgument;
+use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
 use Domain\Exception\InvalidArgumentException;
 
 enum BotCommand: string
@@ -40,5 +42,13 @@ enum BotCommand: string
         }
 
         return $value;
+    }
+
+    public function getCommandArgumentClass(array $commandArgs)
+    {
+        return match($this) {
+            self::REGISTER_DRUG => new RegisterDrugCommandArgument($commandArgs),
+            self::MEDICATION => new MedicationCommandArgument($commandArgs),
+        };
     }
 }
