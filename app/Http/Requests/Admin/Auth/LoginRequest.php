@@ -6,7 +6,7 @@ namespace App\Http\Requests\Admin\Auth;
 
 use App\Http\Requests\Request as AppRequest;
 use Domain\AdminUser\AdminUserId;
-use Domain\Base\BaseValue;
+use Domain\Common\RawPassword;
 
 class LoginRequest extends AppRequest
 {
@@ -38,8 +38,8 @@ class LoginRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getPasswordAsBaseValue(): BaseValue
+    public function getPasswordAsBaseValue(): RawPassword
     {
-        return new BaseValue($this->input('password'));
+        return new RawPassword($this->input('password'));
     }
 }

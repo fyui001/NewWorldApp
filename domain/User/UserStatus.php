@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\User;
 
-use Courage\CoInt\CoInteger;
-use Courage\CoString;
 use Domain\Base\BaseEnum;
+use Domain\Common\RawInteger;
+use Domain\Common\RawString;
 
 enum UserStatus: int implements BaseEnum
 {
@@ -14,27 +14,27 @@ enum UserStatus: int implements BaseEnum
     case STATUS_VALID = 1;
     case STATUS_DELETED = 2;
 
-    public function displayName(): Costring
+    public function displayName(): RawString
     {
         return match ($this) {
-            self::STATUS_UNREGISTERED => new CoString('未登録'),
-            self::STATUS_VALID => new CoString('有効'),
-            self::STATUS_DELETED => new CoString('無効'),
+            self::STATUS_UNREGISTERED => new RawString('未登録'),
+            self::STATUS_VALID => new RawString('有効'),
+            self::STATUS_DELETED => new RawString('無効'),
         };
     }
 
-    public function rawString(): CoString
+    public function rawString(): RawString
     {
         return match ($this) {
-            self::STATUS_UNREGISTERED => new CoString('unregistered'),
-            self::STATUS_VALID => new CoString('valid'),
-            self::STATUS_DELETED => new CoString('deleted'),
+            self::STATUS_UNREGISTERED => new RawString('unregistered'),
+            self::STATUS_VALID => new RawString('valid'),
+            self::STATUS_DELETED => new RawString('deleted'),
         };
     }
 
-    public function getValue(): CoInteger
+    public function getValue(): RawInteger
     {
-        return new CoInteger($this->value);
+        return new RawInteger($this->value);
     }
 
     public function isRegistered(): bool

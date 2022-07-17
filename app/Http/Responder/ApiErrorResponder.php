@@ -2,17 +2,17 @@
 
 namespace App\Http\Responder;
 
-use Courage\CoList;
+use Domain\Common\ListValue;
 
 class ApiErrorResponder
 {
-    private CoList $response;
+    private ListValue $response;
 
     public function __construct(string $key)
     {
         $errors = config('api_errors');
         if (!isset($errors[$key])) {
-            $this->response = new CoList([
+            $this->response = new ListValue([
                 'body' => [
                     'status' => false,
                     'message' => 'undefined error @ /config/api_errors.php',
@@ -25,7 +25,7 @@ class ApiErrorResponder
             ]);
             return;
         }
-        $this->response = new CoList([]);
+        $this->response = new ListValue([]);
         $this->response['body'] = [
             'status' => $errors[$key]['status'] ?? false,
             'message' => $errors[$key]['message'] ?? '',
@@ -36,7 +36,7 @@ class ApiErrorResponder
         $this->response['response_code'] = $errors[$key]['response_code'] ?? 500;
     }
 
-    public function getResponse(): CoList
+    public function getResponse(): ListValue
     {
         return $this->response;
     }
