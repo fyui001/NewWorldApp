@@ -16,9 +16,9 @@ class DrugDomainService
         $this->drugRepository = $drugRepository;
     }
 
-    public function findDrug(DrugId $drugId): Drug
+    public function show(DrugId $drugId): Drug
     {
-        return $this->drugRepository->findDrug($drugId);
+        return $this->drugRepository->show($drugId);
     }
 
     public function getDrugList(): DrugList
