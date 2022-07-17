@@ -58,11 +58,27 @@ class DrugControllerTest extends TestCase
     {
         $this->userLogin();
 
+        $response = $this->json('GET', route('api.drugs.show', $this->drug->getId()));
+        $except = [
+            'status' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => $this->drug->toArray(),
+        ];
+
+        $response->assertStatus(200)
+            ->assertJson($except);
+    }
+
+    public function testName()
+    {
+        $this->userLogin();
+
         $params = [
             'drug_name' => 'フルニトラゼパム',
         ];
 
-        $response = $this->json('GET', route('api.drugs.show'), $params);
+        $response = $this->json('GET', route('api.drugs.show.name'), $params);
 
         $except = [
             'status' => true,

@@ -17,7 +17,7 @@ interface DrugServiceInterface
 {
     public function getDrugs(): LengthAwarePaginator;
     public function getDrugList(): array;
-    public function findDrug(DrugId $drugId): array;
+    public function show(DrugId $drugId): array;
     public function searchDrugByName(DrugName $drugName): array;
     public function createDrug(DrugName $drugName, DrugUrl $url): array;
     public function updateDrug(DrugModel $drug, UpdateDrugRequest $request): array;

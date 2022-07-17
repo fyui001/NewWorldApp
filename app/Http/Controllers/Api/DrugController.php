@@ -6,9 +6,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\Drugs\IndexDrugRequest;
 use App\Http\Requests\Api\Drugs\CreateDrugRequest;
+use App\Http\Requests\Api\Drugs\ShowDrugRequest;
 use App\Http\Responder\ApiErrorResponder;
 use App\Services\Interfaces\DrugServiceInterface;
-use App\Http\Requests\Api\Drugs\ShowDrugRequest;
+use App\Http\Requests\Api\Drugs\ShowNameDrugRequest;
 use \Illuminate\Http\JsonResponse;
 
 class DrugController
@@ -89,13 +90,31 @@ class DrugController
         ]);
     }
 
+    public function show(ShowDrugRequest $request): JsonResponse
+    {
+        $response = $this->drugService->show($request->getDrugId());
+
+        if (!$response['status']) {
+            $apiErrorResponder = new ApiErrorResponder($response['errors']['key']);
+            $error = $apiErrorResponder->getResponse()->toArray();
+            return response()->json($error['body'], $error['response_code']);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => $response['data'],
+        ], 200);
+    }
+
     /**
-     * Find a drug
+     * Find a drug by name
      *
-     * @param ShowDrugRequest $request
+     * @param ShowNameDrugRequest $request
      * @return JsonResponse
      */
-    public function show(ShowDrugRequest $request): JsonResponse
+    public function showName(ShowNameDrugRequest $request): JsonResponse
     {
         $response = $this->drugService->searchDrugByName($request->getDrugName());
 

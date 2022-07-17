@@ -30,7 +30,8 @@ Route:: group([
         'prefix' => 'drugs'
     ], function() {
         Route::get('/', 'Api\DrugController@index')->name('api.drugs.index');
-        Route::get('/show', 'Api\DrugController@show')->name('api.drugs.show');
+        Route::get('/{drugId}', 'Api\DrugController@show')->name('api.drugs.show');
+        Route::get('/show/name', 'Api\DrugController@showName')->name('api.drugs.show.name');
         Route::post('/create', 'Api\DrugController@create')->name('api.drugs.create');
     });
 

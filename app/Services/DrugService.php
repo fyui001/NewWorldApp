@@ -73,9 +73,9 @@ class DrugService extends AppService implements DrugServiceInterface
      * @param DrugId $drugId
      * @return array
      */
-    public function findDrug(DrugId $drugId): array
+    public function show(DrugId $drugId): array
     {
-        $drug = $this->drugDomainService->findDrug($drugId);
+        $drug = $this->drugDomainService->show($drugId);
 
         if (empty($drug)) {
             return [
@@ -90,7 +90,7 @@ class DrugService extends AppService implements DrugServiceInterface
         return [
             'status' => true,
             'errors' => null,
-            'data' => $drug,
+            'data' => $drug->toArray(),
         ];
     }
 
