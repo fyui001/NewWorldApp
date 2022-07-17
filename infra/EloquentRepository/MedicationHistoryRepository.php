@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Courage\CoInt\CoPositiveInteger;
+use Domain\Common\RawPositiveInteger;
 use Domain\Drug\DrugId;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
@@ -30,9 +30,9 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         return MedicationHistoryModel::sortable()->with(self::WITH_MODEL)->paginate(15);
     }
 
-    public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger
+    public function getCountMedicationTake(DrugId $drugId): RawPositiveInteger
     {
-        return new CoPositiveInteger(
+        return new RawPositiveInteger(
             MedicationHistoryModel::where(['drug_id' => $drugId->getRawValue()])->count()
         );
     }
@@ -77,7 +77,7 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         return $model->toDomain();
     }
 
-    public function delete(MedicationHistoryId $id): CoPositiveInteger
+    public function delete(MedicationHistoryId $id): RawPositiveInteger
     {
         $model = MedicationHistoryModel::where(['id' => $id->getRawValue()]);
 
@@ -91,6 +91,6 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
             throw new LogicException();
         }
 
-        return new CoPositiveInteger($result);
+        return new RawPositiveInteger($result);
     }
 }

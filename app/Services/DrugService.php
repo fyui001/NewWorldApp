@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
 use App\Http\Requests\Api\Drugs\CreateDrugRequest as ApiCreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
-use Courage\CoInt\CoInteger;
+use Domain\Common\RawInteger;
 use Domain\Drug\Drug;
 use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugId;
@@ -202,7 +202,7 @@ class DrugService extends AppService implements DrugServiceInterface
                 $drug->toDomain()->getId()
             );
 
-            if ($medicationHistories->isLessThan(new CoInteger(0))) {
+            if ($medicationHistories->isLessThan(new RawInteger(0))) {
                 return [
                     'status' => false,
                     'message' => 'Have a medication history',

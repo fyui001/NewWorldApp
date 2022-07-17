@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Courage\CoInt\CoPositiveInteger;
 use Domain\AdminUser\AdminUserHashedPassword;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRepository as AdminUserRepositoryInterface;
@@ -13,6 +12,7 @@ use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\RawPositiveInteger;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
@@ -82,7 +82,7 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return $model->toDomain();
     }
 
-    public function delete(AdminId $adminId): CoPositiveInteger
+    public function delete(AdminId $adminId): RawPositiveInteger
     {
         $model = AdminUserModel::where(['id' => $adminId->getRawValue()]);
 
@@ -96,6 +96,6 @@ class AdminUserRepository implements AdminUserRepositoryInterface
             throw new LogicException();
         }
 
-        return new CoPositiveInteger($result);
+        return new RawPositiveInteger($result);
     }
 }

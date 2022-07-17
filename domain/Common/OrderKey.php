@@ -2,26 +2,23 @@
 
 declare(strict_types=1);
 
-
 namespace Domain\Common;
-
-use Courage\CoString;
 
 enum OrderKey: string
 {
     case ASC = 'asc';
     case DESC = 'desc';
 
-    public function displayName(): CoString
+    public function displayName(): RawString
     {
         return match($this) {
-            self::ASC => new CoString('昇順'),
-            self::DESC => new CoString('降順'),
+            self::ASC => new RawString('昇順'),
+            self::DESC => new RawString('降順'),
         };
     }
 
-    public function getValue(): CoString
+    public function getValue(): RawString
     {
-        return new CoString($this->value);
+        return new RawString($this->value);
     }
 }

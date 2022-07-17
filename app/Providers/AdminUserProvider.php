@@ -8,7 +8,7 @@ use App\Auth\AdminUser;
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserRepository;
-use Domain\Base\BaseValue;
+use Domain\Common\RawPassword;
 use Domain\Exception\NotFoundException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -72,6 +72,6 @@ class AdminUserProvider implements UserProvider
 
     public function validateCredentials(Authenticatable $user, array $credentials): bool
     {
-        return $user->checkPassword($this->hasher, new BaseValue($credentials['password']));
+        return $user->checkPassword($this->hasher, new RawPassword($credentials['password']));
     }
 }

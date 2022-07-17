@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Domain\Base;
+namespace Domain\Common;
 
-use Courage\CoString;
+use Domain\Base\BaseValue;
 
-abstract class BaseValue extends CoString
+class RawString extends BaseValue
 {
     public function __construct(string $value)
     {

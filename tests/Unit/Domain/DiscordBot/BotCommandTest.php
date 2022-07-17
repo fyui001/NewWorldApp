@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Domain\DiscordBot;
 
-use Courage\CoString;
+use Domain\Common\RawString;
 use Domain\DiscordBot\BotCommand;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -22,7 +22,7 @@ class BotCommandTest extends TestCase
      * @dataProvider displayNameProvider
      * @return void
      */
-    public function testDisplayName(CoString $displayName, BotCommand $command)
+    public function testDisplayName(RawString $displayName, BotCommand $command)
     {
         $this->assertEquals(
             $displayName,
@@ -34,15 +34,15 @@ class BotCommandTest extends TestCase
     {
         return [
             'hello' => [
-                new CoString('hello'),
+                new RawString('hello'),
                 BotCommand::HELLO
             ],
             'registerDrug' => [
-                new CoString('薬物登録'),
+                new RawString('薬物登録'),
                 BotCommand::REGISTER_DRUG,
             ],
             'medication' => [
-                new CoString('のんだ'),
+                new RawString('のんだ'),
                 BOtCommand::MEDICATION,
             ],
         ];

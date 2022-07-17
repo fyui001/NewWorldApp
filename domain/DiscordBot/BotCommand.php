@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\DiscordBot;
 
-use Courage\CoString;
+use Domain\Common\RawString;
 use Domain\DiscordBot\CommandArgument\MedicationCommandArgument;
 use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
 use Domain\Exception\InvalidArgumentException;
@@ -15,12 +15,12 @@ enum BotCommand: string
     case REGISTER_DRUG = 'registerDrug';
     case MEDICATION = 'medication';
 
-    public function displayName(): CoString
+    public function displayName(): RawString
     {
         return match($this) {
-            self::HELLO => new CoString('hello'),
-            self::REGISTER_DRUG => new CoString('薬物登録'),
-            self::MEDICATION => new CoString('のんだ'),
+            self::HELLO => new RawString('hello'),
+            self::REGISTER_DRUG => new RawString('薬物登録'),
+            self::MEDICATION => new RawString('のんだ'),
         };
     }
 

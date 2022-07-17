@@ -2,10 +2,10 @@
 
 namespace Domain\DiscordBot;
 
-use Courage\CoString;
 use Courage\Exceptions\InvalidArgumentException;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
+use Domain\Common\RawString;
 use Domain\DiscordBot\CommandArgument\MedicationCommandArgument;
 use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
 use Domain\Drug\DrugDomainService;
@@ -23,16 +23,16 @@ use Infra\Discord\MessageSender;
 
 class DiscordBotDomainService
 {
-    private CoString $wikiApiUrl;
-    private CoString $wikiViewPageUrl;
+    private RawString $wikiApiUrl;
+    private RawString $wikiViewPageUrl;
     private MessageSender $messageSender;
 
     public function __construct (
         private DrugDomainService $drugDomainService,
         private MedicationHistoryDomainService $medicationHistoryDomainService,
     ) {
-        $this->wikiApiUrl = new CoString('https://ja.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=');
-        $this->wikiViewPageUrl = new CoString('https://ja.wikipedia.org/wiki/');
+        $this->wikiApiUrl = new RawString('https://ja.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=');
+        $this->wikiViewPageUrl = new RawString('https://ja.wikipedia.org/wiki/');
     }
 
     public function hello(Discord $discord, Message $message): void
