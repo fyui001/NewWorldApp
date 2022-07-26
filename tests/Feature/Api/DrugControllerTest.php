@@ -68,9 +68,23 @@ class DrugControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJson($except);
+
+        $response = $this->json('GET', route('api.drugs.show', 316));
+
+        $except = [
+            'status' => false,
+            'message' => 'Drug notfound.',
+            'errors' => [
+                'type' => 'drug_notfound'
+            ],
+            'data' => null,
+        ];
+
+        $response->assertStatus(404)
+            ->assertJson($except);
     }
 
-    public function testName()
+    public function testShowName()
     {
         $this->userLogin();
 
@@ -87,6 +101,24 @@ class DrugControllerTest extends TestCase
         ];
 
         $response->assertStatus(200)
+            ->assertJson($except);
+
+        $params = [
+            'drug_name' => '高田憂希',
+        ];
+
+        $response = $this->json('GET', route('api.drugs.show.name'), $params);
+
+        $except = [
+            'status' => false,
+            'message' => 'Drug notfound.',
+            'errors' => [
+                'type' => 'drug_notfound'
+            ],
+            'data' => null,
+        ];
+
+        $response->assertStatus(404)
             ->assertJson($except);
     }
 }

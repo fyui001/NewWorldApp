@@ -3,12 +3,12 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\Interfaces\DiscordBotServiceInterface;
+use Infra\Discord\DiscordBotClient;
 
 class RunDiscordBot extends Command
 {
 
-    protected DiscordBotServiceInterface $discordBotService;
+    protected DiscordBotClient $botClient;
 
     /**
      * The name and signature of the console command.
@@ -29,19 +29,19 @@ class RunDiscordBot extends Command
      *
      * @return void
      */
-    public function __construct(DiscordBotServiceInterface $discordBotService)
+    public function __construct(DiscordBotClient $discordBotService)
     {
-        $this->discordBotService = $discordBotService;
+        $this->botClient = $discordBotService;
         parent::__construct();
     }
 
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle(): void
     {
-        $this->discordBotService->run(env('BOT_TOKEN'));
+        $this->botClient->run(env('BOT_TOKEN'));
     }
 }

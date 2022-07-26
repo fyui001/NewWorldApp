@@ -52,6 +52,18 @@ class UserControllerTest extends TestCase
 
     public function testShow()
     {
+        $response = $this->json('GET', route('api.users.show'));
+
+        $response->assertStatus(401)
+            ->assertJson([
+                'status' => false,
+                'errors' => [
+                    'type' => 'unauthorized',
+                ],
+                'message' => '401 Unauthorized.',
+                'data' => null,
+            ]);
+
         $this->userLogin();
 
         $response = $this->json('GET', route('api.users.show'));

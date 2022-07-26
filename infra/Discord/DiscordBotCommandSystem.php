@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\DiscordBot;
+namespace Infra\Discord;
 
 use Courage\Exceptions\InvalidArgumentException;
 use Discord\Discord;
@@ -19,9 +19,8 @@ use Illuminate\Support\Facades\Log;
 use Infra\Discord\EmbedHelper\DrugRegisterHelper;
 use Infra\Discord\EmbedHelper\HelloHelper;
 use Infra\Discord\EmbedHelper\MedicationHistoryHelper;
-use Infra\Discord\MessageSender;
 
-class DiscordBotDomainService
+class DiscordBotCommandSystem
 {
     private RawString $wikiApiUrl;
     private RawString $wikiViewPageUrl;
@@ -43,8 +42,11 @@ class DiscordBotDomainService
         );
     }
 
-    public function registerDrug(RegisterDrugCommandArgument $args, Discord $discord, Message $message): void
-    {
+    public function registerDrug(
+        RegisterDrugCommandArgument $args,
+        Discord $discord,
+        Message $message,
+    ): void {
         $this->messageSender = new MessageSender($message);
         $drugRegisterHelper = new DrugRegisterHelper($discord, $message);
         $drugName = $args->getDrugName();
@@ -81,8 +83,11 @@ class DiscordBotDomainService
         }
     }
 
-    public function medication(MedicationCommandArgument $args, Discord $discord, Message $message): void
-    {
+    public function medication(
+        MedicationCommandArgument $args,
+        Discord $discord,
+        Message $message,
+    ): void {
         $this->messageSender = new MessageSender($message);
 
         $medicationHistoryHelper = new MedicationHistoryHelper($discord, $message);

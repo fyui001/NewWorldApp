@@ -32,7 +32,7 @@ enum BotCommand: string
     public static function makeFromDisplayName(string $displayName): self
     {
         try {
-            $value = match($displayName) {
+            $value = match ($displayName) {
                 'hello' => self::HELLO,
                 '薬物登録' => self::REGISTER_DRUG,
                 'のんだ' => self::MEDICATION
@@ -46,7 +46,7 @@ enum BotCommand: string
 
     public function getCommandArgumentClass(array $commandArgs)
     {
-        return match($this) {
+        return match ($this) {
             self::REGISTER_DRUG => new RegisterDrugCommandArgument($commandArgs),
             self::MEDICATION => new MedicationCommandArgument($commandArgs),
         };

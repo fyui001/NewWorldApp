@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
-use App\Http\Requests\Api\Drugs\CreateDrugRequest as ApiCreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
 use Domain\Common\RawInteger;
@@ -75,9 +73,15 @@ class DrugService extends AppService implements DrugServiceInterface
      */
     public function show(DrugId $drugId): array
     {
-        $drug = $this->drugDomainService->show($drugId);
+        try {
+            $drug = $this->drugDomainService->show($drugId);
 
-        if (empty($drug)) {
+            return [
+                'status' => true,
+                'errors' => null,
+                'data' => $drug->toArray(),
+            ];
+        } catch (NotFoundException $e) {
             return [
                 'status' => false,
                 'errors' => [
@@ -86,12 +90,6 @@ class DrugService extends AppService implements DrugServiceInterface
                 'data' => null
             ];
         }
-
-        return [
-            'status' => true,
-            'errors' => null,
-            'data' => $drug->toArray(),
-        ];
     }
 
     /**
@@ -102,9 +100,15 @@ class DrugService extends AppService implements DrugServiceInterface
      */
     public function searchDrugByName(DrugName $drugName): array
     {
-        $drug = $this->drugDomainService->findDrugByName($drugName);
+        try {
+            $drug = $this->drugDomainService->findDrugByName($drugName);
 
-        if (empty($drug)) {
+            return [
+                'status' => true,
+                'errors' => null,
+                'data' => $drug->toArray(),
+            ];
+        } catch (NotFoundException) {
             return [
                 'status' => false,
                 'errors' => [
@@ -113,18 +117,13 @@ class DrugService extends AppService implements DrugServiceInterface
                 'data' => null
             ];
         }
-
-        return [
-            'status' => true,
-            'errors' => null,
-            'data' => $drug->toArray(),
-        ];
     }
 
     /**
      * Create a drug
      *
-     * @param CreateDrugRequest|ApiCreateDrugRequest $request
+     * @param DrugName $drugName
+     * @param DrugUrl $url
      * @return array
      */
     public function createDrug(DrugName $drugName, DrugUrl $url): array

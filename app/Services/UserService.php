@@ -40,7 +40,6 @@ class UserService extends AppService implements UserServiceInterface
      */
     public function getUser(): array
     {
-
         $user = Auth::guard('api')->user();
 
         if (empty($user)) {
@@ -53,29 +52,39 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = $this->userDomainService->getUserById(
-            new Id($user->getAuthIdentifier())
-        );
+        try {
+            $user = $this->userDomainService->getUserById(
+                new Id($user->getAuthIdentifier())
+            );
 
-        $medicationHistoryList = $this->medicationHistoryDomainService->getListByUserId(
-            $user->getId(),
-        );
+            $medicationHistoryList = $this->medicationHistoryDomainService->getListByUserId(
+                $user->getId(),
+            );
 
-        $medicationHistoryDetailList = new MedicationHistoryDetailList([]);
-        foreach ($medicationHistoryList as $key => $medicationHistory) {
-            $medicationHistoryDetailList[$key] = $this->buildDetail($medicationHistory)->toArray();
+            $medicationHistoryDetailList = new MedicationHistoryDetailList([]);
+            foreach ($medicationHistoryList as $key => $medicationHistory) {
+                $medicationHistoryDetailList[$key] = $this->buildDetail($medicationHistory)->toArray();
+            }
+
+            $userAndMedicationHistoryDetailList = new UserAndMedicationHistoryDetailList(
+                $user,
+                $medicationHistoryDetailList,
+            );
+
+            return [
+                'status' => true,
+                'errors' => null,
+                'data' => $userAndMedicationHistoryDetailList->toArray(),
+            ];
+        } catch (NotFoundException $e) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'key' => 'user_notfound',
+                ],
+                'data' => null,
+            ];
         }
-
-        $userAndMedicationHistoryDetailList = new UserAndMedicationHistoryDetailList(
-            $user,
-            $medicationHistoryDetailList,
-        );
-
-        return [
-            'status' => true,
-            'errors' => null,
-            'data' => $userAndMedicationHistoryDetailList->toArray(),
-        ];
     }
 
     /**
