@@ -2,21 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace Infra\Discord;
 
-use App\Services\Service as AppService;
-use App\Services\Interfaces\DiscordBotServiceInterface;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Intents;
 use Domain\DiscordBot\BotCommand;
-use Domain\DiscordBot\DiscordBotDomainService;
 
-class DiscordBotService extends AppService implements DiscordBotServiceInterface
+class DiscordBotClient
 {
     public function __construct(
-      private DiscordBotDomainService $discordBotDomainService,
+        private DiscordBotCommandSystem $discordBotCommandSystem,
     ) {
     }
 
@@ -71,11 +68,11 @@ class DiscordBotService extends AppService implements DiscordBotServiceInterface
                     unset($commandContents[0]);
                     $commandArgs = array_values($commandContents);
                     $commandArgs = BotCommand::makeFromDisplayName($commandName)->getCommandArgumentClass($commandArgs);
-                    $this->discordBotDomainService->$botCommandName($commandArgs, $this->discord, $this->message);
+                    $this->discordBotCommandSystem->$botCommandName($commandArgs, $this->discord, $this->message);
                     return true;
                 }
 
-                $this->discordBotDomainService->$botCommandName($this->discord, $this->message);
+                $this->discordBotCommandSystem->$botCommandName($this->discord, $this->message);
 
                 return true;
             });
