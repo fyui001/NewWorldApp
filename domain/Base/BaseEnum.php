@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Base;
 
-use Courage\CoInt\CoInteger;
-use Courage\CoString;
+use Domain\Common\RawInteger;
+use Domain\Common\RawString;
 
 interface BaseEnum {
-    public function displayName(): Costring;
-    public function getValue(): CoInteger;
+    public function displayName(): BaseValue;
+    public function getValue(): RawInteger|RawString;
 }

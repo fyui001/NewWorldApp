@@ -6,6 +6,7 @@ namespace Tests\Unit\Domain\DiscordBot;
 
 use Domain\Common\RawString;
 use Domain\DiscordBot\BotCommand;
+use Domain\Exception\InvalidArgumentException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -76,5 +77,12 @@ class BotCommandTest extends TestCase
                 BotCommand::MEDICATION,
             ]
         ];
+    }
+
+    public function testMakeFromDisplayNameFailure()
+    {
+        $command = '高田憂希';
+        $this->expectException(InvalidArgumentException::class);
+        BotCommand::makeFromDisplayName($command);
     }
 }
