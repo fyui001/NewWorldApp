@@ -48,7 +48,7 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         return new MedicationHistoryList($collection->map(function ($model) {
             /** @var $model MedicationHistoryModel */
             return $model->toDomain();
-        })->toarray());
+        })->toArray());
     }
 
     public function create(Id $userId, DrugId $drugId, MedicationHistoryAmount $amount): MedicationHistory
