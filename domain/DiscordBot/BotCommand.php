@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\DiscordBot;
 
+use Domain\Base\BaseEnum;
 use Domain\Common\RawString;
 use Domain\DiscordBot\CommandArgument\MedicationCommandArgument;
 use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
 use Domain\Exception\InvalidArgumentException;
 
-enum BotCommand: string
+enum BotCommand: string implements BaseEnum
 {
     case HELLO = 'hello';
     case REGISTER_DRUG = 'registerDrug';
@@ -24,9 +25,9 @@ enum BotCommand: string
         };
     }
 
-    public function getValue(): string
+    public function getValue(): RawString
     {
-        return $this->value;
+        return new RawString($this->value);
     }
 
     public static function makeFromDisplayName(string $displayName): self
@@ -45,7 +46,7 @@ enum BotCommand: string
     }
 
     public function getCommandArgumentClass(array $commandArgs)
-    {
+    : RegisterDrugCommandArgument|MedicationCommandArgument {
         return match ($this) {
             self::REGISTER_DRUG => new RegisterDrugCommandArgument($commandArgs),
             self::MEDICATION => new MedicationCommandArgument($commandArgs),

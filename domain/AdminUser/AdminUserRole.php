@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\AdminUser;
 
 use Domain\Base\BaseEnum;
-use Domain\Base\BaseValue;
 use Domain\Common\ListValue;
 use Domain\Common\RawInteger;
 use Domain\Common\RawString;
@@ -16,7 +15,7 @@ enum AdminUserRole: int implements BaseEnum
     case ROLE_SYSTEM = 1;
     case ROLE_OPERATOR = 2;
 
-    public function displayName(): BaseValue
+    public function displayName(): RawString
     {
         return match($this) {
             self::ROLE_SYSTEM => new RawString('システム管理者'),
