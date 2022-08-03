@@ -10,8 +10,6 @@ RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 ## appliation
 FROM php:8.1-fpm
 
-ARG TZ
-
 COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /code
