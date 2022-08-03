@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Domain\Common\CreatedAt;
+use Domain\Common\UpdatedAt;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,8 +23,8 @@ class UsersSeeder extends Seeder
             'icon_url' => '',
             'password' => Hash::make('hogehoge'),
             'status' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => CreatedAt::now()->getSqlTimeStamp(),
+            'updated_at' => UpdatedAt::now()->getSqlTimeStamp(),
         ]);
     }
 }
