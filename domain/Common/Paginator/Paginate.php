@@ -41,7 +41,7 @@ class Paginate
             return new Offset(0);
         }
 
-        return new Offset($this->page->getRawValue() * $this->perPage->getRawValue() - 1);
+        return new Offset(($this->page->getRawValue() - 1) * $this->perPage->getRawValue());
     }
 
     public function getLimit(): Limit

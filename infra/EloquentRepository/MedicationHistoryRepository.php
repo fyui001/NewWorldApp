@@ -12,6 +12,7 @@ use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\MedicationHistoryCount;
 use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\MedicationHistory\MedicationHistoryList;
 use Domain\MedicationHistory\MedicationHistoryRepository as MedicationHistoryRepositoryInterface;
@@ -37,6 +38,12 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         return new MedicationHistoryList($collection->map(function(MedicationHistoryModel $model) {
             return $model->toDomain();
         })->toArray());
+    }
+
+    public function getCount(): MedicationHistoryCount
+    {
+        $query = MedicationHistoryModel::query();
+        return new MedicationHistoryCount($query->count());
     }
 
     public function getCountMedicationTake(DrugId $drugId): RawPositiveInteger
