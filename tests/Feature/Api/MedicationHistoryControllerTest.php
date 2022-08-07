@@ -28,8 +28,8 @@ class MedicationHistoryControllerTest extends TestCase
         $this->userLogin();
 
         $params = [
-            'user_id' => $this->medicationHistory->getUserId()->getId()->getRawValue(),
-            'drug_name' => $this->medicationHistory->getDrugId()->getName()->getRawValue(),
+            'user_id' => $this->medicationHistory->getUserId()->getRawValue(),
+            'drug_name' => $this->drug->getName()->getRawValue(),
             'amount' => $this->medicationHistory->getAmount()->getRawValue(),
         ];
 
@@ -41,9 +41,10 @@ class MedicationHistoryControllerTest extends TestCase
             'data' => (
                 new MedicationHistory(
                     new MedicationHistoryId(($this->medicationHistory->getId()->getRawValue()) + 1),
-                    $this->user,
-                    $this->drug,
+                    $this->user->getId(),
+                    $this->drug->getId(),
                     $this->medicationHistory->getAmount(),
+                    $this->medicationHistory->getCreatedAt(),
                 )
             )->toArray(),
         ];

@@ -8,6 +8,7 @@ use App\DataTransfer\MedicationHistory\MedicationHistoryDetail;
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
 use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
 use Domain\Common\RawPassword;
+use Domain\Drug\DrugDomainService;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
@@ -22,15 +23,11 @@ use App\Services\Interfaces\UserServiceInterface;
 
 class UserService extends AppService implements UserServiceInterface
 {
-    private UserDomainService $userDomainService;
-    private MedicationHistoryDomainService $medicationHistoryDomainService;
-
     public function __construct(
-        UserDomainService $userDomainService,
-        MedicationHistoryDomainService $medicationHistoryDomainService,
+        private UserDomainService $userDomainService,
+        private MedicationHistoryDomainService $medicationHistoryDomainService,
+        private DrugDomainService $drugDomainService,
     ) {
-        $this->userDomainService = $userDomainService;
-        $this->medicationHistoryDomainService = $medicationHistoryDomainService;
     }
 
     /**
@@ -185,6 +182,8 @@ class UserService extends AppService implements UserServiceInterface
 
     private function buildDetail(MedicationHistory $medicationHistory): MedicationHistoryDetail
     {
-        return new MedicationHistoryDetail($medicationHistory);
+        $user = $this->userDomainService->getUserById($medicationHistory->getUserId());
+        $drug = $this->drugDomainService->show($medicationHistory->getDrugId());
+        return new MedicationHistoryDetail($medicationHistory, $user, $drug);
     }
 }
