@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
+use App\Http\Requests\Admin\AdminRequest;
+use Domain\Common\Paginator\Paginate;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\MedicationHistory;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
@@ -27,9 +29,14 @@ class MedicationHistoryController extends AppController
      *
      * @return View
      */
-    public function index(): View
+    public function index(AdminRequest $request): View
     {
-        $medicationHistories = $this->medicationHistoryService->getMedicationHistories();
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 20);
+
+        $paginate = Paginate::make((int)$page, (int)$perPage);
+
+        $medicationHistories = $this->medicationHistoryService->getMedicationHistoryPaginator($paginate);
 
         return view('medication_histories.index', compact('medicationHistories'));
     }

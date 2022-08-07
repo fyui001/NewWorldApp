@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
+use Domain\Common\OrderKey;
+use Domain\Common\Paginator\Paginate;
 use Domain\Common\RawPositiveInteger;
 use Domain\Drug\DrugId;
 use Domain\Exception\LogicException;
@@ -14,8 +16,6 @@ use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\MedicationHistory\MedicationHistoryList;
 use Domain\MedicationHistory\MedicationHistoryRepository as MedicationHistoryRepositoryInterface;
 use Domain\User\Id;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 
 class MedicationHistoryRepository implements MedicationHistoryRepositoryInterface
@@ -25,9 +25,18 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         'user',
     ];
 
-    public function getPaginator(): LengthAwarePaginator
+    public function getPaginator(Paginate $paginate): MedicationHistoryList
     {
-        return MedicationHistoryModel::sortable()->with(self::WITH_MODEL)->paginate(15);
+        $builder = MedicationHistoryModel::with(self::WITH_MODEL)
+            ->orderBy('id', OrderKey::DESC->getValue()->getRawValue())
+            ->limit($paginate->getLimit()->getRawValue())
+            ->offset($paginate->offset()->getRawValue());
+
+        $collection = $builder->get();
+
+        return new MedicationHistoryList($collection->map(function(MedicationHistoryModel $model) {
+            return $model->toDomain();
+        })->toArray());
     }
 
     public function getCountMedicationTake(DrugId $drugId): RawPositiveInteger
@@ -42,11 +51,10 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         $builder = MedicationHistoryModel::where([
             'user_id' => $userId->getRawValue()
         ]);
-        /* @var $collection Collection */
+
         $collection = $builder->get();
 
-        return new MedicationHistoryList($collection->map(function ($model) {
-            /** @var $model MedicationHistoryModel */
+        return new MedicationHistoryList($collection->map(function (MedicationHistoryModel $model) {
             return $model->toDomain();
         })->toArray());
     }

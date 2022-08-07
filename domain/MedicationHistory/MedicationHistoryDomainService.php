@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Domain\MedicationHistory;
 
 use Courage\CoInt\CoPositiveInteger;
+use Domain\Common\Paginator\Paginate;
 use Domain\Drug\DrugId;
 use Domain\User\Id;
 use Domain\User\UserDomainService;
 use Domain\User\UserId;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class MedicationHistoryDomainService
 {
@@ -19,9 +19,9 @@ class MedicationHistoryDomainService
     ) {
     }
 
-    public function getPaginate(): LengthAwarePaginator
+    public function getPaginate(Paginate $paginate): MedicationHistoryList
     {
-        return $this->medicationHistoryRepository->getPaginator();
+        return $this->medicationHistoryRepository->getPaginator($paginate);
     }
 
     public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger

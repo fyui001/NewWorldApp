@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\Parts\Embed\Embed;
+use Domain\Drug\Drug;
 use Domain\MedicationHistory\MedicationHistory;
 
 class MedicationHistoryHelper
@@ -18,7 +19,7 @@ class MedicationHistoryHelper
     {
     }
 
-    public function toMedicationHistoryCreatedEmbed(MedicationHistory $medicationHistory): Embed
+    public function toMedicationHistoryCreatedEmbed(MedicationHistory $medicationHistory, Drug $drug): Embed
     {
         $userAvatar = $this->message->user->getAvatarAttribute('png');
         $botAvatar = $this->discord->user->getAvatarAttribute('png');
@@ -26,11 +27,11 @@ class MedicationHistoryHelper
         $embed->setTitle($this->title);
         $embed->setDescription(
             '<@'. $this->message->user->id . '>' . ' took '
-            . $medicationHistory->getDrug()->getName()->getRawValue()
+            . $drug->getName()->getRawValue()
             . ' '
             . $medicationHistory->getAmount()->toFloat()
-            . ' mg at '
-            . Carbon::now()->format('H:m:s')
+            . 'mg at '
+            . $medicationHistory->getCreatedAt()->getDetail()
         );
         $embed->setColor('#eac645');
         $embed->setAuthor($this->message->user->username, $userAvatar);
