@@ -13,6 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface MedicationHistoryRepository
 {
     public function getPaginator(Paginate $paginate): MedicationHistoryList;
+    public function getCount(): MedicationHistoryCount;
     public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger;
     public function getListByUserId(Id $userId): MedicationHistoryList;
     public function create(

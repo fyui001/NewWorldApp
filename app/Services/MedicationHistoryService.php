@@ -13,6 +13,7 @@ use Domain\Drug\DrugName;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryAmount;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
+use Domain\MedicationHistory\MedicationHistoryRepository;
 use Domain\User\Id;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
@@ -24,6 +25,7 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
         private MedicationHistoryDomainService $medicationHistoryDomainService,
         private DrugDomainService $drugDomainService,
         private UserDomainService $userDomainService,
+        private MedicationHistoryRepository $medicationHistoryRepository,
     ){
     }
 
@@ -46,7 +48,11 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
             $medicationHistoryDetailList[$key] = new MedicationHistoryDetail($item, $user, $drug);
         }
 
-        return new MedicationHistoryDetailPaginator($medicationHistoryDetailList, $paginate);
+        return new MedicationHistoryDetailPaginator(
+            $medicationHistoryDetailList,
+            $this->medicationHistoryRepository->getCount(),
+            $paginate,
+        );
     }
 
     public function createMedicationHistory(Id $userId, DrugName $drugName, MedicationHistoryAmount $amount): array

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Common\Paginator;
 
-use Domain\Base\BaseIntegerValue;
+use Domain\Base\BasePositiveInteger;
 
-class Limit extends BaseIntegerValue
+class Limit extends BasePositiveInteger
 {
 }
