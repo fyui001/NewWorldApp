@@ -61,7 +61,7 @@ class DiscordBotClient
 
                 $removedCommandPrefix = mb_convert_kana($removedCommandPrefix, 'rsa');
                 $commandName = mb_strstr($removedCommandPrefix, ' ', true) ?: $removedCommandPrefix;
-                $botCommandName = BotCommand::makeFromDisplayName($commandName)->getValue();
+                $botCommandName = BotCommand::makeFromDisplayName($commandName)->getValue()->getRawValue();
 
                 if (mb_strstr($removedCommandPrefix, ' ', true) || mb_strstr($removedCommandPrefix, '　', true)) {
                     $commandContents += $this->argSplitter($removedCommandPrefix);
