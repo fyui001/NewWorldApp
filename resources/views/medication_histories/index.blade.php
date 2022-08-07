@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th class="text-center">@sortablelink('id', '#')</th>
+        <th>#</th>
         <th>服薬者</th>
         <th>薬物名</th>
         <th>量(mg)</th>
@@ -22,15 +22,15 @@
     </tr>
     </thead>
     @foreach($medicationHistories as $item)
-        <?php /** @var Infra\EloquentModels\MedicationHistory $item */ ?>
+        <?php /** @var App\DataTransfer\MedicationHistory\MedicationHistoryDetail $item */ ?>
     <tr>
-        <td>{{ $item->toDomain()->getId()->getRawValue() }}</td>
-        <td>{{ $item->toDomain()->getUser()->getName()->getRawValue() }}</td>
-        <td>{{ $item->toDomain()->getDrug()->getName()->getRawValue() }}</td>
-        <td>{{ $item->toDomain()->getAmount()->getRawValue() }}</td>
-        <td>{{ $item->created_at }}</td>
+        <td>{{ $item->getMedicationHistory()->getId()->getRawValue() }}</td>
+        <td>{{ $item->getUser()->getName()->getRawValue() }}</td>
+        <td>{{ $item->getDrug()->getName() }}</td>
+        <td>{{ $item->getMedicationHistory()->getAmount()->getRawValue() }}</td>
+        <td>{{ $item->getMedicationHistory()->getCreatedAt()->getDetail() }}</td>
         <td class="td-actions text-right">
-            <a href="{{ route('admin.medication_histories.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+            <a href="{{ route('admin.medication_histories.edit', $item->getMedicationHistory()->getId()->getRawValue()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                 <span class="oi oi-pencil"></span>
             </a>
         </td>
@@ -38,6 +38,6 @@
     @endforeach
 </table>
 <div class="box-footer clearfix">
-    {!! $medicationHistories->appends(request()->query())->links('pagination::bootstrap-4') !!}
+    {{ $medicationHistories->withPath('/admin/medication_histories')->links('pagination::bootstrap-4') }}
 </div>
 @endsection

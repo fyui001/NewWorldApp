@@ -2,26 +2,19 @@
 
 namespace Domain\MedicationHistory;
 
-use Domain\Drug\Drug;
-use Domain\User\User;
+use Domain\Common\CreatedAt;
+use Domain\Drug\DrugId;
+use Domain\User\Id as UserId;
 
 class MedicationHistory
 {
-    private MedicationHistoryId $id;
-    private User $user;
-    private Drug $drug;
-    private MedicationHistoryAmount $amount;
-
     public function __construct(
-        MedicationHistoryId $id,
-        User $user,
-        Drug $drug,
-        MedicationHistoryAmount $amount
+        private MedicationHistoryId $id,
+        private UserId $userId,
+        private DrugId $drugId,
+        private MedicationHistoryAmount $amount,
+        private CreatedAt $createdAt,
     ) {
-        $this->id = $id;
-        $this->user = $user;
-        $this->drug = $drug;
-        $this->amount = $amount;
     }
 
     public function getId(): MedicationHistoryId
@@ -29,14 +22,14 @@ class MedicationHistory
         return $this->id;
     }
 
-    public function getUser(): User
+    public function getUserId(): UserId
     {
-        return $this->user;
+        return $this->userId;
     }
 
-    public function getDrug(): Drug
+    public function getDrugId(): DrugId
     {
-        return $this->drug;
+        return $this->drugId;
     }
 
     public function getAmount(): MedicationHistoryAmount
@@ -44,13 +37,19 @@ class MedicationHistory
         return $this->amount;
     }
 
+    public function getCreatedAt(): CreatedAt
+    {
+        return $this->createdAt;
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->getId()->getRawValue(),
-            'user' => $this->getUser()->toArray(),
-            'drug' => $this->getDrug()->toArray(),
+            'userId' => $this->getUserId()->getRawValue(),
+            'drugId' => $this->getDrugId()->getRawValue(),
             'amount' => $this->getAmount()->getRawValue(),
+            'createdAt' => $this->createdAt->getRawValue(),
         ];
     }
 }

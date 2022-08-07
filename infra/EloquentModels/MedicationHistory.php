@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
+use Domain\Common\CreatedAt;
 use Domain\Drug\Drug as DrugDomain;
 use Domain\Drug\DrugId;
 use Domain\Drug\DrugName;
@@ -55,20 +56,10 @@ class MedicationHistory extends AppModel
     {
         return new MedicationHistoryDomain(
             new MedicationHistoryId((int)$this->id),
-            new UserDomain(
-                new Id((int)$this->user->id),
-                new UserId((int)$this->user->user_id),
-                new UserName($this->user->name),
-                new UserHashedPassword($this->user->password),
-                new IconUrl($this->user->icon_url),
-                UserStatus::tryFrom((int)$this->user->status),
-            ),
-            new DrugDomain(
-                new DrugId((int)$this->drug->id),
-                new DrugName($this->drug->drug_name),
-                new DrugUrl($this->drug->url),
-            ),
-            new MedicationHistoryAmount((float)$this->amount)
+            new Id((int)$this->user->id),
+            new DrugId((int)$this->drug->id),
+            new MedicationHistoryAmount((float)$this->amount),
+            CreatedAt::forStringTime((string)$this->created_at),
         );
     }
 }
