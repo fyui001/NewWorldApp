@@ -20,7 +20,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'user_id' => '19890308',
             'name' => '松井恵理子',
-            'icon_url' => '',
+            'icon_url' => 'http://test.test',
             'password' => Hash::make('hogehoge'),
             'status' => 1,
             'created_at' => CreatedAt::now()->getSqlTimeStamp(),
