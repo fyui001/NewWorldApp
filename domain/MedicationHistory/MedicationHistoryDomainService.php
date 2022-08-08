@@ -37,7 +37,7 @@ class MedicationHistoryDomainService
     public function create(
         Id $userId,
         DrugId $drugId,
-        MedicationHistoryAmount $amount
+        Amount $amount
     ): MedicationHistory {
         return $this->medicationHistoryRepository->create($userId, $drugId, $amount);
     }
@@ -45,7 +45,7 @@ class MedicationHistoryDomainService
     public function createByUserId(
         UserId $userId,
         DrugId $drugId,
-        MedicationHistoryAmount $amount
+        Amount $amount
     ): MedicationHistory {
         $user = $this->userDomainService->getUserByUserId($userId);
         return $this->medicationHistoryRepository->create($user->getId(), $drugId, $amount);

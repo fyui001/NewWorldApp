@@ -18,7 +18,7 @@ interface MedicationHistoryRepository
     public function create(
         Id $userId,
         DrugId $drugId,
-        MedicationHistoryAmount $amount
+        Amount $amount
     ): MedicationHistory;
     public function update(MedicationHistory $medicationHistory): MedicationHistory;
     public function delete(MedicationHistoryId $id): RawPositiveInteger;

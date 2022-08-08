@@ -10,7 +10,7 @@ use Domain\Drug\DrugId;
 use Domain\Drug\DrugName;
 use Domain\Drug\DrugUrl;
 use Domain\MedicationHistory\MedicationHistory as MedicationHistoryDomain;
-use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\Amount;
 use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\User\IconUrl;
 use Domain\User\Id;
@@ -58,7 +58,7 @@ class MedicationHistory extends AppModel
             new MedicationHistoryId((int)$this->id),
             new Id((int)$this->user->id),
             new DrugId((int)$this->drug->id),
-            new MedicationHistoryAmount((float)$this->amount),
+            new Amount((float)$this->amount),
             CreatedAt::forStringTime((string)$this->created_at),
         );
     }

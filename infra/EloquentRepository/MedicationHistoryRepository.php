@@ -11,7 +11,7 @@ use Domain\Drug\DrugId;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
-use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\Amount;
 use Domain\MedicationHistory\MedicationHistoryCount;
 use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\MedicationHistory\MedicationHistoryList;
@@ -66,7 +66,7 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         })->toArray());
     }
 
-    public function create(Id $userId, DrugId $drugId, MedicationHistoryAmount $amount): MedicationHistory
+    public function create(Id $userId, DrugId $drugId, Amount $amount): MedicationHistory
     {
         $model = new MedicationHistoryModel();
 

@@ -11,7 +11,7 @@ use Domain\Common\Paginator\Paginate;
 use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugName;
 use Domain\MedicationHistory\MedicationHistory;
-use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\Amount;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\MedicationHistory\MedicationHistoryRepository;
 use Domain\User\Id;
@@ -55,7 +55,7 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
         );
     }
 
-    public function createMedicationHistory(Id $userId, DrugName $drugName, MedicationHistoryAmount $amount): array
+    public function createMedicationHistory(Id $userId, DrugName $drugName, Amount $amount): array
     {
         $drug = $this->drugDomainService->findDrugByName($drugName);
         $result = $this->medicationHistoryDomainService->create($userId, $drug->getId(), $amount);
