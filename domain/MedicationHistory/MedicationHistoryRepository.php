@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Domain\MedicationHistory;
 
-use Courage\CoInt\CoPositiveInteger;
 use Domain\Common\Paginator\Paginate;
+use Domain\Common\RawPositiveInteger;
 use Domain\Drug\DrugId;
 use Domain\User\Id;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 interface MedicationHistoryRepository
 {
     public function getPaginator(Paginate $paginate): MedicationHistoryList;
     public function getCount(): MedicationHistoryCount;
-    public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger;
+    public function getCountMedicationTake(DrugId $drugId): RawPositiveInteger;
     public function getListByUserId(Id $userId): MedicationHistoryList;
     public function create(
         Id $userId,
@@ -22,5 +21,5 @@ interface MedicationHistoryRepository
         MedicationHistoryAmount $amount
     ): MedicationHistory;
     public function update(MedicationHistory $medicationHistory): MedicationHistory;
-    public function delete(MedicationHistoryId $id): CoPositiveInteger;
+    public function delete(MedicationHistoryId $id): RawPositiveInteger;
 }
