@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\MedicationHistories;
 
 use App\Http\Requests\Request as AppRequest;
 use Domain\Drug\DrugName;
-use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\Amount;
 use Domain\User\Id as UserId;
 
 class CreateMedicationHistoryRequest extends AppRequest
@@ -54,8 +54,8 @@ class CreateMedicationHistoryRequest extends AppRequest
         return new DrugName($this->input('drug_name'));
     }
 
-    public function getAmount(): MedicationHistoryAmount
+    public function getAmount(): Amount
     {
-        return new MedicationHistoryAmount((float)$this->input('amount'));
+        return new Amount((float)$this->input('amount'));
     }
 }

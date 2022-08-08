@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\MedicationHistory;
 
-use Courage\CoInt\CoPositiveInteger;
 use Domain\Common\Paginator\Paginate;
+use Domain\Common\RawPositiveInteger;
 use Domain\Drug\DrugId;
 use Domain\User\Id;
 use Domain\User\UserDomainService;
@@ -24,7 +24,7 @@ class MedicationHistoryDomainService
         return $this->medicationHistoryRepository->getPaginator($paginate);
     }
 
-    public function getCountMedicationTake(DrugId $drugId): CoPositiveInteger
+    public function getCountMedicationTake(DrugId $drugId): RawPositiveInteger
     {
         return $this->medicationHistoryRepository->getCountMedicationTake($drugId);
     }
@@ -37,7 +37,7 @@ class MedicationHistoryDomainService
     public function create(
         Id $userId,
         DrugId $drugId,
-        MedicationHistoryAmount $amount
+        Amount $amount
     ): MedicationHistory {
         return $this->medicationHistoryRepository->create($userId, $drugId, $amount);
     }
@@ -45,7 +45,7 @@ class MedicationHistoryDomainService
     public function createByUserId(
         UserId $userId,
         DrugId $drugId,
-        MedicationHistoryAmount $amount
+        Amount $amount
     ): MedicationHistory {
         $user = $this->userDomainService->getUserByUserId($userId);
         return $this->medicationHistoryRepository->create($user->getId(), $drugId, $amount);
@@ -56,7 +56,7 @@ class MedicationHistoryDomainService
         return $this->medicationHistoryRepository->update($medicationHistory);
     }
 
-    public function delete(MedicationHistoryId $id): CoPositiveInteger
+    public function delete(MedicationHistoryId $id): RawPositiveInteger
     {
         return $this->medicationHistoryRepository->delete($id);
     }

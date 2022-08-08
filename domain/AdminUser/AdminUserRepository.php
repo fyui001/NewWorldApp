@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Courage\CoInt\CoPositiveInteger;
+use Domain\Common\RawPositiveInteger;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface AdminUserRepository
@@ -20,5 +20,5 @@ interface AdminUserRepository
         AdminUserStatus $adminUserStatus
     ): AdminUser;
     public function update(AdminUser $adminUser): AdminUser;
-    public function delete(AdminId $adminId): CoPositiveInteger;
+    public function delete(AdminId $adminId): RawPositiveInteger;
 }

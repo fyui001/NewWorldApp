@@ -68,9 +68,28 @@ class UserControllerTest extends TestCase
 
         $response = $this->json('GET', route('api.users.show'));
 
+        $expectData = [
+            'user' => [
+                'id' => $this->user->getId()->getRawValue(),
+                'userId' => $this->user->getUserId()->getRawValue(),
+                'name' => $this->user->getName()->getRawValue(),
+                'iconUrl' => $this->user->getIconUrl()->getRawValue(),
+                'status' => $this->user->getStatus()->rawString()->getRawValue(),
+                'medicationHistories' => [
+                    [
+                        'id' => $this->medicationHistory->getId()->getRawValue(),
+                        'drug' => $this->drug->toArray(),
+                        'amount' => $this->medicationHistory->getAmount()->getRawValue(),
+                        'createdAt' => $this->medicationHistory->getCreatedAt()->getDetail(),
+                    ],
+                ],
+            ],
+        ];
+
         $response->assertStatus(200)
             ->assertJson([
                 'status' => true,
+                'data' => $expectData,
             ]);
     }
 

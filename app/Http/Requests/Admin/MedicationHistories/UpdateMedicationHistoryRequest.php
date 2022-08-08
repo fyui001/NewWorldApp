@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\MedicationHistories;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\MedicationHistory\MedicationHistoryAmount;
+use Domain\MedicationHistory\Amount;
 use Infra\EloquentModels\MedicationHistory;
 
 class UpdateMedicationHistoryRequest extends AppRequest
@@ -40,8 +40,8 @@ class UpdateMedicationHistoryRequest extends AppRequest
         ];
     }
 
-    public function getAmount(): MedicationHistoryAmount
+    public function getAmount(): Amount
     {
-        return new MedicationHistoryAmount((float)$this->input('amount'));
+        return new Amount((float)$this->input('amount'));
     }
 }

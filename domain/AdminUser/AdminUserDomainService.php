@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Courage\CoInt\CoPositiveInteger;
+use Domain\Common\RawPositiveInteger;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminUserDomainService
@@ -42,7 +42,7 @@ class AdminUserDomainService
         return $this->adminUserRepository->update($adminUser);
     }
 
-    public function deleteAdminUser(AdminId $adminId): CoPositiveInteger
+    public function deleteAdminUser(AdminId $adminId): RawPositiveInteger
     {
         return $this->adminUserRepository->delete($adminId);
     }

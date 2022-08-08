@@ -8,10 +8,13 @@ use App\Auth\AdminUser;
 use App\Auth\User;
 use Domain\AdminUser\AdminUser as AdminUserDomain;
 use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 use Domain\Drug\Drug;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\User\User as UserDomain;
 use Domain\User\UserId;
+use Domain\User\UserStatus;
 use Illuminate\Support\Facades\Hash;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
 use Infra\EloquentModels\Drug as DrugModel;
@@ -74,8 +77,8 @@ class FeatureTestCase extends TestCase
         $model->user_id = 'takada_yuki';
         $model->password = Hash::make('takada_yuki0316');
         $model->name = '高田憂希';
-        $model->role = 1;
-        $model->status = 1;
+        $model->role = AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue();
+        $model->status = AdminUserStatus::STATUS_VALID->getValue()->getRawValue();
 
         $model->save();
 
@@ -117,7 +120,7 @@ class FeatureTestCase extends TestCase
         $model->name = '松井恵理子';
         $model->icon_url = 'https://example.com';
         $model->password = Hash::make('hogehoge');
-        $model->status = 1;
+        $model->status = UserStatus::STATUS_VALID->getValue()->getRawValue();
 
         $model->save();
 

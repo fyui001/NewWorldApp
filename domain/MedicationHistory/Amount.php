@@ -6,7 +6,7 @@ namespace Domain\MedicationHistory;
 
 use Courage\CoFloat\CoPositiveFloat;
 
-class MedicationHistoryAmount extends CoPositiveFloat
+class Amount extends CoPositiveFloat
 {
     public function __construct(float $value)
     {

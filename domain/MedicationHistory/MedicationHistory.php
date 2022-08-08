@@ -10,10 +10,10 @@ class MedicationHistory
 {
     public function __construct(
         private MedicationHistoryId $id,
-        private UserId $userId,
-        private DrugId $drugId,
-        private MedicationHistoryAmount $amount,
-        private CreatedAt $createdAt,
+        private UserId              $userId,
+        private DrugId              $drugId,
+        private Amount              $amount,
+        private CreatedAt           $createdAt,
     ) {
     }
 
@@ -32,7 +32,7 @@ class MedicationHistory
         return $this->drugId;
     }
 
-    public function getAmount(): MedicationHistoryAmount
+    public function getAmount(): Amount
     {
         return $this->amount;
     }
