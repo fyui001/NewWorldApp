@@ -26,7 +26,7 @@
     <tr>
         <td>{{ $item->getMedicationHistory()->getId()->getRawValue() }}</td>
         <td>{{ $item->getUser()->getName()->getRawValue() }}</td>
-        <td>{{ $item->getDrug()->getName() }}</td>
+        <td>{{ $item->getDrug()->getName()->getRawValue()}}</td>
         <td>{{ $item->getMedicationHistory()->getAmount()->getRawValue() }}</td>
         <td>{{ $item->getMedicationHistory()->getCreatedAt()->getDetail() }}</td>
         <td class="td-actions text-right">
