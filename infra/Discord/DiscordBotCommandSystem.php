@@ -8,8 +8,8 @@ use Discord\Parts\Channel\Message;
 use Domain\Common\RawString;
 use Domain\DiscordBot\CommandArgument\MedicationCommandArgument;
 use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
-use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugName;
+use Domain\Drug\DrugRepository;
 use Domain\Drug\DrugUrl;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
@@ -27,7 +27,7 @@ class DiscordBotCommandSystem
     private MessageSender $messageSender;
 
     public function __construct (
-        private DrugDomainService $drugDomainService,
+        private DrugRepository $drugRepository,
         private MedicationHistoryDomainService $medicationHistoryDomainService,
     ) {
         $this->wikiApiUrl = new RawString('https://ja.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=');
@@ -67,7 +67,7 @@ class DiscordBotCommandSystem
 
         try {
             $url = new DrugUrl($this->wikiViewPageUrl->getRawValue() . $drugName->getRawValue());
-            $drug = $this->drugDomainService->createDrug(
+            $drug = $this->drugRepository->create(
                 $drugName,
                 $url,
             );
@@ -92,7 +92,7 @@ class DiscordBotCommandSystem
 
         $medicationHistoryHelper = new MedicationHistoryHelper($discord, $message);
 
-        $drug = $this->drugDomainService->findDrugByName(
+        $drug = $this->drugRepository->findDrugByName(
             $args->getDrugName()
         );
 
@@ -104,7 +104,7 @@ class DiscordBotCommandSystem
             );
 
             $this->messageSender->sendEmbed(
-                $medicationHistoryHelper->toMedicationHistoryCreatedEmbed($medicationHistory),
+                $medicationHistoryHelper->toMedicationHistoryCreatedEmbed($medicationHistory, $drug),
             );
         } catch (InvalidArgumentException | NotFoundException $e) {
             Log::error($e->getMessage());
