@@ -6,13 +6,16 @@ namespace App\Services;
 
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetail;
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
-use App\DataTransfer\User\UserAndMedicationHistoryDetailList;
+use App\DataTransfer\User\UserMedicationHistory;
+use App\DataTransfer\User\UserMedicationHistoryDetailList;
+use App\DataTransfer\User\UserMedicationHistoryList;
 use Domain\Common\RawPassword;
 use Domain\Drug\DrugDomainService;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\User\Id;
+use Domain\User\User;
 use Domain\User\UserDomainService;
 use Domain\User\UserHashedPassword;
 use Domain\User\UserId;
@@ -33,39 +36,26 @@ class UserService extends AppService implements UserServiceInterface
     /**
      * ユーザー情報取得
      *
+     * @param User $user
      * @return array
      */
-    public function getUser(): array
+    public function getUserDetail(User $user): array
     {
-        $user = Auth::guard('api')->user();
-
-        if (empty($user)) {
-            return [
-                'status' => false,
-                'errors' => [
-                    'key' => 'unauthorized',
-                ],
-                'data' => null,
-            ];
-        }
-
         try {
-            $user = $this->userDomainService->getUserById(
-                new Id($user->getAuthIdentifier())
-            );
+            $user = $this->userDomainService->getUserById($user->getId());
 
             $medicationHistoryList = $this->medicationHistoryDomainService->getListByUserId(
                 $user->getId(),
             );
 
-            $medicationHistoryDetailList = new MedicationHistoryDetailList([]);
+            $userMedicationHistoryList = new UserMedicationHistoryList([]);
             foreach ($medicationHistoryList as $key => $medicationHistory) {
-                $medicationHistoryDetailList[$key] = $this->buildDetail($medicationHistory)->toArray();
+                $userMedicationHistoryList[$key] = $this->buildDetail($medicationHistory);
             }
 
-            $userAndMedicationHistoryDetailList = new UserAndMedicationHistoryDetailList(
+            $userAndMedicationHistoryDetailList = new UserMedicationHistoryDetailList(
                 $user,
-                $medicationHistoryDetailList,
+                $userMedicationHistoryList,
             );
 
             return [
@@ -180,10 +170,9 @@ class UserService extends AppService implements UserServiceInterface
         }
     }
 
-    private function buildDetail(MedicationHistory $medicationHistory): MedicationHistoryDetail
+    private function buildDetail(MedicationHistory $medicationHistory): UserMedicationHistory
     {
-        $user = $this->userDomainService->getUserById($medicationHistory->getUserId());
         $drug = $this->drugDomainService->show($medicationHistory->getDrugId());
-        return new MedicationHistoryDetail($medicationHistory, $user, $drug);
+        return new UserMedicationHistory($medicationHistory, $drug);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\Users\UserDetailRequest;
 use App\Http\Responder\ApiErrorResponder;
 use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserRegisterRequest;
@@ -24,12 +25,23 @@ class UserController
     /**
      * ユーザー情報取得
      *
+     * @param UserDetailRequest $request
      * @return JsonResponse
      */
-    public function show(): JsonResponse
+    public function show(UserDetailRequest $request): JsonResponse
     {
+        $user = $request->loginUser();
 
-        $response = $this->userService->getUser();
+        if (!$user) {
+            $apiErrorResponder = new ApiErrorResponder('unauthorized');
+            $response = $apiErrorResponder->getResponse();
+            return response()->json(
+                $response['body'],
+                $response['response_code'],
+            );
+        }
+
+        $response = $this->userService->getUserDetail($user);
 
         if (!$response['status']) {
             if (!empty($response['errors'])) {
