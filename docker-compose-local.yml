@@ -57,18 +57,6 @@ services:
       - "3306:3306"
     labels:
       - "traefik.enable=false"
-  memcached:
-    image: memcached:latest
-    ports:
-      - "11211:11211"
-    volumes:
-      - memcached:/var/lib/memcached:delegated
-    networks:
-      - default
-      - docker_default
-    labels:
-      - "traefik.enable=false"
-
 networks:
   docker_default:
     name: docker_default
@@ -76,5 +64,4 @@ networks:
 volumes:
   php-vendor:
   node-modules:
-  memcached:
   db-store:
