@@ -20,7 +20,7 @@ jobs:
       - name: dokcer-compose up
         run: |
           cp .env.example .env
-          docker-compose up -d
+          mutagen-compose
       - name: composer install
         run: |
           docker-compose exec -T app bash -c "composer install --no-progress --prefer-dist --optimize-autoloader"
