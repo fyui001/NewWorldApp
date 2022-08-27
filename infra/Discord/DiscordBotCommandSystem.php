@@ -16,6 +16,7 @@ use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\User\UserId;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Infra\Discord\EmbedHelper\CommandNotFoundHelper;
 use Infra\Discord\EmbedHelper\DrugRegisterHelper;
 use Infra\Discord\EmbedHelper\HelloHelper;
 use Infra\Discord\EmbedHelper\MedicationHistoryHelper;
@@ -112,5 +113,15 @@ class DiscordBotCommandSystem
                 $medicationHistoryHelper->toMedicationHistoryFailedEmbed(),
             );
         }
+    }
+
+    public function commandNotFound(Discord $discord, Message $message): void
+    {
+        $this->messageSender = new MessageSender($message);
+        $commandNotFoundHelper = new CommandNotFoundHelper($discord, $message);
+
+        $embed = $commandNotFoundHelper->convertIntoDiscordEmbed();
+
+        $this->messageSender->sendEmbed($embed);
     }
 }

@@ -23,7 +23,7 @@ class DiscordBotClient
      * @var Discord
      */
     protected Discord $discord;
-    protected  Message $message;
+    protected Message $message;
 
     /**
      * This Command Prefix
