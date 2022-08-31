@@ -43,10 +43,10 @@ ide_helper:
 	@docker-compose exec app php artisan ide-helper:generate
 
 up:
-	@docker-compose up -d
+	@mutagen-compose up -d
 
 down:
-	@docker-compose down
+	@@mutagen-compose down
 
 setup:
 	@make composer_install

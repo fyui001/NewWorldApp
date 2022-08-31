@@ -78,11 +78,4 @@ class BotCommandTest extends TestCase
             ]
         ];
     }
-
-    public function testMakeFromDisplayNameFailure()
-    {
-        $command = '高田憂希';
-        $this->expectException(InvalidArgumentException::class);
-        BotCommand::makeFromDisplayName($command);
-    }
 }
