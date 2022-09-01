@@ -30,9 +30,7 @@ RUN apt update && \
     zlib1g-dev \
     libonig-dev
 
-RUN pecl install memcached && \
-    docker-php-ext-enable memcached && \
-    docker-php-ext-install bcmath intl pdo_mysql opcache bcmath
+RUN docker-php-ext-install bcmath intl pdo_mysql opcache bcmath
 
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
