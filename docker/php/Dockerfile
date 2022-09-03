@@ -14,8 +14,6 @@ COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /code
 
-RUN chmod -R 777 /code
-
 RUN apt update && \
     apt full-upgrade -y && \
     apt full-upgrade -y && \
