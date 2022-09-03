@@ -8,10 +8,14 @@ x-mutagen:
       mode: "two-way-resolved"
       ignore:
         vcs: true
+      permissions:
+        defaultFileMode: 0666
+        defaultDirectoryMode: 0777
       configurationBeta:
         permissions:
           defaultOwner: id:33
           defaultGroup: id:33
+
 
 services:
   web:
@@ -22,7 +26,9 @@ services:
       - default
       - docker_default
     volumes:
-      - code:/code
+      - type: bind
+        source: './public'
+        target: '/code/public'
       - ./docker/nginx/conf.d/local.d/default.conf:/etc/nginx/conf.d/default.conf
     environment:
       - TZ=${TZ}
@@ -40,7 +46,9 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - code:/code
+      - type: bind
+        source: '.'
+        target: '/code'
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - js
@@ -53,7 +61,7 @@ services:
       dockerfile: ./docker/js/Dockerfile
     tty: true
     volumes:
-      - .:/code:cached
+      - code:/code
       - node-modules:/code/node_modules
     labels:
       - "traefik.enable=false"
