@@ -1,8 +1,5 @@
 APP_CONTAINER_ID = `docker compose ps -q app`
 
-help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
 init:
 	@cp .env.example .env
 
@@ -46,7 +43,7 @@ up:
 	@mutagen-compose up -d
 
 down:
-	@@mutagen-compose down
+	@mutagen-compose down
 
 setup:
 	@make composer_install
@@ -58,12 +55,6 @@ setup:
 	@make test_seed
 	@make permission
 	@docker-compose exec app php artisan storage:link
-
-cp_vendor:
-	@echo '"vendor removing...'
-	@rm -rf ./vendor
-	@docker cp $(APP_CONTAINER_ID):/code/vendor ./vendor
-	@echo '"one sync vendor!'
 
 start_discord_bot:
 	@docker-compose exec app php artisan discord-bot:run
