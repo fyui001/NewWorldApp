@@ -56,8 +56,8 @@ class MedicationHistory extends AppModel
     {
         return new MedicationHistoryDomain(
             new MedicationHistoryId((int)$this->id),
-            new Id((int)$this->user->id),
-            new DrugId((int)$this->drug->id),
+            new Id((int)$this->user_id),
+            new DrugId((int)$this->drug_id),
             new Amount((float)$this->amount),
             CreatedAt::forStringTime((string)$this->created_at),
         );

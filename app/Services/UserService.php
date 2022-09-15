@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DataTransfer\Drug\DrugHashMap;
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetail;
 use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
 use App\DataTransfer\User\UserMedicationHistory;
@@ -11,6 +12,7 @@ use App\DataTransfer\User\UserMedicationHistoryDetailList;
 use App\DataTransfer\User\UserMedicationHistoryList;
 use Domain\Common\RawPassword;
 use Domain\Drug\DrugDomainService;
+use Domain\Drug\DrugList;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
@@ -49,8 +51,13 @@ class UserService extends AppService implements UserServiceInterface
             );
 
             $userMedicationHistoryList = new UserMedicationHistoryList([]);
-            foreach ($medicationHistoryList as $key => $medicationHistory) {
-                $userMedicationHistoryList[$key] = $this->buildDetail($medicationHistory);
+            $drugList = $this->drugDomainService->getDrugList();
+            $drugHashMap = new DrugHashMap($drugList);
+            foreach ($medicationHistoryList as $medicationHistory) {
+                /** @var MedicationHistory $medicationHistory */
+                $userMedicationHistoryList[
+                    (string)$medicationHistory->getId()->getRawValue()
+                ] = $this->buildDetail($medicationHistory, $drugHashMap);
             }
 
             $userAndMedicationHistoryDetailList = new UserMedicationHistoryDetailList(
@@ -170,9 +177,11 @@ class UserService extends AppService implements UserServiceInterface
         }
     }
 
-    private function buildDetail(MedicationHistory $medicationHistory): UserMedicationHistory
-    {
-        $drug = $this->drugDomainService->show($medicationHistory->getDrugId());
+    private function buildDetail(
+        MedicationHistory $medicationHistory,
+        DrugHashMap $drugHashMap,
+    ): UserMedicationHistory {
+        $drug = $drugHashMap->get((string)$medicationHistory->getDrugId()->getRawValue());
         return new UserMedicationHistory($medicationHistory, $drug);
     }
 }
