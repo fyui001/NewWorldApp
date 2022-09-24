@@ -93,11 +93,11 @@ class DiscordBotCommandSystem
 
         $medicationHistoryHelper = new MedicationHistoryHelper($discord, $message);
 
-        $drug = $this->drugRepository->findDrugByName(
-            $args->getDrugName()
-        );
-
         try {
+            $drug = $this->drugRepository->findDrugByName(
+                $args->getDrugName()
+            );
+
             $medicationHistory = $this->medicationHistoryDomainService->createByUserId(
                 new UserId($message->user->id),
                 $drug->getId(),
