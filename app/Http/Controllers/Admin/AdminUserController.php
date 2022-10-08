@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
-use Domain\AdminUser\AdminId;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\AdminUser;
@@ -31,7 +30,7 @@ class AdminUserController extends AppController
      */
     public function index(): View
     {
-        $adminUsers = $this->adminUserService->getUsers();
+        $adminUsers = $this->adminUserService->getAdminUsers();
         return view('admin_users.index', compact('adminUsers'));
     }
 
@@ -53,7 +52,14 @@ class AdminUserController extends AppController
      */
     public function store(CreateAdminUserRequest $request): RedirectResponse
     {
-        $this->adminUserService->createUser($request);
+        $this->adminUserService->createUser(
+            $request->getUserId(),
+            $request->getAdminUserRawPassword(),
+            $request->getName(),
+            $request->getRole(),
+            $request->getStatus(),
+
+        );
         return redirect(route('admin.admin_users.index'))->with('success', 'ユーザーを保存しました');
     }
 
@@ -77,7 +83,14 @@ class AdminUserController extends AppController
      */
     public function update(AdminUser $adminUser, UpdateAdminUserRequest $request): RedirectResponse
     {
-        $this->adminUserService->updateUser(new AdminId((int)$adminUser->id), $request);
+        $this->adminUserService->updateUser(
+            $adminUser->toDomain()->getId(),
+            $request->getUserId(),
+            $request->getRawPassword(),
+            $request->getName(),
+            $request->getRole(),
+            $request->getStatus(),
+        );
         return redirect(route('admin.admin_users.index'))->with(['success' => 'ユーザーを編集しました']);
     }
 
@@ -89,7 +102,7 @@ class AdminUserController extends AppController
      */
     public function destroy(AdminUser $adminUser): RedirectResponse
     {
-        $this->adminUserService->deleteUser(new AdminId((int)$adminUser->id));
+        $this->adminUserService->deleteUser($adminUser->toDomain()->getId());
         return redirect(route('admin.admin_users.index'))->with(['success' => 'ユーザーを削除しました']);
     }
 }

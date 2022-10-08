@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DataTransfer\Drug\DrugPaginator;
-use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
 use Domain\Common\Paginator\Paginate;
-use Domain\Common\RawInteger;
+use Domain\Common\RawPositiveInteger;
 use Domain\Drug\Drug;
 use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugId;
@@ -159,20 +158,25 @@ class DrugService extends AppService implements DrugServiceInterface
     /**
      * Update a drug
      *
-     * @param DrugModel $drug
-     * @param UpdateDrugRequest $request
+     * @param DrugId $drugId
+     * @param DrugName $drugName
+     * @param DrugUrl $drugUrl
      * @return array
      */
-    public function updateDrug(DrugModel $drug, UpdateDrugRequest $request): array
+    public function updateDrug(
+        DrugId $drugId,
+        DrugName $drugName,
+        DrugUrl $drugUrl,
+    ): array
     {
 
-        $drugDomain = new Drug(
-            new DrugId((int)$drug->id),
-            $request->getName(),
-            $request->getUrl()
+        $result = $this->drugDomainService->updateDrug(
+            new Drug(
+                $drugId,
+                $drugName,
+                $drugUrl,
+            )
         );
-
-        $result = $this->drugDomainService->updateDrug($drugDomain);
 
         if (!$result) {
             return [
@@ -199,14 +203,14 @@ class DrugService extends AppService implements DrugServiceInterface
      * @param DrugModel $drug
      * @return array
      */
-    public function deleteDrug(DrugModel $drug): array
+    public function deleteDrug(DrugId $drugId): array
     {
         try {
             $medicationHistories = $this->medicationHistoryDomainService->getCountMedicationTake(
-                $drug->toDomain()->getId()
+                $drugId,
             );
 
-            if ($medicationHistories->isLessThan(new RawInteger(0))) {
+            if ($medicationHistories->isLessThan(RawPositiveInteger::makeZero())) {
                 return [
                     'status' => false,
                     'message' => 'Have a medication history',
@@ -217,7 +221,7 @@ class DrugService extends AppService implements DrugServiceInterface
                 ];
             }
 
-            $this->drugDomainService->deleteDrug($drug->toDomain()->getId());
+            $this->drugDomainService->deleteDrug($drugId);
 
             return [
                 'status' => true,

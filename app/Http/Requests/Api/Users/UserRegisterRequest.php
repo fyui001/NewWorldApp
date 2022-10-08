@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Users;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\User\UserHashedPassword;
+use Domain\Common\RawPassword;
 use Domain\User\UserId;
 
 class UserRegisterRequest extends AppRequest
@@ -29,8 +29,8 @@ class UserRegisterRequest extends AppRequest
         return new UserId((int)$this->input('user_id'));
     }
 
-    public function getUserHashedPassword(): UserHashedPassword
+    public function getUserRawPassword(): RawPassword
     {
-        return new UserHashedPassword((string)$this->input('password'));
+        return new RawPassword($this->input('password'));
     }
 }

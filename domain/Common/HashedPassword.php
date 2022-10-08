@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\User;
+namespace Domain\Common;
 
 use Domain\Base\BaseHashedValue;
 
-class UserHashedPassword extends BaseHashedValue
+class HashedPassword extends BaseHashedValue
 {
 }

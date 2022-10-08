@@ -93,7 +93,11 @@ class DrugController extends AppController
      */
     public function update(DrugModel $drug, UpdateDrugRequest $request): RedirectResponse
     {
-        $response = $this->drugService->updateDrug($drug, $request);
+        $response = $this->drugService->updateDrug(
+            $drug->toDomain()->getId(),
+            $request->getName(),
+            $request->getUrl(),
+        );
 
         if (!$response['status']) {
             return redirect(route('admin.drugs.index'))->with(['error' => '薬物の更新に失敗しました']);
@@ -111,7 +115,7 @@ class DrugController extends AppController
     public function delete(DrugModel $drug): RedirectResponse
     {
 
-        $response = $this->drugService->deleteDrug($drug);
+        $response = $this->drugService->deleteDrug($drug->toDomain()->getId());
         if (!$response['status']) {
             if ($response['errors']['key'] === 'have_a_medication_history') {
                 return redirect(route('admin.drugs.index'))->with(['error' => '服薬履歴が存在するため削除できません']);

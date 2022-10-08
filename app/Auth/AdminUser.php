@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Auth;
 
 use Domain\AdminUser\AdminUser as AdminUserDomain;
-use Domain\Base\BaseValue;
+use Domain\Common\RawPassword;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Hashing\Hasher;
 
@@ -61,7 +61,7 @@ class AdminUser implements Authenticatable
         // do noting
     }
 
-    public function checkPassword(Hasher $hasher, BaseValue $rawPassword): bool
+    public function checkPassword(Hasher $hasher, RawPassword $rawPassword): bool
     {
         if (!$this->adminUser->hasHashedPassword()) {
             return false;

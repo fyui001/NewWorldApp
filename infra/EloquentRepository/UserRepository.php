@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
+use Domain\Common\HashedPassword;
 use Domain\Exception\NotFoundException;
 use Domain\User\Id;
 use Domain\User\User;
-use Domain\User\UserHashedPassword;
 use Domain\User\UserId;
 use Domain\User\UserRepository as UserRepositoryInterface;
 use Domain\User\UserStatus;
@@ -47,7 +47,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function userRegister(
         Id $id,
-        UserHashedPassword $password,
+        HashedPassword $password,
         UserStatus $userStatus
     ): bool {
         $model = UserModel::where([

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\User;
 
-use Courage\CoInt\CoPositiveInteger;
+use Domain\Base\BasePositiveInteger;
 
-class UserId extends CoPositiveInteger
+class UserId extends BasePositiveInteger
 {
 }

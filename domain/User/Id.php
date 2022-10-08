@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\User;
 
-use Courage\CoInt\CoPositiveInteger;
+use Domain\Base\BaseId;
 
-class Id extends CoPositiveInteger
+class Id extends BaseId
 {
-    public function __construct(int $value)
-    {
-        parent::__construct($value);
-    }
 }

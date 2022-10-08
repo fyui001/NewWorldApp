@@ -58,5 +58,4 @@ networks:
 volumes:
   php-vendor:
   node-modules:
-  memcached:
 

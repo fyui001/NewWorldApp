@@ -4,29 +4,19 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
+use Domain\Common\HashedPassword;
+
 class AdminUser
 {
-    private AdminId $adminId;
-    private AdminUserId $adminUserId;
-    private AdminUserHashedPassword $password;
-    private AdminUserName $adminUserName;
-    private AdminUserRole $adminUserRole;
-    private AdminUserStatus $adminUserStatus;
 
     public function __construct(
-        AdminId $adminId,
-        AdminUserId $adminUserId,
-        AdminUserHashedPassword $password,
-        AdminUserName $adminUserName,
-        AdminUserRole $adminUserRole,
-        AdminUserStatus $adminUserStatus
+        private AdminId $adminId,
+        private AdminUserId $adminUserId,
+        private HashedPassword $password,
+        private AdminUserName $adminUserName,
+        private AdminUserRole $adminUserRole,
+        private AdminUserStatus $adminUserStatus
     ) {
-        $this->adminId = $adminId;
-        $this->adminUserId = $adminUserId;
-        $this->password = $password;
-        $this->adminUserName = $adminUserName;
-        $this->adminUserRole = $adminUserRole;
-        $this->adminUserStatus = $adminUserStatus;
     }
 
     public function getId(): AdminId
@@ -39,7 +29,7 @@ class AdminUser
         return $this->adminUserId;
     }
 
-    public function getPassword(): AdminUserHashedPassword
+    public function getPassword(): HashedPassword
     {
         return $this->password;
     }

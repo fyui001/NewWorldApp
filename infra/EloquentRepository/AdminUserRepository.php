@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserList;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRepository as AdminUserRepositoryInterface;
 use Domain\AdminUser\AdminUser;
@@ -12,17 +12,23 @@ use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\HashedPassword;
 use Domain\Common\RawPositiveInteger;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
+use Illuminate\Database\Eloquent\Collection;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminUserRepository implements AdminUserRepositoryInterface
 {
-    public function getPaginator(): LengthAwarePaginator
+    public function getAdminUserList(): AdminUserList
     {
-        return AdminUserModel::paginate(15);
+        /** @var Collection $collection */
+        $collection = AdminUserModel::get();
+
+        return new AdminUserList($collection->map(function(AdminUserModel $model) {
+            return $model->toDomain();
+        })->toArray());
     }
 
     public function get(AdminId $adminId): AdminUser
@@ -49,10 +55,10 @@ class AdminUserRepository implements AdminUserRepositoryInterface
 
     public function create(
         AdminUserId $adminUserId,
-        AdminUserHashedPassword $adminUserHashedPassWord,
+        HashedPassword $adminUserHashedPassWord,
         AdminUserName $adminUserName,
         AdminUserRole $adminUserRole,
-        AdminUserStatus $adminUserStatus
+        AdminUserStatus $adminUserStatus,
     ): AdminUser {
         $model = new AdminUserModel();
 

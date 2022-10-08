@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Admin;
 
-use Courage\CoString;
 use Domain\AdminUser\AdminUserId;
+use Domain\Common\RawString;
 use Domain\Exception\NotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
@@ -52,7 +52,7 @@ class AdminUserControllerTest extends TestCase
         $response = $this->adminUserRepository->getByUserId(new AdminUserId($params['user_id']));
 
         $this->assertTrue(
-            $response->getUserId()->isEqual(new Costring($params['user_id']))
+            $response->getUserId()->isEqual(new RawString($params['user_id']))
         );
     }
 
@@ -85,7 +85,7 @@ class AdminUserControllerTest extends TestCase
         $response = $this->adminUserRepository->getByUserId(new AdminUserId($params['user_id']));
 
         $this->assertTrue(
-            $response->getUserId()->isEqual(new CoString($params['user_id']))
+            $response->getUserId()->isEqual(new RawString($params['user_id']))
         );
 
         $this->get(route('admin.auth.logout'));
