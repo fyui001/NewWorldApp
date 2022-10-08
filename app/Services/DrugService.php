@@ -4,41 +4,46 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DataTransfer\Drug\DrugPaginator;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Service as AppService;
+use Domain\Common\Paginator\Paginate;
 use Domain\Common\RawInteger;
 use Domain\Drug\Drug;
 use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugId;
 use App\Services\Interfaces\DrugServiceInterface;
 use Domain\Drug\DrugName;
+use Domain\Drug\DrugRepository;
 use Domain\Drug\DrugUrl;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugService extends AppService implements DrugServiceInterface
 {
-    private DrugDomainService $drugDomainService;
-    private MedicationHistoryDomainService $medicationHistoryDomainService;
-
     public function __construct(
-        DrugDomainService $drugDomainService,
-        MedicationHistoryDomainService $medicationHistoryDomainService
+        private DrugDomainService $drugDomainService,
+        private MedicationHistoryDomainService $medicationHistoryDomainService,
+        private DrugRepository $drugRepository,
     ) {
-        $this->drugDomainService = $drugDomainService;
-        $this->medicationHistoryDomainService = $medicationHistoryDomainService;
     }
 
     /**
      * Paginate Drugs
      *
-     * @return LengthAwarePaginator
+     * @param Paginate $paginate
+     * @return DrugPaginator
      */
-    public function getDrugs(): LengthAwarePaginator
+    public function getDrugsPaginator(Paginate $paginate): DrugPaginator
     {
-        return $this->drugDomainService->getPaginator();
+        $drugList = $this->drugDomainService->getPaginator($paginate);
+
+        return new DrugPaginator(
+            $drugList,
+            $this->drugRepository->getCount(),
+            $paginate,
+        );
     }
 
     public function getDrugList(): array

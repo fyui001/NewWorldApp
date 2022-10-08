@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
+use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
 use App\Services\Interfaces\DrugServiceInterface;
+use Domain\Common\Paginator\Paginate;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
@@ -30,9 +32,15 @@ class DrugController extends AppController
      *
      * @return View
      */
-    public function index(): View
+    public function index(AdminRequest $request): View
     {
-        $drugs = $this->drugService->getDrugs();
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 20);
+
+        $paginate = Paginate::make((int)$page, (int)$perPage);
+
+        $drugs = $this->drugService->getDrugsPaginator($paginate);
+
         return view('drugs.index', compact('drugs'));
     }
 
