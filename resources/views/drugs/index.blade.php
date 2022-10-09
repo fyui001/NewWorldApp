@@ -18,29 +18,29 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="text-center">@sortablelink('id', '#') </th>
-            <th>@sortablelink('drug_name', '薬物名')</th>
+            <th class="text-center">#</th>
+            <th>薬物名</th>
             <th>Wiki Source</th>
             <th class="text-right">Action</th>
         </tr>
     </thead>
     @foreach($drugs as $item)
-        <?php /** @var Infra\EloquentModels\Drug $item */ ?>
+        <?php /** @var Domain\Drug\Drug $item */ ?>
         <tr>
-            <td>{{ $item->toDomain()->getId() }}</td>
-            <td>{{ $item->toDomain()->getName() }}</td>
+            <td>{{ $item->getId() }}</td>
+            <td>{{ $item->getName() }}</td>
             <td>
-                <a href="{{ $item->toDomain()->getUrl() }}" target="_blank" rel="noopener noreferrer">
-                    {{ mb_substr($item->toDomain()->getUrl(), 0, 40) }}
+                <a href="{{ $item->getUrl() }}" target="_blank" rel="noopener noreferrer">
+                    {{ mb_substr($item->getUrl(), 0, 40) }}
                 </a>
             </td>
             <td class="td-actions text-right">
-                <a href="{{ route('admin.drugs.edit', $item->toDomain()->getId()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('admin.drugs.edit', $item->getId()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('admin.drugs.delete', $item->toDomain()->getId())  }}"
+                <a href="javascript:void(0)" data-url="{{ route('admin.drugs.delete', $item->getId())  }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
-                   data-label="{{ $item->toDomain()->getName() }}" title="Delete">
+                   data-label="{{ $item->getName() }}" title="Delete">
                     <span class="oi oi-x"></span>
                 </a>
             </td>
@@ -54,7 +54,7 @@
 </form>
 
 <div class="box-footer clearfix">
-    {!! $drugs->appends(request()->query())->links('pagination::bootstrap-4') !!}
+    {!! $drugs->withPath('/admin/drugs')->links('pagination::bootstrap-4') !!}
 </div>
 @endsection
 

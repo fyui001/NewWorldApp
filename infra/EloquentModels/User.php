@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
+use Domain\Common\HashedPassword;
 use Domain\User\IconUrl;
 use Domain\User\User as UserDomain;
 use Domain\User\Id;
-use Domain\User\UserHashedPassword;
 use Domain\User\UserId;
 use Domain\User\UserName;
 use Domain\User\UserStatus;
@@ -64,7 +64,7 @@ class User extends Authenticatable implements JWTSubject
             new Id((int)$this->id),
             new UserId($this->user_id),
             new UserName($this->name),
-            new UserHashedPassword($this->password),
+            new HashedPassword($this->password),
             new IconUrl($this->icon_url),
             UserStatus::tryFrom((int)$this->status)
         );

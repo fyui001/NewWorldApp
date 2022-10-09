@@ -27,6 +27,7 @@ class MedicationHistoryController extends AppController
     /**
      * 服薬履歴一覧
      *
+     * @param AdminRequest $request
      * @return View
      */
     public function index(AdminRequest $request): View

@@ -27,29 +27,26 @@
         </tr>
     </thead>
     @foreach($adminUsers as $item)
-        <?php /** @var Infra\EloquentModels\AdminUser $item */ ?>
+        <?php /** @var Domain\AdminUser\AdminUser $item */ ?>
         <tr>
-            <td>{{ $item->toDomain()->getId() }}</td>
-            <td>{{ $item->toDomain()->getUserId() }}</td>
-            <td>{{ $item->toDomain()->getName() }}</td>
-            <td>{{ $item->toDomain()->getRole()->displayName() }}</td>
-            <td>{{ $item->toDomain()->getStatus()->displayName() }}</td>
+            <td>{{ $item->getId() }}</td>
+            <td>{{ $item->getUserId() }}</td>
+            <td>{{ $item->getName() }}</td>
+            <td>{{ $item->getRole()->displayName() }}</td>
+            <td>{{ $item->getStatus()->displayName() }}</td>
             <td class="td-actions text-right">
-                <a href="{{ route('admin.admin_users.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('admin.admin_users.edit', $item->getId()->getRawValue()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('admin.admin_users.destroy', $item) }}"
+                <a href="javascript:void(0)" data-url="{{ route('admin.admin_users.destroy', $item->getId()->getRawValue()) }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
-                   data-label="{{ $item->toDomain()->getName()->getRawValue() }}" title="Delete">
+                   data-label="{{ $item->getName()->getRawValue() }}" title="Delete">
                     <span class="oi oi-x"></span>
                 </a>
             </td>
         </tr>
     @endforeach
 </table>
-<div class="box-footer clearfix">
-    {!! $adminUsers->render() !!}
-</div>
 <form action="#" id="form-delete" method="POST">
     <input type="hidden" name="_method" value="delete" />
     <input type="hidden" name="_token" value="{{ csrf_token() }}">

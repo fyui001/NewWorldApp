@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\AdminUsers;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\AdminUser\AdminUserHashedPassword;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
-use Infra\EloquentModels\AdminUser;
+use Domain\Common\RawPassword;
 
 class UpdateAdminUserRequest extends AppRequest
 {
@@ -79,9 +78,9 @@ class UpdateAdminUserRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getUserHashedPassword(): AdminUserHashedPassword
+    public function getRawPassword(): RawPassword
     {
-        return AdminUserHashedPassword::make($this->input('password'));
+        return new RawPassword($this->input('password'));
     }
 
     public function getName(): AdminUserName

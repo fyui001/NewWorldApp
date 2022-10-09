@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
-use Domain\Base\BaseValue;
+use Domain\Common\RawPassword;
 use Domain\User\User as UserDomain;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Hashing\Hasher;
@@ -73,7 +73,7 @@ class User implements Authenticatable, JWTSubject
         return $this->getAuthIdentifier();
     }
 
-    public function checkPassword(Hasher $hasher, BaseValue $rawPassword): bool
+    public function checkPassword(Hasher $hasher, RawPassword $rawPassword): bool
     {
         if (!$this->user->hasHashedPassword()) {
             return false;

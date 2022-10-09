@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
-use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
 use App\Services\Service as AppService;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use Domain\AdminUser\AdminId;
-use Domain\AdminUser\AdminUser;
 use Domain\AdminUser\AdminUserDomainService;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserList;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\RawPassword;
 use Exception;
 
 class AdminUserService extends AppService implements AdminUserServiceInterface
@@ -26,27 +28,36 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
     /**
      * Get all users from paginator.
      *
-     * @return LengthAwarePaginator
+     * @return AdminUserList
      */
-    public function getUsers(): LengthAwarePaginator
+    public function getAdminUsers(): AdminUserList
     {
-        return $this->adminUserDomainService->getPaginator();
+        return $this->adminUserDomainService->getAdminUserList();
     }
 
     /**
      * Create a user.
      *
-     * @param CreateAdminUserRequest $request
+     * @param AdminUserId $adminUserId
+     * @param RawPassword $adminUserRawPassWord
+     * @param AdminUserName $adminUserName
+     * @param AdminUserRole $adminUserRole
+     * @param AdminUserStatus $adminUserStatus
      * @return void
      */
-    public function createUser(CreateAdminUserRequest $request): void
-    {
+    public function createUser(
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    ): void {
         $this->adminUserDomainService->createAdminUser(
-            $request->getUserId(),
-            $request->getUserHashedPassword(),
-            $request->getName(),
-            $request->getRole(),
-            $request->getStatus()
+            $adminUserId,
+            $adminUserRawPassWord,
+            $adminUserName,
+            $adminUserRole,
+            $adminUserStatus,
         );
     }
 
@@ -54,19 +65,27 @@ class AdminUserService extends AppService implements AdminUserServiceInterface
      * Update the user.
      *
      * @param AdminId $adminId
-     * @param UpdateAdminUserRequest $request
+     * @param AdminUserId $adminUserId
+     * @param RawPassword $adminUserRawPassWord
+     * @param AdminUserName $adminUserName
+     * @param AdminUserRole $adminUserRole
+     * @param AdminUserStatus $adminUserStatus
      */
-    public function updateUser(AdminId $adminId, UpdateAdminUserRequest $request): void
-    {
+    public function updateUser(
+        AdminId $adminId,
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    ): void {
         $this->adminUserDomainService->updateAdminUser(
-            new AdminUser(
-                $adminId,
-                $request->getUserId(),
-                $request->getUserHashedPassword(),
-                $request->getName(),
-                $request->getRole(),
-                $request->getStatus()
-            )
+            $adminId,
+            $adminUserId,
+            $adminUserRawPassWord,
+            $adminUserName,
+            $adminUserRole,
+            $adminUserStatus,
         );
     }
 

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
+use Domain\Common\OrderKey;
+use Domain\Common\Paginator\Paginate;
 use Domain\Drug\Drug;
+use Domain\Drug\DrugCount;
 use Domain\Drug\DrugId;
 use Domain\Drug\DrugList;
 use Domain\Drug\DrugName;
@@ -13,7 +16,6 @@ use Domain\Drug\DrugUrl;
 use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugRepository implements DrugRepositoryInterface
@@ -41,6 +43,12 @@ class DrugRepository implements DrugRepositoryInterface
         })->toArray());
     }
 
+    public function getCount(): DrugCount
+    {
+        $query = DrugModel::query();
+        return new DrugCount($query->count());
+    }
+
     public function findDrugByName(DrugName $drugName): Drug
     {
         $model = DrugModel::where(['drug_name' => $drugName->getRawValue()])->first();
@@ -52,9 +60,18 @@ class DrugRepository implements DrugRepositoryInterface
         return $model->toDomain();
     }
 
-    public function getPaginator(): LengthAwarePaginator
+    public function getPaginator(Paginate $paginate): DrugList
     {
-        return DrugModel::paginate(15);
+        $builder = DrugModel::query()
+            ->orderBy('id', OrderKey::DESC->getValue()->getRawValue())
+            ->limit($paginate->getLimit()->getRawValue())
+            ->offset($paginate->offset()->getRawValue());
+
+        $collection = $builder->get();
+
+        return new DrugList($collection->map(function(DrugModel $model) {
+            return $model->toDomain();
+        })->toArray());
     }
 
     public function create(DrugName $drugName, DrugUrl $drugUrl): Drug

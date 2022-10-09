@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Infra\EloquentModels;
 
 use Domain\AdminUser\AdminId;
-use Domain\AdminUser\AdminUserHashedPassword;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\HashedPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Domain\AdminUser\AdminUser as AdminUserDomain;
@@ -52,7 +52,7 @@ class AdminUser extends Authenticatable
         return new AdminUserDomain(
             new AdminId($this->id),
             new AdminUserId($this->user_id),
-            new AdminUserHashedPassword($this->password),
+            new HashedPassword($this->password),
             new AdminUserName($this->name),
             AdminUserRole::tryFrom((int)$this->role),
             AdminUserStatus::tryFrom((int)$this->status)

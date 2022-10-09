@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin\AdminUsers;
 
 use App\Http\Requests\Request as AppRequest;
-use Domain\AdminUser\AdminUserHashedPassword;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\RawPassword;
 
 class CreateAdminUserRequest extends AppRequest
 {
@@ -77,9 +77,9 @@ class CreateAdminUserRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getUserHashedPassword(): AdminUserHashedPassword
+    public function getAdminUserRawPassword(): RawPassword
     {
-        return new AdminUserHashedPassword($this->input('password'));
+        return new RawPassword($this->input('password'));
     }
 
     public function getName(): AdminUserName

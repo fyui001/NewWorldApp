@@ -5,21 +5,16 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DataTransfer\Drug\DrugHashMap;
-use App\DataTransfer\MedicationHistory\MedicationHistoryDetail;
-use App\DataTransfer\MedicationHistory\MedicationHistoryDetailList;
 use App\DataTransfer\User\UserMedicationHistory;
 use App\DataTransfer\User\UserMedicationHistoryDetailList;
 use App\DataTransfer\User\UserMedicationHistoryList;
 use Domain\Common\RawPassword;
 use Domain\Drug\DrugDomainService;
-use Domain\Drug\DrugList;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
-use Domain\User\Id;
 use Domain\User\User;
 use Domain\User\UserDomainService;
-use Domain\User\UserHashedPassword;
 use Domain\User\UserId;
 use Domain\User\UserStatus;
 use Illuminate\Support\Facades\Auth;
@@ -124,13 +119,13 @@ class UserService extends AppService implements UserServiceInterface
     /**
      * 登録
      *
-     * @param Id $id
-     * @param UserHashedPassword $hashedPassword
+     * @param UserId $userId
+     * @param RawPassword $rawPassword
      * @return array
      */
     public function register(
         UserId $userId,
-        UserHashedPassword $hashedPassword,
+        RawPassword $rawPassword,
     ): array {
         try {
             $user = $this->userDomainService->getUserByUserId($userId);
@@ -147,7 +142,7 @@ class UserService extends AppService implements UserServiceInterface
 
             $result = $this->userDomainService->userRegister(
                 $user->getId(),
-                $hashedPassword,
+                $rawPassword,
                 UserStatus::STATUS_VALID
             );
 

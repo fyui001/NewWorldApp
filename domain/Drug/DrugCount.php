@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\User;
+namespace Domain\Drug;
 
 use Domain\Base\BasePositiveInteger;
 
-class UserId extends BasePositiveInteger
+class DrugCount extends BasePositiveInteger
 {
 }

@@ -33,7 +33,7 @@ class MedicationHistoryService extends AppService implements MedicationHistorySe
      * Get all medication history
      *
      * @param Paginate $paginate
-     * @return MedicationHistoryDetailList
+     * @return MedicationHistoryDetailPaginator
      */
     public function getMedicationHistoryPaginator(Paginate $paginate): MedicationHistoryDetailPaginator
     {

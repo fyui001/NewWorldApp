@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\User;
 
-use App\DataTransfer\User\UserMedicationHistoryDetailList;
+use Domain\Common\HashedPassword;
 
 interface UserRepository
 {
@@ -12,7 +12,7 @@ interface UserRepository
     public function getUserByUserId(UserId $userId): User;
     public function userRegister(
         Id $id,
-        UserHashedPassword $password,
+        HashedPassword $password,
         UserStatus $userStatus
     ): bool;
 }

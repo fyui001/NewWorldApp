@@ -4,42 +4,57 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
+use Domain\Common\RawPassword;
 use Domain\Common\RawPositiveInteger;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class AdminUserDomainService
 {
-    private AdminUserRepository $adminUserRepository;
-
-    public function __construct(AdminUserRepository $adminUserRepository)
-    {
-        $this->adminUserRepository = $adminUserRepository;
+    public function __construct(
+        private AdminUserRepository $adminUserRepository,
+        private Hasher $hasher,
+    ) {
     }
 
-    public function getPaginator(): LengthAwarePaginator
+    public function getAdminUserList(): AdminUserList
     {
-        return $this->adminUserRepository->getPaginator();
+        return $this->adminUserRepository->getAdminUserList();
     }
 
     public function createAdminUser(
         AdminUserId $adminUserId,
-        AdminUserHashedPassword $adminUserHashedPassWord,
+        RawPassword $adminUserRawPassWord,
         AdminUserName $adminUserName,
         AdminUserRole $adminUserRole,
-        AdminUserStatus $adminUserStatus
+        AdminUserStatus $adminUserStatus,
     ): AdminUser {
         return $this->adminUserRepository->create(
             $adminUserId,
-            $adminUserHashedPassWord,
+            $adminUserRawPassWord->hash($this->hasher),
             $adminUserName,
             $adminUserRole,
             $adminUserStatus,
         );
     }
 
-    public function updateAdminUser(AdminUser $adminUser): AdminUser
-    {
-        return $this->adminUserRepository->update($adminUser);
+    public function updateAdminUser(
+        AdminId $adminId,
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    ): AdminUser {
+        return $this->adminUserRepository->update(
+            new AdminUser(
+                $adminId,
+                $adminUserId,
+                $adminUserRawPassWord->hash($this->hasher),
+                $adminUserName,
+                $adminUserRole,
+                $adminUserStatus,
+            )
+        );
     }
 
     public function deleteAdminUser(AdminId $adminId): RawPositiveInteger

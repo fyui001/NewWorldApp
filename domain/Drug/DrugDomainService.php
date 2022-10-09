@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Drug;
 
-use Courage\CoInt\CoPositiveInteger;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\Common\Paginator\Paginate;
 
 class DrugDomainService
 {
@@ -31,9 +30,9 @@ class DrugDomainService
         return $this->drugRepository->findDrugByName($drugName);
     }
 
-    public function getPaginator(): LengthAwarePaginator
+    public function getPaginator(Paginate $paginate): DrugList
     {
-        return $this->drugRepository->getPaginator();
+        return $this->drugRepository->getPaginator($paginate);
     }
 
     public function createDrug(DrugName $drugName, DrugUrl $drugUrl): Drug

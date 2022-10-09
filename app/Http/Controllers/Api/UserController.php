@@ -118,7 +118,7 @@ class UserController
     {
         $response = $this->userService->register(
             $request->getUserId(),
-            $request->getUserHashedPassword(),
+            $request->getUserRawPassword(),
         );
 
         if (!$response['status']) {

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\User;
 
-use Courage\CoList;
-use Domain\Base\BaseListValue;
+use Domain\Common\HashedPassword;
 
 class User
 {
@@ -13,7 +12,7 @@ class User
         private Id $id,
         private UserId $userId,
         private UserName $userName,
-        private UserHashedPassword $userHashedPassword,
+        private HashedPassword $userHashedPassword,
         private IconUrl $iconUrl,
         private UserStatus $userStatus
     ) {}
@@ -33,7 +32,7 @@ class User
         return $this->userName;
     }
 
-    public function getHashedPassword(): UserHashedPassword
+    public function getHashedPassword(): HashedPassword
     {
         return $this->userHashedPassword;
     }
