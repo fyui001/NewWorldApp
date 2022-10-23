@@ -26,7 +26,7 @@ class UserDomainService
         return $this->userRepository->getUserByUserId($userId);
     }
 
-    public function userRegister(
+    public function userPasswordRegister(
         Id $id,
         RawPassword $password,
         UserStatus $userStatus,
@@ -36,5 +36,11 @@ class UserDomainService
             $password->hash($this->hasher),
             $userStatus,
         );
+    }
+
+    public function definitiveRegister(DefinitiveRegisterToken $definitiveRegisterToken): bool
+    {
+        return $this->userRepository->definitiveRegister($definitiveRegisterToken);
+        return !is_null($user);
     }
 }

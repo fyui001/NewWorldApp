@@ -48,7 +48,8 @@
             "Domain\\": "domain/",
             "Infra\\": "infra/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Database\\Libs\\": "database/libs/"
         }
     },
     "autoload-dev": {

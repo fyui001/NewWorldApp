@@ -15,4 +15,5 @@ interface UserRepository
         HashedPassword $password,
         UserStatus $userStatus
     ): bool;
+    public function definitiveRegister(DefinitiveRegisterToken $definitiveRegisterToken): bool;
 }

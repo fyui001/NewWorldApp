@@ -21,6 +21,11 @@ return [
         'message' => 'Invalid password.',
         'response_code' => 400,
     ],
+    'invalid_token' => [
+        'type' => 'invalid_token',
+        'message' => 'Invalid token.',
+        'response_code' => 400,
+    ],
     'forbidden' => [
         'type' => 'forbidden',
         'message' => '403 Forbidden.',

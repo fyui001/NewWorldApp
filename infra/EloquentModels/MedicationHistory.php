@@ -11,14 +11,10 @@ use Domain\MedicationHistory\Amount;
 use Domain\MedicationHistory\MedicationHistoryId;
 use Domain\User\Id;
 use Infra\EloquentModels\Model as AppModel;
-use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MedicationHistory extends AppModel
 {
-
-    use Sortable;
-
     protected $table = 'medication_histories';
 
     protected $guarded = [

@@ -19,12 +19,18 @@ Route::group([
 ], function() {
     Route::post('/login', 'Api\UserController@login')->name('api.users.login');
     Route::post('/register', 'Api\UserController@register')->name('api.users.register');
-    Route::get('/', 'Api\UserController@show')->name('api.users.show');
+    Route::get('/definitive_registers', 'Api\UserController@definitiveRegister')->name('api.users.definitive_register');
 });
 
 Route:: group([
     'middleware' => 'auth:api',
 ], function() {
+    Route::group([
+        'prefix' => 'users'
+    ], function() {
+        Route::get('/', 'Api\UserController@show')->name('api.users.show');
+    });
+
     /* Drugs */
     Route::group([
         'prefix' => 'drugs'
