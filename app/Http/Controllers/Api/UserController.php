@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\ApiRequest;
 use App\Http\Requests\Api\Users\UserDetailRequest;
 use App\Http\Responder\ApiErrorResponder;
 use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserRegisterRequest;
 use App\Services\Interfaces\UserServiceInterface;
+use Domain\User\DefinitiveRegisterToken;
 use \Illuminate\Http\JsonResponse;
 
 class UserController
@@ -141,8 +143,39 @@ class UserController
         return response()->json([
             'status' => true,
             'errors' => null,
-            'message' => 'registered',
+            'message' => 'password registered',
             'data' => $response['data'],
         ]);
+    }
+
+    public function definitiveRegister(ApiRequest $request)
+    {
+        $definitiveRegisterToken = new DefinitiveRegisterToken($request->query('token'));
+
+        $response = $this->userService->definitiveRegister($definitiveRegisterToken);
+
+        if (!$response['status']) {
+            if (!empty($response['errors'])) {
+                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
+                $response = $apiErrorResponder->getResponse();
+                return response()->json(
+                    $response['body'],
+                    $response['response_code']
+                );
+            }
+            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
+            $errorResponse = $apiErrorResponder->getResponse();
+            return response()->json(
+                $errorResponse['body'],
+                $errorResponse['response_code']
+            );
+        }
+
+        return response()->json([
+            'status' => true,
+            'errors' => null,
+            'message' => 'registered',
+            'data' => $response['data'],
+        ], 200);
     }
 }

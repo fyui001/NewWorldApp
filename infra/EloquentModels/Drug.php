@@ -11,12 +11,9 @@ use Domain\Drug\DrugUrl;
 use Illuminate\Database\Eloquent\Builder;
 use Infra\EloquentModels\Model as AppModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Kyslik\ColumnSortable\Sortable;
 
 class Drug extends AppModel
 {
-
-    use Sortable;
 
     protected $table = 'drugs';
 

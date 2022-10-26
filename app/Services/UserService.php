@@ -10,9 +10,12 @@ use App\DataTransfer\User\UserMedicationHistoryDetailList;
 use App\DataTransfer\User\UserMedicationHistoryList;
 use Domain\Common\RawPassword;
 use Domain\Drug\DrugDomainService;
+use Domain\Exception\DuplicateEntryException;
+use Domain\Exception\InvalidArgumentException;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
+use Domain\User\DefinitiveRegisterToken;
 use Domain\User\User;
 use Domain\User\UserDomainService;
 use Domain\User\UserId;
@@ -140,7 +143,7 @@ class UserService extends AppService implements UserServiceInterface
                 ];
             }
 
-            $result = $this->userDomainService->userRegister(
+            $result = $this->userDomainService->userPasswordRegister(
                 $user->getId(),
                 $rawPassword,
                 UserStatus::STATUS_VALID
@@ -166,6 +169,45 @@ class UserService extends AppService implements UserServiceInterface
                 'status' => false,
                 'errors' => [
                     'key' => 'notfound',
+                ],
+                'data' => null,
+            ];
+        } catch (DuplicateEntryException $e) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'key' => 'duplicate_entry',
+                ],
+                'data' => null,
+            ];
+        }
+    }
+
+    public function definitiveRegister(DefinitiveRegisterToken $definitiveRegisterToken): array
+    {
+        try {
+            $result = $this->userDomainService->definitiveRegister($definitiveRegisterToken);
+
+            if (!$result) {
+                return [
+                    'status' => false,
+                    'errors' => [
+                        'key' => 'invalid_token',
+                    ],
+                    'data' => null,
+                ];
+            }
+
+            return [
+                'status' => true,
+                'errors' => null,
+                'data' => null,
+            ];
+        } catch (InvalidArgumentException $e) {
+            return [
+                'status' => false,
+                'errors' => [
+                    'key' => 'invalid_token',
                 ],
                 'data' => null,
             ];

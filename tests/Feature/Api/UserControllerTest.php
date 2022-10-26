@@ -143,7 +143,7 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJson([
                 'status' => true,
-                'message' => 'registered',
+                'message' => 'password registered',
                 'errors' => null,
                 'data' => null,
             ]);
