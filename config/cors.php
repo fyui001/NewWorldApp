@@ -20,7 +20,8 @@ return [
     'allowed_methods' => ['GET', 'POST'],
 
     'allowed_origins' => [
-        '*'
+        'nw.fyui001.com',
+        'nw.localhost',
     ],
 
     'allowed_origins_patterns' => [],
