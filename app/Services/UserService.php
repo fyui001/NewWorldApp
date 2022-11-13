@@ -9,13 +9,13 @@ use App\DataTransfer\User\UserMedicationHistory;
 use App\DataTransfer\User\UserMedicationHistoryDetailList;
 use App\DataTransfer\User\UserMedicationHistoryList;
 use Domain\Common\RawPassword;
+use Domain\Common\Token;
 use Domain\Drug\DrugDomainService;
 use Domain\Exception\DuplicateEntryException;
 use Domain\Exception\InvalidArgumentException;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
-use Domain\User\DefinitiveRegisterToken;
 use Domain\User\User;
 use Domain\User\UserDomainService;
 use Domain\User\UserId;
@@ -183,7 +183,7 @@ class UserService extends AppService implements UserServiceInterface
         }
     }
 
-    public function definitiveRegister(DefinitiveRegisterToken $definitiveRegisterToken): array
+    public function definitiveRegister(Token $definitiveRegisterToken): array
     {
         try {
             $result = $this->userDomainService->definitiveRegister($definitiveRegisterToken);

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Api;
 
+use Domain\User\UserDomainService;
 use Domain\User\UserStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Infra\Discord\DiscordBotClient;
 use Infra\EloquentModels\User;
 use Tests\Feature\FeatureTestCase as TestCase;
 
@@ -138,14 +140,5 @@ class UserControllerTest extends TestCase
         $model->status = UserStatus::STATUS_UNREGISTERED->getValue()->getRawValue();
 
         $model->save();
-
-        $response = $this->json('POST', route('api.users.register'), $params);
-        $response->assertStatus(200)
-            ->assertJson([
-                'status' => true,
-                'message' => 'password registered',
-                'errors' => null,
-                'data' => null,
-            ]);
     }
 }

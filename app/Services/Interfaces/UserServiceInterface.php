@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Interfaces;
 
 use Domain\Common\RawPassword;
-use Domain\User\DefinitiveRegisterToken;
+use Domain\Common\Token;
 use Domain\User\User;
 use Domain\User\UserId;
 
@@ -16,5 +16,5 @@ interface UserServiceInterface {
         UserId $id,
         RawPassword $rawPassword,
     ): array;
-    public function definitiveRegister(DefinitiveRegisterToken $definitiveRegisterToken): array;
+    public function definitiveRegister(Token $definitiveRegisterToken): array;
 }

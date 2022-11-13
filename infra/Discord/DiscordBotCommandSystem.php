@@ -2,7 +2,6 @@
 
 namespace Infra\Discord;
 
-use Courage\Exceptions\InvalidArgumentException;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Domain\Common\RawString;
@@ -11,9 +10,11 @@ use Domain\DiscordBot\CommandArgument\RegisterDrugCommandArgument;
 use Domain\Drug\DrugName;
 use Domain\Drug\DrugRepository;
 use Domain\Drug\DrugUrl;
+use Domain\Exception\InvalidArgumentException;
 use Domain\Exception\NotFoundException;
-use Domain\MedicationHistory\MedicationHistoryDomainService;
+use Domain\MedicationHistory\MedicationHistoryRepository;
 use Domain\User\UserId;
+use Domain\User\UserRepository;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Infra\Discord\EmbedHelper\CommandNotFoundHelper;
@@ -29,7 +30,8 @@ class DiscordBotCommandSystem
 
     public function __construct (
         private DrugRepository $drugRepository,
-        private MedicationHistoryDomainService $medicationHistoryDomainService,
+        private MedicationHistoryRepository $medicationHistoryRepository,
+        private UserRepository $userRepository,
     ) {
         $this->wikiApiUrl = new RawString('https://ja.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=');
         $this->wikiViewPageUrl = new RawString('https://ja.wikipedia.org/wiki/');
@@ -37,8 +39,9 @@ class DiscordBotCommandSystem
 
     public function hello(Discord $discord, Message $message): void
     {
-        $this->messageSender = new MessageSender($message);
+        $this->messageSender = new MessageSender();
         $this->messageSender->sendEmbed(
+            $message,
             (new HelloHelper($discord))->convertIntoDiscordEmbed(),
         );
     }
@@ -48,7 +51,7 @@ class DiscordBotCommandSystem
         Discord $discord,
         Message $message,
     ): void {
-        $this->messageSender = new MessageSender($message);
+        $this->messageSender = new MessageSender();
         $drugRegisterHelper = new DrugRegisterHelper($discord, $message);
         $drugName = $args->getDrugName();
 
@@ -56,6 +59,7 @@ class DiscordBotCommandSystem
 
         if (empty($result) || isset($result['query']['redirects'])) {
             $this->messageSender->sendEmbed(
+                $message,
                 $drugRegisterHelper->convertIntoDiscordEmbedFailure(),
             );
         }
@@ -74,11 +78,13 @@ class DiscordBotCommandSystem
             );
 
             $this->messageSender->sendEmbed(
+                $message,
                 $drugRegisterHelper->convertInToDiscordEmbed($drug),
             );
         } catch (\Exception $e) {
             Log::warning($e->getMessage());
             $this->messageSender->sendEmbed(
+                $message,
                 $drugRegisterHelper->convertIntoDiscordEmbedFailure(),
             );
         }
@@ -89,7 +95,7 @@ class DiscordBotCommandSystem
         Discord $discord,
         Message $message,
     ): void {
-        $this->messageSender = new MessageSender($message);
+        $this->messageSender = new MessageSender();
 
         $medicationHistoryHelper = new MedicationHistoryHelper($discord, $message);
 
@@ -98,18 +104,22 @@ class DiscordBotCommandSystem
                 $args->getDrugName()
             );
 
-            $medicationHistory = $this->medicationHistoryDomainService->createByUserId(
-                new UserId($message->user->id),
+            $user = $this->userRepository->getUserByUserId(new UserId((int)$message->user->id));
+
+            $medicationHistory = $this->medicationHistoryRepository->create(
+                $user->getId(),
                 $drug->getId(),
                 $args->getAmount(),
             );
 
             $this->messageSender->sendEmbed(
+                $message,
                 $medicationHistoryHelper->toMedicationHistoryCreatedEmbed($medicationHistory, $drug),
             );
         } catch (InvalidArgumentException | NotFoundException $e) {
             Log::error($e->getMessage());
             $this->messageSender->sendEmbed(
+                $message,
                 $medicationHistoryHelper->toMedicationHistoryFailedEmbed(),
             );
         }
@@ -117,11 +127,11 @@ class DiscordBotCommandSystem
 
     public function commandNotFound(Discord $discord, Message $message): void
     {
-        $this->messageSender = new MessageSender($message);
+        $this->messageSender = new MessageSender();
         $commandNotFoundHelper = new CommandNotFoundHelper($discord, $message);
 
         $embed = $commandNotFoundHelper->convertIntoDiscordEmbed();
 
-        $this->messageSender->sendEmbed($embed);
+        $this->messageSender->sendEmbed($message, $embed);
     }
 }

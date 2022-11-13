@@ -6,9 +6,17 @@ namespace Infra\Discord;
 
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
+use Discord\Http\Drivers\React;
+use Discord\Http\Http;
 use Discord\Parts\Channel\Message;
+use Discord\Parts\User\Member;
 use Discord\WebSockets\Intents;
 use Domain\DiscordBot\BotCommand;
+use Domain\User\DefinitiveRegisterToken\DefinitiveRegisterToken;
+use Domain\User\UserId;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use stdClass;
 
 class DiscordBotClient
 {
@@ -32,6 +40,7 @@ class DiscordBotClient
      */
     protected string $commandPrefix = '!';
 
+    protected string $dmChannelId;
 
     /**
      * Starting run a discord bot
@@ -39,17 +48,16 @@ class DiscordBotClient
      * @param string $botToken
      * @throws IntentException
      */
-    public function run(string $botToken): void
+    public function run(): void
     {
         $this->discord = new Discord([
-            'token' => $botToken,
+            'token' => env('DISCORD_BOT_TOKEN'),
             'loadAllMembers' => true,
             'intents' => Intents::getDefaultIntents() | Intents::GUILD_MEMBERS,
         ]);
 
         $this->discord->on('ready', function(Discord $discord) {
-
-            $discord->on('message', function(Message $message) {
+            $discord->on('message', function(Message $message) use ($discord) {
                 $this->message = $message;
                 $commandPrefix = substr($this->message->content, 0, 1);
                 $removedCommandPrefix = str_replace($this->commandPrefix, '', $this->message->content);
@@ -68,17 +76,37 @@ class DiscordBotClient
                     unset($commandContents[0]);
                     $commandArgs = array_values($commandContents);
                     $commandArgs = BotCommand::makeFromDisplayName($commandName)->getCommandArgumentClass($commandArgs);
-                    $this->discordBotCommandSystem->$botCommandName($commandArgs, $this->discord, $this->message);
+                    $this->discordBotCommandSystem->$botCommandName($commandArgs, $discord, $this->message);
                     return true;
                 }
 
-                $this->discordBotCommandSystem->$botCommandName($this->discord, $this->message);
+                $this->discordBotCommandSystem->$botCommandName($discord, $this->message);
 
                 return true;
             });
         });
-
         $this->discord->run();
+    }
+
+    public function sendDefinitiveRegisterUrlByDm(UserId $userId, DefinitiveRegisterToken $token): void
+    {
+        $loop = \React\EventLoop\Loop::get();
+        $logger = (new Logger('discord-direct-message'))->pushHandler(new StreamHandler('php://stdout'));
+        $driver = new React($loop);
+        $discordHttp = new Http('Bot '. env('DISCORD_BOT_TOKEN'), $loop, $logger, $driver);
+
+        $dmChannelIdRequestPath = '/users/@me/channels';
+        $content = ['recipient_id' => $userId->getRawValue()];
+        $discordHttp->post($dmChannelIdRequestPath, $content)->then(function(stdClass $response) {
+            $this->dmChannelId = $response->id;
+        });
+        $loop->run();
+
+        $dmApiPath = "/channels/{$this->dmChannelId}/messages";
+        $registerUrl = route('api.users.definitive_register', ['token' => $token->getToken()->getRawValue()]);
+        $discordHttp->post($dmApiPath, ['content' => $registerUrl]);
+        $loop->run();
+        $loop->stop();
     }
 
     /**
@@ -87,7 +115,7 @@ class DiscordBotClient
      * @param string $commandPrefix
      * @return bool
      */
-    public function commandPrefixChecker(string $commandPrefix): bool
+    private function commandPrefixChecker(string $commandPrefix): bool
     {
         return $this->commandPrefix === $commandPrefix;
     }
@@ -99,7 +127,7 @@ class DiscordBotClient
      * @param string $commandContents
      * @return array
      */
-    public function argSplitter(string $commandContents): array
+    private function argSplitter(string $commandContents): array
     {
         return explode(' ', $commandContents);
     }
