@@ -1,5 +1,10 @@
 version: '3.9'
 
+volumes:
+  code:
+  node-modules:
+  db-store:
+
 x-mutagen:
   sync:
     code:
@@ -13,12 +18,12 @@ x-mutagen:
         defaultDirectoryMode: 0777
       configurationBeta:
         permissions:
-          defaultOwner: id:33
-          defaultGroup: id:33
-
+          defaultOwner: id:0
+          defaultGroup: id:0
 
 services:
   web:
+    container_name: new-world-web
     image: nginx:latest
     depends_on:
       - app
@@ -26,9 +31,7 @@ services:
       - default
       - docker_default
     volumes:
-      - type: bind
-        source: './public'
-        target: '/code/public'
+      - code:/code
       - ./docker/nginx/conf.d/local.d/default.conf:/etc/nginx/conf.d/default.conf
     environment:
       - TZ=${TZ}
@@ -46,9 +49,7 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - type: bind
-        source: '.'
-        target: '/code'
+      - code:/code
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - js
@@ -56,6 +57,7 @@ services:
     labels:
       - "traefik.enable=false"
   js:
+    container_name: new-world-js
     build:
       context: .
       dockerfile: ./docker/js/Dockerfile
@@ -66,6 +68,7 @@ services:
     labels:
       - "traefik.enable=false"
   db:
+    container_name: new-world-db
     image: mysql:5.7
     volumes:
       - db-store:/var/lib/mysql
@@ -79,10 +82,6 @@ services:
     labels:
       - "traefik.enable=false"
 networks:
+  default: {}
   docker_default:
     name: docker_default
-
-volumes:
-  code:
-  node-modules:
-  db-store:

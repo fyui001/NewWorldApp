@@ -19,9 +19,9 @@ Route::group(['prefix' => 'admin'], function() {
 
     /* Auth */
     Route::group(['prefix' => 'auth'], function() {
-        Route::get('/login', 'Auth\LoginController@showLoginForm')->name('admin.auth.login');
-        Route::post('/login', 'Auth\LoginController@login')->name('admin.auth.login.post');
-        Route::get('/logout', 'Auth\LoginController@logout')->name('admin.auth.logout');
+        Route::get('/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.auth.login');
+        Route::post('/login', 'Admin\Auth\LoginController@login')->name('admin.auth.login.post');
+        Route::get('/logout', 'Admin\Auth\LoginController@logout')->name('admin.auth.logout');
     });
     /* Admin Users */
     Route::group([

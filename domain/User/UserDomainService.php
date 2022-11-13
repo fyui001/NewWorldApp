@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Domain\User;
 
 use Domain\Common\RawPassword;
+use Domain\Common\Token;
 use Illuminate\Contracts\Hashing\Hasher;
+use Infra\Discord\DiscordBotClient;
 
 class UserDomainService
 {
@@ -13,6 +15,7 @@ class UserDomainService
     public function __construct(
         private UserRepository $userRepository,
         private Hasher $hasher,
+        private DiscordBotClient $discordBotClient,
     ) {
     }
 
@@ -31,16 +34,22 @@ class UserDomainService
         RawPassword $password,
         UserStatus $userStatus,
     ): bool {
-        return $this->userRepository->userRegister(
+        $result =  $this->userRepository->userRegister(
             $id,
             $password->hash($this->hasher),
             $userStatus,
         );
+
+        $user = $this->userRepository->get($id);
+        $token = $this->userRepository->getDefinitiveRegisterToken($id);
+        $this->discordBotClient->sendDefinitiveRegisterUrlByDm($user->getUserId(), $token);
+
+
+        return $result;
     }
 
-    public function definitiveRegister(DefinitiveRegisterToken $definitiveRegisterToken): bool
+    public function definitiveRegister(Token $definitiveRegisterToken): bool
     {
         return $this->userRepository->definitiveRegister($definitiveRegisterToken);
-        return !is_null($user);
     }
 }

@@ -9,16 +9,16 @@ use Discord\Parts\Embed\Embed;
 
 class MessageSender
 {
-    public function __construct(private Message $message)
+    public function __construct()
     {
     }
 
-    public function sendEmbed(Embed $embed): void
+    public function sendEmbed(Message $message, Embed $embed): void
     {
         try {
-            $this->message->channel->sendEmbed($embed);
+            $message->channel->sendEmbed($embed);
         } catch (\Exception $e) {
-            $this->message->channel->sendMessage($e->getMessage());
+            $message->channel->sendMessage($e->getMessage());
         }
     }
 }
