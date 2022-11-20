@@ -103,7 +103,7 @@ class DiscordBotClient
         $loop->run();
 
         $dmApiPath = "/channels/{$this->dmChannelId}/messages";
-        $registerUrl = route('api.users.definitive_register', ['token' => $token->getToken()->getRawValue()]);
+        $registerUrl = url("/definitive_register?token={$token->getToken()->getRawValue()}");
         $discordHttp->post($dmApiPath, ['content' => $registerUrl]);
         $loop->run();
         $loop->stop();

@@ -20,7 +20,7 @@ Route::group([
     Route::get('/', 'Api\UserController@show')->name('api.users.show');
     Route::post('/login', 'Api\UserController@login')->name('api.users.login');
     Route::post('/register', 'Api\UserController@register')->name('api.users.register');
-    Route::get('/definitive_registers', 'Api\UserController@definitiveRegister')->name('api.users.definitive_register');
+    Route::post('/definitive_registers', 'Api\UserController@definitiveRegister')->name('api.users.definitive_register');
 });
 
 Route:: group([
