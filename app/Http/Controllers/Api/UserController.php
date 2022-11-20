@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Api\ApiRequest;
+use App\Http\Requests\Api\Users\UserDefinitiveRegister;
 use App\Http\Requests\Api\Users\UserDetailRequest;
 use App\Http\Responder\ApiErrorResponder;
 use App\Http\Requests\Api\Users\LoginUserRequest;
@@ -148,9 +148,9 @@ class UserController
         ]);
     }
 
-    public function definitiveRegister(ApiRequest $request)
+    public function definitiveRegister(UserDefinitiveRegister $request): JsonResponse
     {
-        $definitiveRegisterToken = new Token($request->query('token'));
+        $definitiveRegisterToken = $request->getToken();
 
         $response = $this->userService->definitiveRegister($definitiveRegisterToken);
 
@@ -171,6 +171,11 @@ class UserController
             );
         }
 
-        return response()->redirectTo('/', 303);
+        return response()->json([
+            'status' => true,
+            'errors' => null,
+            'message' => 'success definitive register',
+            'data' => null,
+        ], 200);
     }
 }
