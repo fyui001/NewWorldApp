@@ -41,4 +41,9 @@ enum UserStatus: int implements BaseEnum
     {
         return $this === self::STATUS_VALID;
     }
+
+    public function isUnregistered(): bool
+    {
+        return $this === self::STATUS_UNREGISTERED;
+    }
 }
