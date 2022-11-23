@@ -6,14 +6,16 @@ namespace Domain\User;
 
 use Domain\Common\RawPassword;
 use Domain\Common\Token;
+use Domain\Exception\DuplicateEntryException;
+use Domain\User\DefinitiveRegisterToken\DefinitiveRegisterTokenRepository;
 use Illuminate\Contracts\Hashing\Hasher;
 use Infra\Discord\DiscordBotClient;
 
 class UserDomainService
 {
-
     public function __construct(
         private UserRepository $userRepository,
+        private DefinitiveRegisterTokenRepository $definitiveRegisterTokenRepository,
         private Hasher $hasher,
         private DiscordBotClient $discordBotClient,
     ) {
@@ -30,26 +32,29 @@ class UserDomainService
     }
 
     public function userPasswordRegister(
-        Id $id,
+        UserId $userId,
         RawPassword $password,
-        UserStatus $userStatus,
     ): bool {
-        $result =  $this->userRepository->userRegister(
-            $id,
+        $user = $this->userRepository->getUserByUserId($userId);
+
+        if (!$user->getStatus()->isUnregistered()) {
+            throw new DuplicateEntryException();
+        }
+
+        $result = $this->userRepository->userRegister(
+            $user->getId(),
             $password->hash($this->hasher),
-            $userStatus,
         );
 
-        $user = $this->userRepository->get($id);
-        $token = $this->userRepository->getDefinitiveRegisterToken($id);
+        $token = $this->definitiveRegisterTokenRepository->create($user->getId());
         $this->discordBotClient->sendDefinitiveRegisterUrlByDm($user->getUserId(), $token);
-
 
         return $result;
     }
 
-    public function definitiveRegister(Token $definitiveRegisterToken): bool
+    public function definitiveRegister(Token $token): bool
     {
-        return $this->userRepository->definitiveRegister($definitiveRegisterToken);
+        $definitiveRegisterToken = $this->definitiveRegisterTokenRepository->tokenPutToUse($token);
+        return $this->userRepository->definitiveRegister($definitiveRegisterToken->getUserId());
     }
 }

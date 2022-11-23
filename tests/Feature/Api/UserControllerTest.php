@@ -95,7 +95,7 @@ class UserControllerTest extends TestCase
             ]);
     }
 
-    public function testRegister()
+    public function testRegisterFiler()
     {
         $params = [
             'user_id' => 19890308,
@@ -130,15 +130,11 @@ class UserControllerTest extends TestCase
                 ],
                 'data' => null,
             ]);
+    }
 
-        $model = new User();
+    public function testDefinitiveRegister()
+    {
 
-        $model->user_id = 930316;
-        $model->name = '高田憂希';
-        $model->icon_url = 'https://example.com';
-        $model->password = '';
-        $model->status = UserStatus::STATUS_UNREGISTERED->getValue()->getRawValue();
 
-        $model->save();
     }
 }

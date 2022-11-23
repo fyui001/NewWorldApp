@@ -10,8 +10,11 @@ use Domain\AdminUser\AdminUser as AdminUserDomain;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\ExpiredAt;
+use Domain\Common\Token;
 use Domain\Drug\Drug;
 use Domain\MedicationHistory\MedicationHistory;
+use Domain\User\DefinitiveRegisterToken\DefinitiveRegisterToken;
 use Domain\User\User as UserDomain;
 use Domain\User\UserId;
 use Domain\User\UserStatus;
@@ -20,6 +23,7 @@ use Infra\EloquentModels\AdminUser as AdminUserModel;
 use Infra\EloquentModels\Drug as DrugModel;
 use Infra\EloquentModels\MedicationHistory as MedicationHistoryModel;
 use Infra\EloquentModels\User as UserModel;
+use Infra\EloquentModels\UserDefinitiveRegisterToken as UserDefinitiveRegisterTokenModel;
 use Infra\EloquentRepository\AdminUserRepository;
 use Infra\EloquentRepository\UserRepository;
 use Tests\TestCase;
@@ -33,6 +37,7 @@ class FeatureTestCase extends TestCase
     protected Drug $drug;
     protected MedicationHistory $medicationHistory;
     protected UserDomain $user;
+    protected DefinitiveRegisterToken $definitiveRegisterToken;
 
     public function setUp(): void
     {
@@ -125,5 +130,35 @@ class FeatureTestCase extends TestCase
         $model->save();
 
         $this->user = $model->toDomain();
+    }
+
+    public function createUnregisteredUser():void
+    {
+        $model = new UserModel();
+
+        $model->user_id = 19890308;
+        $model->name = '松井恵理子';
+        $model->icon_url = 'https://example.com';
+        $model->password = Hash::make('hogehoge');
+        $model->status = UserStatus::STATUS_UNREGISTERED->getValue()->getRawValue();
+
+        $model->save();
+
+        $this->user = $model->toDomain();
+    }
+
+    public function createUnusedToken(): void
+    {
+        $this->createUnregisteredUser();
+
+        $model = new UserDefinitiveRegisterTokenModel();
+        $model->user_id = $this->user->getUserId()->getRawValue();
+        $model->token = Token::makeRandomCoStr(64)->getRawValue();
+        $model->is_verify = false;
+        $model->expired_at = ExpiredAt::makeExpiredAtTime()->getSqlTimeStamp();
+
+        $model->save();
+
+        $this->definitiveRegisterToken = $model->toDomain();
     }
 }

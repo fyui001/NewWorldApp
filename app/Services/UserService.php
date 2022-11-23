@@ -131,22 +131,9 @@ class UserService extends AppService implements UserServiceInterface
         RawPassword $rawPassword,
     ): array {
         try {
-            $user = $this->userDomainService->getUserByUserId($userId);
-
-            if ($user->getStatus()->isRegistered()) {
-                return [
-                    'status' => false,
-                    'errors' => [
-                        'key' => 'duplicate_entry',
-                    ],
-                    'data' => null,
-                ];
-            }
-
             $result = $this->userDomainService->userPasswordRegister(
-                $user->getId(),
+                $userId,
                 $rawPassword,
-                UserStatus::STATUS_VALID
             );
 
             if (!$result) {
