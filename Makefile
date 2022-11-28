@@ -3,6 +3,10 @@ APP_CONTAINER_ID = `docker compose ps -q app`
 init:
 	@cp .env.example .env
 
+init_mutagen:
+	@curl -L https://github.com/mutagen-io/mutagen/releases/download/v0.16.2/mutagen_linux_amd64_v0.16.2.tar.gz | sudo tar -zxf - -C /usr/local/bin
+	@curl -L https://github.com/mutagen-io/mutagen-compose/releases/download/v0.16.2/mutagen-compose_linux_amd64_v0.16.2.tar.gz | sudo tar -zxf - -C /usr/local/bin
+
 docker_build:
 	@docker-compose build
 
