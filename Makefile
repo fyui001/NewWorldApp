@@ -45,6 +45,9 @@ up:
 down:
 	@mutagen-compose down
 
+stop:
+	@mutagen-compose stop
+
 setup:
 	@make composer_install
 	@docker-compose exec app php artisan key:generate
