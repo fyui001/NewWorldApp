@@ -9,7 +9,6 @@ use Discord\Exceptions\IntentException;
 use Discord\Http\Drivers\React;
 use Discord\Http\Http;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\User\Member;
 use Discord\WebSockets\Intents;
 use Domain\DiscordBot\BotCommand;
 use Domain\User\DefinitiveRegisterToken\DefinitiveRegisterToken;

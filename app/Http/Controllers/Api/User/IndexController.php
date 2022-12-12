@@ -32,7 +32,7 @@ class UserController
      */
     public function show(UserDetailRequest $request): JsonResponse
     {
-        $user = $request->loginUser();
+        $user = $request->getUser();
 
         if (!$user) {
             $apiErrorResponder = new ApiErrorResponder('unauthorized');

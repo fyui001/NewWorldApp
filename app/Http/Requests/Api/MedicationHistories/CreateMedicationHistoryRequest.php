@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\MedicationHistories;
 
-use App\Http\Requests\Request as AppRequest;
+use App\Http\Requests\Api\ApiRequest;
 use Domain\Drug\DrugName;
 use Domain\MedicationHistory\Amount;
 use Domain\User\Id as UserId;
 
-class CreateMedicationHistoryRequest extends AppRequest
+class CreateMedicationHistoryRequest extends ApiRequest
 {
     public function authorize(): bool
     {

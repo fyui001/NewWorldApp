@@ -8,7 +8,7 @@ use Domain\User\User;
 
 trait UserAuthenticationTrait
 {
-    public function loginUser(): ?User
+    public function getUser(): ?User
     {
         /** @var \App\Auth\User $user */
         $user = $this->user('api');
