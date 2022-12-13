@@ -32,6 +32,7 @@ RUN apt update && \
 
 RUN docker-php-ext-install bcmath intl pdo_mysql opcache bcmath
 
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug && \
-    pecl clear-cache
+## NOTE: 使いたいときに入れるように
+#RUN pecl install xdebug && \
+#    docker-php-ext-enable xdebug && \
+#    pecl clear-cache

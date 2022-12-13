@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DataTransfer\Drug\DrugHashMap;
-use App\DataTransfer\User\UserMedicationHistory;
+use App\DataTransfer\User\UserMedicationHistoryDetail;
 use App\DataTransfer\User\UserMedicationHistoryDetailList;
-use App\DataTransfer\User\UserMedicationHistoryList;
+use App\DataTransfer\User\UserMedicationHistoryPaginator;
+use Domain\Common\Paginator\Paginate;
 use Domain\Common\RawPassword;
 use Domain\Common\Token;
 use Domain\Drug\DrugDomainService;
@@ -16,6 +16,7 @@ use Domain\Exception\InvalidArgumentException;
 use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistory;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
+use Domain\MedicationHistory\MedicationHistoryRepository;
 use Domain\User\User;
 use Domain\User\UserDomainService;
 use Domain\User\UserId;
@@ -27,9 +28,10 @@ use App\Services\Interfaces\UserServiceInterface;
 class UserService extends AppService implements UserServiceInterface
 {
     public function __construct(
-        private UserDomainService $userDomainService,
-        private MedicationHistoryDomainService $medicationHistoryDomainService,
-        private DrugDomainService $drugDomainService,
+        private readonly UserDomainService $userDomainService,
+        private readonly MedicationHistoryDomainService $medicationHistoryDomainService,
+        private readonly DrugDomainService $drugDomainService,
+        private readonly MedicationHistoryRepository $medicationHistoryRepository,
     ) {
     }
 
@@ -44,29 +46,12 @@ class UserService extends AppService implements UserServiceInterface
         try {
             $user = $this->userDomainService->getUserById($user->getId());
 
-            $medicationHistoryList = $this->medicationHistoryDomainService->getListByUserId(
-                $user->getId(),
-            );
-
-            $userMedicationHistoryList = new UserMedicationHistoryList([]);
-            $drugList = $this->drugDomainService->getDrugList();
-            $drugHashMap = new DrugHashMap($drugList);
-            foreach ($medicationHistoryList as $medicationHistory) {
-                /** @var MedicationHistory $medicationHistory */
-                $userMedicationHistoryList[
-                    (string)$medicationHistory->getId()->getRawValue()
-                ] = $this->buildDetail($medicationHistory, $drugHashMap);
-            }
-
-            $userAndMedicationHistoryDetailList = new UserMedicationHistoryDetailList(
-                $user,
-                $userMedicationHistoryList,
-            );
-
             return [
                 'status' => true,
                 'errors' => null,
-                'data' => $userAndMedicationHistoryDetailList->toArray(),
+                'data' => [
+                    'user' => $user->toArray(),
+                ],
             ];
         } catch (NotFoundException $e) {
             return [
@@ -201,11 +186,39 @@ class UserService extends AppService implements UserServiceInterface
         }
     }
 
-    private function buildDetail(
-        MedicationHistory $medicationHistory,
-        DrugHashMap $drugHashMap,
-    ): UserMedicationHistory {
-        $drug = $drugHashMap->get((string)$medicationHistory->getDrugId()->getRawValue());
-        return new UserMedicationHistory($medicationHistory, $drug);
+    public function getMedicationHistoryPaginator(User $user, Paginate $paginate): array
+    {
+        $result = $this->medicationHistoryDomainService->getPaginateByUserId(
+            $user->getId(),
+            $paginate,
+        );
+
+        $userMedicationHistoryDetailArr = [];
+
+        foreach ($result->toArray() as $key => $item) {
+            /** @var MedicationHistory $item */
+            $drug = $this->drugDomainService->show($item->getDrugId());
+            $medicationHistoryDetail = new UserMedicationHistoryDetail($item, $drug);
+
+            $userMedicationHistoryDetailArr[$key] = $medicationHistoryDetail->toArray();
+        }
+
+        $userMedicationHistoryDetailList = new UserMedicationHistoryDetailList(
+            $user,
+            $userMedicationHistoryDetailArr
+        );
+
+        $medicationHistoryDetailPaginator = new UserMedicationHistoryPaginator(
+            $userMedicationHistoryDetailList,
+            $this->medicationHistoryRepository->getCount(),
+            $paginate,
+        );
+
+        return [
+            'status' => true,
+            'errors' => null,
+            'data' => $medicationHistoryDetailPaginator->toArray()
+        ];
     }
+
 }

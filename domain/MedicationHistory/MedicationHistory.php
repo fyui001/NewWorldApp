@@ -10,10 +10,10 @@ class MedicationHistory
 {
     public function __construct(
         private MedicationHistoryId $id,
-        private UserId              $userId,
-        private DrugId              $drugId,
-        private Amount              $amount,
-        private CreatedAt           $createdAt,
+        private UserId $userId,
+        private DrugId $drugId,
+        private Amount $amount,
+        private CreatedAt $createdAt,
     ) {
     }
 
@@ -49,7 +49,7 @@ class MedicationHistory
             'userId' => $this->getUserId()->getRawValue(),
             'drugId' => $this->getDrugId()->getRawValue(),
             'amount' => $this->getAmount()->getRawValue(),
-            'createdAt' => $this->createdAt->getRawValue(),
+            'createdAt' => $this->createdAt->getDetail(),
         ];
     }
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Drugs;
 
-use App\Http\Requests\Request as AppRequest;
+use App\Http\Requests\Api\ApiRequest;
 use Domain\Drug\DrugId;
 
-class ShowDrugRequest extends AppRequest
+class ShowDrugRequest extends ApiRequest
 {
     public function authorize(): bool
     {

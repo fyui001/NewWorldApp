@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api\Drugs;
+namespace App\Http\Requests\Api\Users;
 
-
+use App\Auth\User;
 use App\Http\Requests\Api\ApiRequest;
+use Domain\User\User as UserDomain;
 
-class IndexDrugRequest extends ApiRequest
+
+class MedicationIndexRequest extends ApiRequest
 {
     public function authorize()
     {
@@ -27,5 +29,11 @@ class IndexDrugRequest extends ApiRequest
             'order_by' => 'nullable|string',
             'sort' => 'nullable|string',
         ];
+    }
+
+    public function getUserDomain(): UserDomain
+    {
+        /** @var User $user */
+        return $this->loginUser();
     }
 }

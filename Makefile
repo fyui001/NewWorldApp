@@ -3,6 +3,10 @@ APP_CONTAINER_ID = `docker compose ps -q app`
 init:
 	@cp .env.example .env
 
+init_mutagen:
+	@curl -L https://github.com/mutagen-io/mutagen/releases/download/v0.16.2/mutagen_linux_amd64_v0.16.2.tar.gz | sudo tar -zxf - -C /usr/local/bin
+	@curl -L https://github.com/mutagen-io/mutagen-compose/releases/download/v0.16.2/mutagen-compose_linux_amd64_v0.16.2.tar.gz | sudo tar -zxf - -C /usr/local/bin
+
 docker_build:
 	@docker-compose build
 
@@ -28,7 +32,7 @@ test_seed:
 	@docker-compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
 
 test:
-	@docker-compose exec app ./vendor/bin/phpunit
+	@docker-compose exec app bash -c "vendor/bin/phpunit --testdox --colors=always"
 
 bash:
 	@docker-compose exec app bash
@@ -45,6 +49,9 @@ up:
 down:
 	@mutagen-compose down
 
+stop:
+	@mutagen-compose stop
+
 setup:
 	@make composer_install
 	@docker-compose exec app php artisan key:generate
@@ -59,5 +66,3 @@ setup:
 start_discord_bot:
 	@docker-compose exec app php artisan discord-bot:run
 
-run_test:
-	@docker-compose exec app bash -c "vendor/bin/phpunit --testdox --colors=always"

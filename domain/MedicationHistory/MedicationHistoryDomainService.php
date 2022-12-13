@@ -29,9 +29,9 @@ class MedicationHistoryDomainService
         return $this->medicationHistoryRepository->getCountMedicationTake($drugId);
     }
 
-    public function getListByUserId(Id $userId): MedicationHistoryList
+    public function getPaginateByUserId(Id $userId, Paginate $paginate): MedicationHistoryList
     {
-        return $this->medicationHistoryRepository->getListByUserId($userId);
+        return $this->medicationHistoryRepository->getPaginateByUserId($userId, $paginate);
     }
 
     public function create(

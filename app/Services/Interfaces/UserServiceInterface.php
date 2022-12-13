@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Interfaces;
 
+use Domain\Common\Paginator\Paginate;
 use Domain\Common\RawPassword;
 use Domain\Common\Token;
 use Domain\User\User;
@@ -17,4 +18,5 @@ interface UserServiceInterface {
         RawPassword $rawPassword,
     ): array;
     public function definitiveRegister(Token $definitiveRegisterToken): array;
+    public function getMedicationHistoryPaginator(User $user, Paginate $paginate): array;
 }
