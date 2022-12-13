@@ -53,11 +53,15 @@ class MedicationHistoryRepository implements MedicationHistoryRepositoryInterfac
         );
     }
 
-    public function getListByUserId(Id $userId): MedicationHistoryList
+    public function getPaginateByUserId(Id $userId, Paginate $paginate): MedicationHistoryList
     {
-        $builder = MedicationHistoryModel::where([
+        $builder = MedicationHistoryModel::with(self::WITH_MODEL)
+            ->where([
             'user_id' => $userId->getRawValue()
-        ]);
+            ])
+            ->orderBy('id', OrderKey::DESC->getValue()->getRawValue())
+            ->limit($paginate->getLimit()->getRawValue())
+            ->offset($paginate->offset()->getRawValue());
 
         $collection = $builder->get();
 

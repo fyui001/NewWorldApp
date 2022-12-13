@@ -2,16 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Api;
+namespace Tests\Feature\Api\User;
 
-use Domain\User\UserDomainService;
-use Domain\User\UserStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Infra\Discord\DiscordBotClient;
-use Infra\EloquentModels\User;
 use Tests\Feature\FeatureTestCase as TestCase;
 
-class UserControllerTest extends TestCase
+class IndexControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -57,14 +53,7 @@ class UserControllerTest extends TestCase
         $response = $this->json('GET', route('api.users.show'));
 
         $response->assertStatus(401)
-            ->assertJson([
-                'status' => false,
-                'errors' => [
-                    'type' => 'unauthorized',
-                ],
-                'message' => '401 Unauthorized.',
-                'data' => null,
-            ]);
+            ->assertJson(['message' => 'Unauthenticated.']);
 
         $this->userLogin();
 
@@ -77,14 +66,6 @@ class UserControllerTest extends TestCase
                 'name' => $this->user->getName()->getRawValue(),
                 'iconUrl' => $this->user->getIconUrl()->getRawValue(),
                 'status' => $this->user->getStatus()->rawString()->getRawValue(),
-                'medicationHistories' => [
-                    [
-                        'id' => $this->medicationHistory->getId()->getRawValue(),
-                        'drug' => $this->drug->toArray(),
-                        'amount' => $this->medicationHistory->getAmount()->getRawValue(),
-                        'createdAt' => $this->medicationHistory->getCreatedAt()->getDetail(),
-                    ],
-                ],
             ],
         ];
 
@@ -130,11 +111,5 @@ class UserControllerTest extends TestCase
                 ],
                 'data' => null,
             ]);
-    }
-
-    public function testDefinitiveRegister()
-    {
-
-
     }
 }

@@ -15,17 +15,30 @@ use Illuminate\Http\Request;
 
 /* Users */
 Route::group([
-    'prefix' => 'users'
+    'prefix' => 'users',
 ], function() {
-    Route::get('/', 'Api\UserController@show')->name('api.users.show');
-    Route::post('/login', 'Api\UserController@login')->name('api.users.login');
-    Route::post('/register', 'Api\UserController@register')->name('api.users.register');
-    Route::post('/definitive_registers', 'Api\UserController@definitiveRegister')->name('api.users.definitive_register');
+    Route::post('/login', 'Api\User\IndexController@login')->name('api.users.login');
+    Route::post('/register', 'Api\User\IndexController@register')->name('api.users.register');
+    Route::post('/definitive_registers', 'Api\User\IndexController@definitiveRegister')->name('api.users.definitive_register');
 });
 
 Route:: group([
     'middleware' => 'auth:api',
 ], function() {
+    /* Users */
+    Route::group([
+        'prefix' => 'users'
+    ], function() {
+        Route::get('/', 'Api\User\IndexController@show')->name('api.users.show');
+
+        /* Medication Histories */
+        Route::group([
+            'prefix' => 'medication_histories'
+        ], function() {
+            Route::get('/', 'Api\User\MedicationHistoriesController@index')->name('api.users.medication_histories');
+            Route::post('/create', 'Api\MedicationHistoryController@create')->name('api.medication_histories.create');
+        });
+    });
 
     /* Drugs */
     Route::group([
@@ -37,10 +50,4 @@ Route:: group([
         Route::post('/create', 'Api\DrugController@create')->name('api.drugs.create');
     });
 
-    /* Medication Histories */
-    Route::group([
-        'prefix' => 'medication_histories'
-    ], function() {
-        Route::post('/create', 'Api\MedicationHistoryController@create')->name('api.medication_histories.create');
-    });
 });

@@ -2,26 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User;
 
+use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserDefinitiveRegister;
 use App\Http\Requests\Api\Users\UserDetailRequest;
-use App\Http\Responder\ApiErrorResponder;
-use App\Http\Requests\Api\Users\LoginUserRequest;
 use App\Http\Requests\Api\Users\UserRegisterRequest;
+use App\Http\Responder\ApiErrorResponder;
 use App\Services\Interfaces\UserServiceInterface;
-use Domain\Common\Token;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
 
-class UserController
+class IndexController
 {
 
-    protected UserServiceInterface $userService;
-
-    public function __construct(UserServiceInterface $userService) {;
-
-        $this->userService = $userService;
-
+    public function __construct
+    (
+        private UserServiceInterface $userService
+    ) {
     }
 
     /**
@@ -32,7 +29,7 @@ class UserController
      */
     public function show(UserDetailRequest $request): JsonResponse
     {
-        $user = $request->getUser();
+        $user = $request->loginUser();
 
         if (!$user) {
             $apiErrorResponder = new ApiErrorResponder('unauthorized');
