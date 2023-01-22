@@ -8,7 +8,7 @@ COPY composer.json composer.lock /code/
 RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 
 ## appliation
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 COPY --from=composer-cache /usr/bin/composer /usr/bin/composer
 
