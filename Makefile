@@ -43,6 +43,9 @@ node-ssh:
 ide_helper:
 	@docker-compose exec app php artisan ide-helper:generate
 
+ide_helper_models:
+	@docker compose exec app php artisan ide-helper:models --dir="infra/EloquentModels"
+
 up:
 	@mutagen-compose up -d
 
