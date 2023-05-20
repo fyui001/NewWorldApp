@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Api;
 
 use App\Http\Requests\Api\Drugs\IndexDrugRequest;
-use App\Http\Requests\Api\Drugs\CreateDrugRequest;
 use App\Http\Requests\Api\Drugs\ShowDrugRequest;
+use App\Http\Requests\Api\Drugs\ShowNameDrugRequest;
 use App\Http\Responder\ApiErrorResponder;
 use App\Services\Interfaces\DrugServiceInterface;
-use App\Http\Requests\Api\Drugs\ShowNameDrugRequest;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
 
 class DrugController
 {

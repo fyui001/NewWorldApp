@@ -13,9 +13,8 @@ use Domain\User\UserName;
 use Domain\User\UserStatus;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
 
     protected $table = 'users';
@@ -37,16 +36,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('Infra\EloquentModels\MedicationHistory', 'user_id');
     }
 
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
     /**
      * Prepare a date for array / JSON serialization.
      *
@@ -64,7 +53,7 @@ class User extends Authenticatable implements JWTSubject
             new Id((int)$this->id),
             new UserId($this->user_id),
             new UserName($this->name),
-            new HashedPassword($this->password),
+            $this->password ? new HashedPassword($this->password) : null,
             new IconUrl($this->icon_url),
             UserStatus::tryFrom((int)$this->status)
         );

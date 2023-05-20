@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Api;
 
 use App\Http\Requests\Api\MedicationHistories\CreateMedicationHistoryRequest;
 use App\Http\Responder\ApiErrorResponder;
 use App\Services\Interfaces\MedicationHistoryServiceInterface;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
 
 class MedicationHistoryController
 {
@@ -22,7 +22,7 @@ class MedicationHistoryController
      * @param CreateMedicationHistoryRequest $request
      * @return JsonResponse
      */
-    public function create(CreateMedicationHistoryRequest $request): JsonResponse
+    public function create(CreateMedicationHistoryRequest $request): JsonResponse|ApiErrorResponder
     {
 
         $response = $this->medicationHistoryService->createMedicationHistory(
@@ -32,20 +32,9 @@ class MedicationHistoryController
         );
 
         if (!$response['status']) {
-            if (!empty($response['errors'])) {
-                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
-                $response = $apiErrorResponder->getResponse();
-                return response()->json(
-                    $response['body'],
-                    $response['response_code']
-                );
+            if (!$response['status']) {
+                return new ApiErrorResponder($response['errors']['key']);
             }
-            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
-            $errorResponse = $apiErrorResponder->getResponse();
-            return response()->json(
-                $errorResponse['body'],
-                $errorResponse['response_code']
-            );
         }
 
         return response()->json( [

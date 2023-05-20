@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api\Users;
+namespace App\Http\Api\User\Request;
 
 use App\Http\Requests\Request as AppRequest;
 use Domain\Common\RawPassword;

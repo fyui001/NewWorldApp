@@ -15,11 +15,11 @@
         "guzzlehttp/guzzle": "^7.2",
         "kyslik/column-sortable": "^6.4",
         "laravel/framework": "^9.0",
+        "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.1",
-        "team-reflex/discord-php": "^6.0",
-        "tymon/jwt-auth": "^1.0"
+        "team-reflex/discord-php": "^6.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",

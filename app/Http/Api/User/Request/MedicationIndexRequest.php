@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api\Users;
+namespace App\Http\Api\User\Request;
 
 use App\Auth\User;
-use App\Http\Requests\Api\ApiRequest;
+use App\Http\Api\Shered\Request\ApiRequest;
 use Domain\User\User as UserDomain;
 
 
