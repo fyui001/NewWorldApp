@@ -69,7 +69,7 @@ services:
       - "traefik.enable=false"
   db:
     container_name: new-world-db
-    image: mysql:5.7
+    image: mysql:8.0.32
     volumes:
       - db-store:/var/lib/mysql
       - ./docker/db/init.sql:/docker-entrypoint-initdb.d/0.sql
