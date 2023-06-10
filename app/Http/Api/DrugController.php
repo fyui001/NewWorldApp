@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Api;
 
+use App\Http\Requests\Api\Drugs\CreateDrugRequest;
 use App\Http\Requests\Api\Drugs\IndexDrugRequest;
 use App\Http\Requests\Api\Drugs\ShowDrugRequest;
 use App\Http\Requests\Api\Drugs\ShowNameDrugRequest;
@@ -26,24 +27,13 @@ class DrugController
      * @param IndexDrugRequest $request
      * @return JsonResponse
      */
-    public function index(IndexDrugRequest $request): JsonResponse
+    public function index(IndexDrugRequest $request): JsonResponse|ApiErrorResponder
     {
         $response = $this->drugService->getDrugList();
         if (!$response['status']) {
-            if (!empty($response['errors'])) {
-                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
-                $response = $apiErrorResponder->getResponse();
-                return response()->json(
-                    $response['body'],
-                    $response['response_code']
-                );
+            if (!$response['status']) {
+                return new ApiErrorResponder($response['errors']['key']);
             }
-            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
-            $errorResponse = $apiErrorResponder->getResponse();
-            return response()->json(
-                $errorResponse['body'],
-                $errorResponse['response_code']
-            );
         }
 
         return response()->json([
@@ -60,25 +50,14 @@ class DrugController
      * @param CreateDrugRequest $request
      * @return JsonResponse
      */
-    public function create(CreateDrugRequest $request): JsonResponse
+    public function create(CreateDrugRequest $request): JsonResponse|ApiErrorResponder
     {
         $response = $this->drugService->createDrug($request->getDrugName(), $request->getUrl());
 
         if (!$response['status']) {
-            if (!empty($response['errors'])) {
-                $apiErrorResponder =  new ApiErrorResponder($response['errors']['key']);
-                $response = $apiErrorResponder->getResponse();
-                return response()->json(
-                    $response['body'],
-                    $response['response_code']
-                );
+            if (!$response['status']) {
+                return new ApiErrorResponder($response['errors']['key']);
             }
-            $apiErrorResponder = new ApiErrorResponder('internal_server_error');
-            $errorResponse = $apiErrorResponder->getResponse();
-            return response()->json(
-                $errorResponse['body'],
-                $errorResponse['response_code']
-            );
         }
 
         return response()->json([
@@ -89,14 +68,14 @@ class DrugController
         ]);
     }
 
-    public function show(ShowDrugRequest $request): JsonResponse
+    public function show(ShowDrugRequest $request): JsonResponse|ApiErrorResponder
     {
         $response = $this->drugService->show($request->getDrugId());
 
         if (!$response['status']) {
-            $apiErrorResponder = new ApiErrorResponder($response['errors']['key']);
-            $error = $apiErrorResponder->getResponse()->toArray();
-            return response()->json($error['body'], $error['response_code']);
+            if (!$response['status']) {
+                return new ApiErrorResponder($response['errors']['key']);
+            }
         }
 
         return response()->json([
@@ -113,14 +92,14 @@ class DrugController
      * @param ShowNameDrugRequest $request
      * @return JsonResponse
      */
-    public function showName(ShowNameDrugRequest $request): JsonResponse
+    public function showName(ShowNameDrugRequest $request): JsonResponse|ApiErrorResponder
     {
         $response = $this->drugService->searchDrugByName($request->getDrugName());
 
         if (!$response['status']) {
-            $apiErrorResponder = new ApiErrorResponder($response['errors']['key']);
-            $error = $apiErrorResponder->getResponse()->toArray();
-            return response()->json($error['body'], $error['response_code']);
+            if (!$response['status']) {
+                return new ApiErrorResponder($response['errors']['key']);
+            }
         }
 
         return response()->json([
