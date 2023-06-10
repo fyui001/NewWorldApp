@@ -10,8 +10,10 @@ use App\Http\Api\User\Request\UserDetailRequest;
 use App\Http\Api\User\Request\UserRegisterRequest;
 use App\Http\Api\User\Responder\UserLoginResponder;
 use App\Http\Responder\ApiErrorResponder;
+use App\Http\Responder\EmptyResponder;
 use App\Services\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController
 {
@@ -55,21 +57,21 @@ class IndexController
      * ログイン
      *
      * @param LoginUserRequest $request
-     * @return UserLoginResponder|ApiErrorResponder
+     * @return UserLoginResponder|EmptyResponder
      */
-    public function login(LoginUserRequest $request): ApiErrorResponder|UserLoginResponder
+    public function login(LoginUserRequest $request): ApiErrorResponder|EmptyResponder
     {
 
-        $response = $this->userService->login(
-            $request->getUserId(),
-            $request->getPasswordAsBaseValue(),
-        );
+        $credentials = [
+            'user_id' => $request->getUserId()->getRawValue(),
+            'password' => $request->getPasswordAsBaseValue()->getRawValue(),
+        ];
 
-        if (!$response['status']) {
-            return new ApiErrorResponder($response['errors']['key']);
+        if (!Auth::guard('api')->attempt($credentials)) {
+            return new ApiErrorResponder('login_failure');
         }
 
-        return new UserLoginResponder($response['data']['user']);
+        return new EmptyResponder();
     }
 
     /**
