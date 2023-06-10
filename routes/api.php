@@ -31,13 +31,13 @@ Route:: group([
     Route::group([
         'prefix' => 'users'
     ], function() {
-        Route::get('/', 'User\IndexController@show')->name('api.users.show');
+        Route::get('/', 'User\Action\IndexController@show')->name('api.users.show');
 
         /* Medication Histories */
         Route::group([
             'prefix' => 'medication_histories'
         ], function() {
-            Route::get('/', 'User\MedicationHistoriesController@index')->name('api.users.medication_histories');
+            Route::get('/', 'User\Action\MedicationHistoriesController@index')->name('api.users.medication_histories');
             Route::post('/create', 'MedicationHistoryController@create')->name('api.medication_histories.create');
         });
     });
