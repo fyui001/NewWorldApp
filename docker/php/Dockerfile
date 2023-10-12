@@ -28,9 +28,13 @@ RUN apt update && \
     libmemcached-dev \
     unzip \
     zlib1g-dev \
-    libonig-dev
+    libonig-dev \
+    default-mysql-client
 
 RUN docker-php-ext-install bcmath intl pdo_mysql opcache bcmath
+
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 ## NOTE: 使いたいときに入れるように
 #RUN pecl install xdebug && \

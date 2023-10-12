@@ -44,7 +44,10 @@ class AdminUserRepository implements AdminUserRepositoryInterface
 
     public function getByUserId(AdminUserId $adminUserId): AdminUser
     {
-        $model = AdminUserModel::where(['user_id' => $adminUserId->getRawValue()])->first();
+        $model = AdminUserModel::where([
+            'user_id' => $adminUserId->getRawValue(),
+            'status' => AdminUserStatus::STATUS_VALID,
+        ])->first();
 
         if (!$model) {
             throw new NotFoundException();

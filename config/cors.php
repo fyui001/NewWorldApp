@@ -15,13 +15,14 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['GET', 'POST'],
 
     'allowed_origins' => [
-        'nw.fyui001.com',
-        'nw.localhost',
+        //'nw.fyui001.com',
+        //'app.nw.localhost',
+        '*',
     ],
 
     'allowed_origins_patterns' => [],

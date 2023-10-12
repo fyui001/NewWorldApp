@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use App\Services\Interfaces;
 use App\Services;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,9 +27,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        Sanctum::ignoreMigrations();
     }
 
     /**
@@ -36,8 +37,13 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
+        // 管理画面用のクッキー
+        if (request()->is('admin*')) {
+            config(['session.cookie' => config('session.cookie_admin')]);
+        }
+
         Paginator::useBootstrap();
         if ($this->app->environment() === 'production') {
             \URL::forceScheme('https');

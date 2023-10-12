@@ -26,7 +26,7 @@ class IndexControllerTest extends TestCase
         $response = $this->json('POST', route('api.users.login'), $params);
         $response->assertStatus(200)->assertJson([
             'status' => true,
-            'data' => $response['data'],
+            'data' => null,
         ]);
 
     }
@@ -65,7 +65,7 @@ class IndexControllerTest extends TestCase
                 'userId' => $this->user->getUserId()->getRawValue(),
                 'name' => $this->user->getName()->getRawValue(),
                 'iconUrl' => $this->user->getIconUrl()->getRawValue(),
-                'status' => $this->user->getStatus()->rawString()->getRawValue(),
+                'status' => $this->user->getStatus()->displayName()->getRawValue(),
             ],
         ];
 

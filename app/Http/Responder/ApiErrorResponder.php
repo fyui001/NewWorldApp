@@ -3,8 +3,9 @@
 namespace App\Http\Responder;
 
 use Domain\Common\ListValue;
+use Illuminate\Http\JsonResponse;
 
-class ApiErrorResponder
+class ApiErrorResponder extends BaseResponder
 {
     private ListValue $response;
 
@@ -36,8 +37,8 @@ class ApiErrorResponder
         $this->response['response_code'] = $errors[$key]['response_code'] ?? 500;
     }
 
-    public function getResponse(): ListValue
+    public function toResponse($request): JsonResponse
     {
-        return $this->response;
+        return new JsonResponse($this->response['body'], $this->response['response_code']);
     }
 }

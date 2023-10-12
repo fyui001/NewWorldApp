@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Api\User\Action;
 
-use App\Http\Requests\Api\Users\MedicationIndexRequest;
+use App\Http\Api\User\Request\MedicationIndexRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use Domain\Common\Paginator\Paginate;
 use Illuminate\Http\JsonResponse;

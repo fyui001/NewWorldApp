@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Drugs;
 
 
-use App\Http\Requests\Api\ApiRequest;
+use App\Http\Api\Shered\Request\ApiRequest;
 
 class IndexDrugRequest extends ApiRequest
 {

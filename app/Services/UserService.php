@@ -76,7 +76,6 @@ class UserService extends AppService implements UserServiceInterface
         $credentials = [
             'user_id' => $userId->getRawValue(),
             'password' => $rawPassword->getRawValue(),
-            'status' => UserStatus::STATUS_VALID,
         ];
 
         if (!Auth::guard('api')->attempt($credentials)) {
@@ -89,17 +88,13 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = $this->userDomainService->getUserByUserId($userId)->toArray();
-        $accessToken = auth('api')->claims([
-            'guard' => 'api'
-        ])->attempt($credentials);
+        $user = $this->userDomainService->getUserByUserId($userId);
 
         return [
             'status' => true,
             'errors' => null,
             'data' => [
                 'user' => $user,
-                'access_token' => $accessToken,
             ],
         ];
     }

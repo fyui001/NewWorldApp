@@ -12,7 +12,7 @@ class User
         private Id $id,
         private UserId $userId,
         private UserName $userName,
-        private HashedPassword $userHashedPassword,
+        private ?HashedPassword $userHashedPassword,
         private IconUrl $iconUrl,
         private UserStatus $userStatus
     ) {}
@@ -59,7 +59,7 @@ class User
             'userId' => $this->getUserId()->getRawValue(),
             'name' => $this->getName()->getRawValue(),
             'iconUrl' => $this->getIconUrl()->getRawValue(),
-            'status' => $this->getStatus()->rawString()->getRawValue(),
+            'status' => $this->getStatus()->displayName()->getRawValue(),
         ];
     }
 }
