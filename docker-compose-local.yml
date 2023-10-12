@@ -46,8 +46,6 @@ services:
       args:
         APP_ENV: ${APP_ENV}
     tty: true
-    environment:
-      - TZ=${TZ}
     volumes:
       - code:/code
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini

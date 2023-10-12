@@ -8,7 +8,7 @@ init_mutagen:
 	@curl -L https://github.com/mutagen-io/mutagen-compose/releases/download/v0.16.2/mutagen-compose_linux_amd64_v0.16.2.tar.gz | sudo tar -zxf - -C /usr/local/bin
 
 docker_build:
-	@docker-compose build
+	@docker-compose build --no-cache
 
 composer_install:
 	@docker-compose exec app composer install
