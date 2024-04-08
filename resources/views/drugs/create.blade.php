@@ -16,15 +16,15 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('admin.drugs.store'), 'method' => 'post']) }}
+<form action="{{ route('admin.drugs.store') }}" method="POST">
     <div class="form-group info">
         <label>薬物名</label>
-        {{ Form::text('drug_name', old('drug_name'), ['class' => 'form-control', 'placeholder' => 'Enter drug name', 'required' => true]) }}
+        <input name="drug_name" value="{{ old('drug_name') }}" class="form-control " placeholder="Enter drug name" required/>
     </div>
     <div class="form-group info">
         <label>URL (wiki)</label>
-        {{ Form::text('url', old('url'), ['class' => 'form-control', 'placeholder' => 'Enter URL', 'required' => true]) }}
+        <input name="url" value="{{ old('url') }}" class="form-control " placeholder="Enter URL" required/>
     </div>
     <button type="submit" class="btn btn-round btn-info">追加</button>
-{{ Form::close() }}
+</form>
 @endsection

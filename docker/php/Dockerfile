@@ -1,5 +1,5 @@
 ## composer
-FROM composer:2.4.1 AS composer-cache
+FROM composer:2.7.2 AS composer-cache
 WORKDIR /code
 # copy only composer files for caching
 COPY composer.json composer.lock /code/
@@ -8,7 +8,7 @@ COPY composer.json composer.lock /code/
 RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 
 ## appliation
-FROM php:8.1-fpm
+FROM php:8.3-fpm
 
 COPY --from=composer-cache /usr/bin/composer /usr/bin/composer
 

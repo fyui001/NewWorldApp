@@ -1,26 +1,3 @@
-version: '3.9'
-
-volumes:
-  code:
-  node-modules:
-  db-store:
-
-x-mutagen:
-  sync:
-    code:
-      alpha: "."
-      beta: "volume://code"
-      mode: "two-way-resolved"
-      ignore:
-        vcs: true
-      permissions:
-        defaultFileMode: 0666
-        defaultDirectoryMode: 0777
-      configurationBeta:
-        permissions:
-          defaultOwner: id:0
-          defaultGroup: id:0
-
 services:
   web:
     container_name: new-world-web
@@ -69,7 +46,7 @@ services:
       - "traefik.enable=false"
   db:
     container_name: new-world-db
-    image: mysql:5.7
+    image: mysql:8.3.0
     volumes:
       - db-store:/var/lib/mysql
       - ./docker/db/init.sql:/docker-entrypoint-initdb.d/0.sql
@@ -81,6 +58,10 @@ services:
       - "3306:3306"
     labels:
       - "traefik.enable=false"
+volumes:
+  code:
+  node-modules:
+  db-store:
 networks:
   default: {}
   docker_default:

@@ -8,9 +8,8 @@ use Domain\Common\RawPassword;
 use Domain\User\User as UserDomain;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Hashing\Hasher;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User implements Authenticatable, JWTSubject
+class User implements Authenticatable
 {
     public function __construct(
        private UserDomain $user,
@@ -63,14 +62,9 @@ class User implements Authenticatable, JWTSubject
         // do noting
     }
 
-    public function getJWTCustomClaims()
+    public function getAuthPasswordName()
     {
-        return [];
-    }
-
-    public function getJWTIdentifier()
-    {
-        return $this->getAuthIdentifier();
+        // do noting
     }
 
     public function checkPassword(Hasher $hasher, RawPassword $rawPassword): bool

@@ -8,61 +8,69 @@ init_mutagen:
 	@curl -L https://github.com/mutagen-io/mutagen-compose/releases/download/v0.16.2/mutagen-compose_linux_amd64_v0.16.2.tar.gz | sudo tar -zxf - -C /usr/local/bin
 
 docker_build:
-	@docker-compose build
+	@docker compose build
 
 composer_install:
-	@docker-compose exec app composer install
+	@docker compose exec app composer install
 
 cache_clear:
-	@docker-compose exec app php artisan cache:clear
-	@docker-compose exec app php artisan view:clear
-	@docker-compose exec app php artisan route:clear
-	@docker-compose exec app php artisan config:clear
+	@docker compose exec app php artisan cache:clear
+	@docker compose exec app php artisan view:clear
+	@docker compose exec app php artisan route:clear
+	@docker compose exec app php artisan config:clear
 
 permission:
-	@docker-compose exec app chmod -R 777 /code/storage bootstrap/cache
+	@docker compose exec app chmod -R 777 /code/storage bootstrap/cache
 
 migrate:
-	@docker-compose exec app php artisan migrate
+	@docker compose exec app php artisan migrate
 
 migrate_seed:
-	@docker-compose exec app php artisan migrate:fresh --seed --drop-views
+	@docker compose exec app php artisan migrate:fresh --seed --drop-views
 
 test_seed:
-	@docker-compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
+	@docker compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
 
 test:
-	@docker-compose exec app bash -c "vendor/bin/phpunit --testdox --colors=always"
+	@docker compose exec app bash -c "vendor/bin/phpunit --testdox --colors=always"
 
 bash:
-	@docker-compose exec app bash
+	@docker compose exec app bash
 
 node-ssh:
-	@docker-compose exec js bash
+	@docker compose exec js bash
 
 ide_helper:
-	@docker-compose exec app php artisan ide-helper:generate
+	@docker compose exec app php artisan ide-helper:generate
+
+ide_helper_models:
+	@docker compose exec app php artisan ide-helper:models --dir="infra/EloquentModels"
 
 up:
-	@mutagen-compose up -d
+	@docker compose up -d
+
+up-mutagen:
+	@mutagen-compose -f compose.yml -f compose.mutagen.yml up -d
 
 down:
-	@mutagen-compose down
+	@docker compose down
+
+down-mutagen:
+	@mutagen-compose -f compose.yml -f compose.mutagen.yml down
 
 stop:
 	@mutagen-compose stop
 
 setup:
 	@make composer_install
-	@docker-compose exec app php artisan key:generate
-	@docker-compose exec app php artisan jwt:secret
+	@docker compose exec app php artisan key:generate
 	@make ide_helper
 	@make cache_clear
 	@make migrate_seed
 	@make test_seed
 	@make permission
-	@docker-compose exec app php artisan storage:link
+	@docker compose exec app php artisan storage:link
 
 start_discord_bot:
-	@docker-compose exec app php artisan discord-bot:run
+	@docker compose exec app php artisan discord-bot:run
 

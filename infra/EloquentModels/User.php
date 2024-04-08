@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
 
     protected $table = 'users';
@@ -35,16 +35,6 @@ class User extends Authenticatable implements JWTSubject
     public function medicationHistories(): HasMany
     {
         return $this->hasMany('Infra\EloquentModels\MedicationHistory', 'user_id');
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
     }
 
     /**

@@ -16,6 +16,7 @@ npm-debug.log
 yarn-error.log
 _ide_helper.php
 docker-compose.yml
+compose.yml
 
 # IDE and editor specific files #
 /nbproject
