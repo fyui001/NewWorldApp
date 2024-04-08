@@ -1,0 +1,116 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `admin_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `admin_users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理者ID',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'パスワード',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名前',
+  `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'ロール',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'ステータス',
+  `created_at` datetime DEFAULT NULL COMMENT '作成日時',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新日時',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNQ_ADMIN_USER_ID` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `drugs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `drugs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `drug_name` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL COMMENT '作成日時',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新日時',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNQ_DRUG_NAME` (`drug_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `medication_histories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `medication_histories` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `drug_id` bigint(20) unsigned NOT NULL,
+  `amount` decimal(11,3) unsigned NOT NULL COMMENT '服薬量',
+  `created_at` datetime DEFAULT NULL COMMENT '作成日時',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新日時',
+  PRIMARY KEY (`id`),
+  KEY `medication_histories_user_id_foreign` (`user_id`),
+  KEY `medication_histories_drug_id_foreign` (`drug_id`),
+  CONSTRAINT `medication_histories_drug_id_foreign` FOREIGN KEY (`drug_id`) REFERENCES `drugs` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `medication_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_definitive_register_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_definitive_register_tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(20) unsigned NOT NULL,
+  `token` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'トークン',
+  `is_verify` tinyint(1) NOT NULL DEFAULT '0' COMMENT '認証したか',
+  `expired_at` datetime NOT NULL COMMENT '有効期限',
+  `created_at` datetime DEFAULT NULL COMMENT '作成日時',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新日時',
+  PRIMARY KEY (`id`),
+  KEY `user_definitive_register_tokens_user_id_foreign` (`user_id`),
+  CONSTRAINT `user_definitive_register_tokens_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` bigint(20) unsigned NOT NULL COMMENT 'ユーザーID',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名前',
+  `icon_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'アイコンURL',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'パスワード',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'ステータス',
+  `created_at` datetime DEFAULT NULL COMMENT '作成日時',
+  `updated_at` datetime DEFAULT NULL COMMENT '更新日時',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNQ_USER_ID` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `migrations` VALUES (1,'2020_07_13_020545_craete_admin_users_table',1);
+INSERT INTO `migrations` VALUES (2,'2020_07_27_044219_create_users_table',1);
+INSERT INTO `migrations` VALUES (3,'2020_11_03_091134_create_drugs_table',1);
+INSERT INTO `migrations` VALUES (4,'2020_11_03_091735_create_medication_histories_table',1);
+INSERT INTO `migrations` VALUES (5,'2021_05_16_145100_add_column_admin_users',1);
+INSERT INTO `migrations` VALUES (6,'2022_04_17_211339_drop_column_admin_users',1);
+INSERT INTO `migrations` VALUES (7,'2022_04_23_161802_drop_is_registered_from_users_table',1);
+INSERT INTO `migrations` VALUES (8,'2022_04_23_161812_drop_del_flg_from_users_table',1);
+INSERT INTO `migrations` VALUES (9,'2022_04_23_161833_add_status_column_from_users_table',1);
+INSERT INTO `migrations` VALUES (10,'2022_06_20_205454_change_column_type_users_table',1);
+INSERT INTO `migrations` VALUES (11,'2022_06_25_135023_drop_column_accsess_token_users',1);
+INSERT INTO `migrations` VALUES (12,'2022_10_09_053757_change_maeication_histories_amount_column_places',1);
+INSERT INTO `migrations` VALUES (13,'2022_10_09_054517_add_foreign_to_maeication_histories_table',1);
+INSERT INTO `migrations` VALUES (14,'2022_10_23_122717_user_definitive_register_tokens',1);
+INSERT INTO `migrations` VALUES (16,'2023_10_13_001327_change_time_stamp_to_datetime',2);

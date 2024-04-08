@@ -20,8 +20,6 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
     tty: true
-    environment:
-      - TZ=${TZ}
     volumes:
       - .:/code
       - php-vendor:/code/vendor

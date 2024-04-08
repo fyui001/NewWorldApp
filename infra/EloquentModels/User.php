@@ -13,7 +13,6 @@ use Domain\User\UserName;
 use Domain\User\UserStatus;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable
 {
@@ -54,7 +53,7 @@ class User extends Authenticatable
             new Id((int)$this->id),
             new UserId($this->user_id),
             new UserName($this->name),
-            new HashedPassword($this->password),
+            $this->password ? new HashedPassword($this->password) : null,
             new IconUrl($this->icon_url),
             UserStatus::tryFrom((int)$this->status)
         );

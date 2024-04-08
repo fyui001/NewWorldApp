@@ -37,6 +37,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $model = UserModel::where([
             'user_id' => $userId->getRawValue(),
+            'status' => UserStatus::STATUS_VALID,
         ])->first();
 
         if (!$model) {

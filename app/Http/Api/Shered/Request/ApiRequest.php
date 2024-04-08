@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Api\Shered\Request;
 
 use App\Http\Requests\Request as AppRequest;
 
