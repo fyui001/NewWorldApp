@@ -23,9 +23,8 @@ use Domain\User\UserId;
 use Domain\User\UserStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Service as AppService;
-use App\Services\Interfaces\UserServiceInterface;
 
-class UserService extends AppService implements UserServiceInterface
+class UserService extends AppService
 {
     public function __construct(
         private readonly UserDomainService $userDomainService,

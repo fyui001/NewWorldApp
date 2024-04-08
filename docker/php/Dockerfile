@@ -28,7 +28,8 @@ RUN apt update && \
     libmemcached-dev \
     unzip \
     zlib1g-dev \
-    libonig-dev
+    libonig-dev \
+    default-mysql-client
 
 RUN docker-php-ext-install bcmath intl pdo_mysql opcache bcmath
 

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller as AppController;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\Drugs\CreateDrugRequest;
 use App\Http\Requests\Admin\Drugs\UpdateDrugRequest;
-use App\Services\Interfaces\DrugServiceInterface;
+use App\Services\DrugService;
 use Domain\Common\Paginator\Paginate;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -18,13 +18,9 @@ use Infra\EloquentModels\Drug as DrugModel;
 
 class DrugController extends AppController
 {
-
-    protected DrugServiceInterface $drugService;
-
-    public function __construct(DrugServiceInterface $drugService)
+    public function __construct(private readonly DrugService $drugService)
     {
         parent::__construct();
-        $this->drugService = $drugService;
     }
 
     /**

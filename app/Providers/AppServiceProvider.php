@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use App\Services\Interfaces;
-use App\Services;
-use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,10 +15,6 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-        Interfaces\AdminUserServiceInterface::class => Services\AdminUserService::class,
-        Interfaces\DrugServiceInterface::class => Services\DrugService::class,
-        Interfaces\MedicationHistoryServiceInterface::class => Services\MedicationHistoryService::class,
-        Interfaces\UserServiceInterface::class => Services\UserService::class,
     ];
 
     /**
@@ -29,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Sanctum::ignoreMigrations();
     }
 
     /**
@@ -45,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Paginator::useBootstrap();
+
         if ($this->app->environment() === 'production') {
             \URL::forceScheme('https');
         }

@@ -11,7 +11,6 @@ use Domain\Common\RawPositiveInteger;
 use Domain\Drug\Drug;
 use Domain\Drug\DrugDomainService;
 use Domain\Drug\DrugId;
-use App\Services\Interfaces\DrugServiceInterface;
 use Domain\Drug\DrugName;
 use Domain\Drug\DrugRepository;
 use Domain\Drug\DrugUrl;
@@ -19,7 +18,7 @@ use Domain\Exception\NotFoundException;
 use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Infra\EloquentModels\Drug as DrugModel;
 
-class DrugService extends AppService implements DrugServiceInterface
+class DrugService extends AppService
 {
     public function __construct(
         private DrugDomainService $drugDomainService,

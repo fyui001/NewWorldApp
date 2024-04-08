@@ -6,13 +6,13 @@ namespace App\Http\Api;
 
 use App\Http\Requests\Api\MedicationHistories\CreateMedicationHistoryRequest;
 use App\Http\Responder\ApiErrorResponder;
-use App\Services\Interfaces\MedicationHistoryServiceInterface;
+use App\Services\MedicationHistoryService;
 use Illuminate\Http\JsonResponse;
 
 class MedicationHistoryController
 {
     public function __construct(
-        private MedicationHistoryServiceInterface $medicationHistoryService,
+        private readonly MedicationHistoryService $medicationHistoryService,
     ) {
     }
 
