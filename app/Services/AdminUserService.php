@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Services\Service as AppService;
-use App\Services\Interfaces\AdminUserServiceInterface;
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserDomainService;
 use Domain\AdminUser\AdminUserId;
@@ -16,7 +15,7 @@ use Domain\AdminUser\AdminUserStatus;
 use Domain\Common\RawPassword;
 use Exception;
 
-class AdminUserService extends AppService implements AdminUserServiceInterface
+class AdminUserService extends AppService
 {
     private AdminUserDomainService $adminUserDomainService;
 

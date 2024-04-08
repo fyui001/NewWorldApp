@@ -16,10 +16,9 @@ use Domain\MedicationHistory\MedicationHistoryDomainService;
 use Domain\MedicationHistory\MedicationHistoryRepository;
 use Domain\User\Id;
 use App\Services\Service as AppService;
-use App\Services\Interfaces\MedicationHistoryServiceInterface;
 use Domain\User\UserDomainService;
 
-class MedicationHistoryService extends AppService implements MedicationHistoryServiceInterface
+class MedicationHistoryService extends AppService
 {
     public function __construct(
         private MedicationHistoryDomainService $medicationHistoryDomainService,

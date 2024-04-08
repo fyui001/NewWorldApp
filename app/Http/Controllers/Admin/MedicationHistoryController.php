@@ -6,22 +6,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
 use App\Http\Requests\Admin\AdminRequest;
+use App\Services\MedicationHistoryService;
 use Domain\Common\Paginator\Paginate;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\MedicationHistory;
-use App\Services\Interfaces\MedicationHistoryServiceInterface;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\Admin\MedicationHistories\UpdateMedicationHistoryRequest;
 
 class MedicationHistoryController extends AppController
 {
-
-    protected MedicationHistoryServiceInterface $medicationHistoryService;
-
-    public function __construct(MedicationHistoryServiceInterface $medicationHistoryService)
+    public function __construct(private readonly MedicationHistoryService $medicationHistoryService)
     {
         parent::__construct();
-        $this->medicationHistoryService = $medicationHistoryService;
     }
 
     /**

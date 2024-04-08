@@ -31,7 +31,7 @@ class BotCommandTest extends TestCase
         );
     }
 
-    public function displayNameProvider() :array
+    public static function displayNameProvider() :array
     {
         return [
             'hello' => [
@@ -61,7 +61,7 @@ class BotCommandTest extends TestCase
         );
     }
 
-    public function makeFromDisplayNameProvider(): array
+    public static function makeFromDisplayNameProvider(): array
     {
         return [
             [

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Api\User\Action;
 
 use App\Http\Api\User\Request\MedicationIndexRequest;
-use App\Services\Interfaces\UserServiceInterface;
+use App\Services\UserService;
 use Domain\Common\Paginator\Paginate;
 use Illuminate\Http\JsonResponse;
 
 class MedicationHistoriesController
 {
     public function __construct(
-        private UserServiceInterface $userService
+        private readonly UserService $userService
     ) {
     }
 

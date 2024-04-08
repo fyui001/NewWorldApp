@@ -23,9 +23,8 @@ use Domain\User\UserId;
 use Domain\User\UserStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Service as AppService;
-use App\Services\Interfaces\UserServiceInterface;
 
-class UserService extends AppService implements UserServiceInterface
+class UserService extends AppService
 {
     public function __construct(
         private readonly UserDomainService $userDomainService,
@@ -76,6 +75,7 @@ class UserService extends AppService implements UserServiceInterface
         $credentials = [
             'user_id' => $userId->getRawValue(),
             'password' => $rawPassword->getRawValue(),
+            'status' => UserStatus::STATUS_VALID,
         ];
 
         if (!Auth::guard('api')->attempt($credentials)) {
@@ -88,13 +88,15 @@ class UserService extends AppService implements UserServiceInterface
             ];
         }
 
-        $user = $this->userDomainService->getUserByUserId($userId);
+        $user = $this->userDomainService->getUserByUserId($userId)->toArray();
+        $accessToken = Auth::guard('api')->attempt($credentials);
 
         return [
             'status' => true,
             'errors' => null,
             'data' => [
                 'user' => $user,
+                'access_token' => $accessToken,
             ],
         ];
     }

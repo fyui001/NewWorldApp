@@ -52,7 +52,7 @@ class AdminUserControllerTest extends TestCase
         $response = $this->adminUserRepository->getByUserId(new AdminUserId($params['user_id']));
 
         $this->assertTrue(
-            $response->getUserId()->isEqual(new RawString($params['user_id']))
+            $response->getUserId()->isEqual(new AdminUserId($params['user_id']))
         );
     }
 
@@ -85,7 +85,7 @@ class AdminUserControllerTest extends TestCase
         $response = $this->adminUserRepository->getByUserId(new AdminUserId($params['user_id']));
 
         $this->assertTrue(
-            $response->getUserId()->isEqual(new RawString($params['user_id']))
+            $response->getUserId()->isEqual(new AdminUserId($params['user_id']))
         );
 
         $this->get(route('admin.auth.logout'));

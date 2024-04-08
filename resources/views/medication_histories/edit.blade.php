@@ -16,19 +16,19 @@
 @endsection
 
 @section('content')
-    {{ Form::open(['url' => route('admin.medication_histories.update', $medicationHistory), 'method' => 'post']) }}
+    <form action="{{ route('admin.medication_histories.update', $medicationHistory) }}" method="POST">
     <div class="form-group info">
         <label>服薬者</label>
-        {{ Form::text('taker', old('', $medicationHistory->user->name), ['class' => 'form-control', 'placeholder' => 'Enter Taker', 'disabled' => true]) }}
+        <input name="taker" value="{{ $medicationHistory->user->name }}" class="form-control" disabled />
     </div>
     <div class="form-group info">
         <label>薬物名</label>
-        {{ Form::text('drug_name', old('drug_name', $medicationHistory->drug->drug_name), ['class' => 'form-control', 'placeholder' => 'Enter drug name', 'disabled' => true]) }}
+        <input name="drug_name" value="{{ $medicationHistory->drug->drug_name }}" class="form-control" disabled />
     </div>
     <div class="form-group info">
         <label>服薬用</label>
-        {{ Form::text('amount', old('amount', $medicationHistory->amount), ['class' => 'form-control', 'placeholder' => 'Enter amount', 'require' => true]) }}
+        <input name="amount" value="{{ old('amount', $medicationHistory->amount) }}" class="form-control" placeholder="Enter amount" required/>
     </div>
     <button type="submit" class="btn btn-round btn-info">更新</button>
-    {{ Form::close() }}
+    </form>
 @endsection

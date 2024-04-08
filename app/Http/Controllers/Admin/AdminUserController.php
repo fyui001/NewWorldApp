@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
-use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
+use App\Services\AdminUserService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Infra\EloquentModels\AdminUser;
@@ -15,12 +15,9 @@ use Infra\EloquentModels\AdminUser;
 class AdminUserController extends AppController
 {
 
-    protected AdminUserServiceInterface $adminUserService;
-
-    public function __construct(AdminUserServiceInterface $adminUserService)
+    public function __construct(private readonly AdminUserService $adminUserService)
     {
         parent::__construct();
-        $this->adminUserService = $adminUserService;
     }
 
     /**

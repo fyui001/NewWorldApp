@@ -11,7 +11,7 @@ use App\Http\Api\User\Request\UserRegisterRequest;
 use App\Http\Api\User\Responder\UserLoginResponder;
 use App\Http\Responder\ApiErrorResponder;
 use App\Http\Responder\EmptyResponder;
-use App\Services\Interfaces\UserServiceInterface;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +20,7 @@ class IndexController
 
     public function __construct
     (
-        private UserServiceInterface $userService
+        private readonly UserService $userService
     ) {
     }
 

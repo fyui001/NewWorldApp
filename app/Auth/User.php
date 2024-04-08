@@ -62,6 +62,11 @@ class User implements Authenticatable
         // do noting
     }
 
+    public function getAuthPasswordName()
+    {
+        // do noting
+    }
+
     public function checkPassword(Hasher $hasher, RawPassword $rawPassword): bool
     {
         if (!$this->user->hasHashedPassword()) {

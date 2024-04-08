@@ -9,16 +9,13 @@ use App\Http\Requests\Api\Drugs\IndexDrugRequest;
 use App\Http\Requests\Api\Drugs\ShowDrugRequest;
 use App\Http\Requests\Api\Drugs\ShowNameDrugRequest;
 use App\Http\Responder\ApiErrorResponder;
-use App\Services\Interfaces\DrugServiceInterface;
+use App\Services\DrugService;
 use Illuminate\Http\JsonResponse;
 
 class DrugController
 {
-    protected DrugServiceInterface $drugService;
-
-    public function __construct(DrugServiceInterface $drugService)
+    public function __construct(private readonly DrugService $drugService)
     {
-        $this->drugService = $drugService;
     }
 
     /**

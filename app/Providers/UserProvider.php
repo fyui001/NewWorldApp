@@ -74,4 +74,9 @@ class UserProvider implements AuthUserProvider
     {
         return $user->checkPassword($this->hasher, new RawPassword($credentials['password']));
     }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false)
+    {
+        // do noting
+    }
 }
